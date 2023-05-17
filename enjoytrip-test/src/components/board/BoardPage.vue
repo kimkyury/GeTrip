@@ -2,7 +2,12 @@
     <div class="container">
         <h1 class="text-center">BOARD</h1>
         <div class="input-group mb-3">
-            <input v-model="$store.state.board.searchWord" @keydown.enter="boardList" type="text" class="form-control" />
+            <input
+                v-model="$store.state.board.searchWord"
+                @keydown.enter="boardList"
+                type="text"
+                class="form-control"
+            />
             <button @click="boardList" class="btn btn-success" type="button">Search</button>
         </div>
 
@@ -31,22 +36,39 @@
                 </tr>
             </tbody>
         </table>
+        <board-pagination></board-pagination>
+
+        <button class="btn btn-sm btn-primary" @click="showInsertModal">글쓰기</button>
+        <insert-modal v-on:call-parent-insert="closeAfterInsert"></insert-modal>
+        <detail-modal></detail-modal>
     </div>
 </template>
 
 <script>
 import Vue from "vue";
 import VueAlertify from "vue-alertify";
+import http from "@/common/axios.js";
 import util from "@/common/util.js";
+import { Modal } from "bootstrap";
+
+import DetailModal from "./modals/DetailModal";
+import InsertModal from "./modals/InsertModal";
+import BoardPagination from "./BoardPagination.vue";
 
 Vue.use(VueAlertify);
 
 export default {
     name: "BoardMain",
+    components: { InsertModal, DetailModal, BoardPagination },
 
+    data() {
+        return {
+            insertModal: null,
+            detailModal: null,
+        };
+    },
     computed: {
         listGetters() {
-            console.log("listGETTEST:", this.$store.getters["board/getBoardList"]);
             return this.$store.getters["getBoardList"]; // no getBoardList()
         },
     },
@@ -61,10 +83,55 @@ export default {
         },
 
         makeDateStr: util.makeDateStr,
+
+        showInsertModal() {
+            this.insertModal.show();
+        },
+
+        closeAfterInsert() {
+            this.insertModal.hide();
+            this.boardList();
+        },
+
+        async boardDetail(boardId) {
+            try {
+                let { data } = await http.get("/boards/" + boardId);
+                console.log(data);
+
+                if (data.result == "login") {
+                    this.doLogout(); // this.$router.push("/login"); 에서 변경
+                } else {
+                    let { dto } = data;
+                    this.$store.commit("SET_BOARD_DETAIL", dto);
+
+                    this.detailModal.show();
+                }
+            } catch (error) {
+                console.log("BoardMainVue: error : ");
+                console.log(error);
+            }
+        },
     },
 
     created() {
         this.boardList();
+    },
+
+    mounted() {
+        this.insertModal = new Modal(document.getElementById("insertModal"));
+        this.detailModal = new Modal(document.getElementById("detailModal"));
+    },
+
+    filters: {
+        makeDateStr: function (date, separator) {
+            return (
+                date.year +
+                separator +
+                (date.month < 10 ? "0" + date.month : date.month) +
+                separator +
+                (date.day < 10 ? "0" + date.day : date.day)
+            );
+        },
     },
 };
 </script>

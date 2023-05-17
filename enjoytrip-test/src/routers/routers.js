@@ -6,14 +6,17 @@ Vue.use(VueRouter);
 import HomePage from "@/components/HomePage";
 import BoardPage from "@/components/board/BoardPage";
 import PlacePage from "@/components/place/PlacePage";
-import MyPage from "@/components/user/MyPage";
 import LoginPage from "@/components/user/LoginPage";
 import SignUpPage from "@/components/user/SignUpPage";
+
+import UserInfoChange from "@/components/user/mypage/UserInfoChange";
+import UserWishList from "@/components/user/mypage/UserWishList";
+import MyPage from "@/components/user/mypage/MyPage";
 
 export default new VueRouter({
     routes: [
         {
-            name: 'Home',
+            name: "Home",
             path: "/",
             component: HomePage,
         },
@@ -38,8 +41,18 @@ export default new VueRouter({
         },
         {
             name: "MyPage",
-            path: "/mypage",
+            path: "/member/mypage",
             component: MyPage,
+        },
+        {
+            name: "UserInfoChange",
+            path: "/member/userinfochange",
+            component: UserInfoChange,
+        },
+        {
+            name: "UserWishList",
+            path: "/member/wishlist",
+            component: UserWishList,
         },
 
         {
