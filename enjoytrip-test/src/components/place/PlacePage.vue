@@ -1,5 +1,5 @@
 <template lang="">
-    <div class="container f-gd">
+    <div class="container">
         <!-- <div style="height: 70px"></div> -->
         <div class="row">
             <!-- 중앙 center content end -->
@@ -107,7 +107,7 @@
                 <!-- kakao map end -->
 
                 <!-- 카드 추가-->
-                <div class="card-group" id="cardSection">
+                <!-- <div class="card-group" id="cardSection">
                     <div
                         class="row row-cols-2 row-cols-lg-5"
                         v-for="(area, index) in trips"
@@ -128,6 +128,34 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div> -->
+            </div>
+        </div>
+        <!-- 카드 추가-->
+        <div class="row gy-5 mb-5">
+            <div class="col-lg-4 col-md-6" v-for="(area, index) in trips" :key="index">
+                <div class="box-image">
+                    <div class="mb-4 primary-overlay">
+                        <img
+                            src="@/img/ssafy_logo.png"
+                            class="card-img-top"
+                            style="height: 20rem"
+                            alt="..."
+                        />
+                        <div
+                            class="overlay-content d-flex flex-column justify-content-center p-4"
+                        ></div>
+                    </div>
+                    <div class="text-center">
+                        <h3 class="h4 text-uppercase text-primary">
+                            <a class="text-reset" href="blog-post.html">{{ area.title }} </a>
+                        </h3>
+                        <p class="small text-uppercase text-muted">
+                            {{ area.addr1 }}
+                        </p>
+                        <a href="#" class="btn btn-primary">상세보기</a>
+                        <a class="btn btn-outline-primary" href="blog-post.html"> 자세히 보기 </a>
                     </div>
                 </div>
             </div>
