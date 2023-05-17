@@ -2,7 +2,7 @@
 
 
 # 1. 로그인/ 로그아웃
-
+![image](./img/signup.png)
 
 
 # 2. 회원서비스
@@ -10,7 +10,7 @@
 
 
 # 3. 관광지 조회
-
+![image](./img/place.png)
 
 # 4. 메인화면
 ![image](./img/home.PNG)
