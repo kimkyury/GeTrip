@@ -3,6 +3,7 @@
 
 # 1. 로그인/ 로그아웃
 ![image](./img/signup.png)
+![image](./img/logout.png)
 
 
 # 2. 회원서비스
