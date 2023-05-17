@@ -97,15 +97,15 @@ export default {
       signupUserPassword: "",
 
       // 유효성 검사
-
-
     };
   },
   methods: {
     async validate() {
       if (this.loginUserEmail.length > 0) this.isLoginUserEmailValid = true;
-      if (this.loginUserPassword.length > 0) this.isLoginUserPasswordValid = true;
-      if (this.isLoginUserEmailValid && this.isLoginUserPasswordValid) return true;
+      if (this.loginUserPassword.length > 0)
+        this.isLoginUserPasswordValid = true;
+      if (this.isLoginUserEmailValid && this.isLoginUserPasswordValid)
+        return true;
       return false;
     },
     async login() {
@@ -118,34 +118,38 @@ export default {
           // logincontroller에 CORS처리 및 @ReqeustBody
           let { data } = await http.post("/login", loginObj);
           console.log(data);
-          this.$store.commit("SET_LOGIN", { isLogin: true, userName: data.userName, userProfileImageUrl: data.userProfileImageUrl });
-          this.$router.push("/board");
+          this.$store.commit("SET_LOGIN", {
+            isLogin: true,
+            userName: data.userName,
+            userProfileImageUrl: data.userProfileImageUrl,
+          });
+          this.$router.push("/");
         } catch (error) {
           console.log("LoginVue: error : ");
-            console.log(error);
-            if (error.response.status == "404") {
-               alert("이메일 또는 비밀번호를 확인하세요.");
-            } else {
-               alert("Opps!! 서버에 문제가 발생했습니다.");
-            }
-         }
+          console.log(error);
+          if (error.response.status == "404") {
+            alert("이메일 또는 비밀번호를 확인하세요.");
+          } else {
+            alert("Opps!! 서버에 문제가 발생했습니다.");
+          }
+        }
       } else {
-        alert("정보를 입력해 주세요.")
+        alert("정보를 입력해 주세요.");
       }
     },
     async signup() {
       let signupObj = {
-        userName : this.signupUserName,
+        userName: this.signupUserName,
         userEmail: this.signupUserEmail,
         userPassword: this.signupUserPassword,
-      }
-      try{
-      let { data } = await http.post("/users", signupObj);
-      if(data.result == "success"){
-        alert("회원가입 성공");
-        this.$router.push('Login');
-      }
-      }catch(error){
+      };
+      try {
+        let { data } = await http.post("/users", signupObj);
+        if (data.result == "success") {
+          alert("회원가입 성공");
+          this.$router.push("/login");
+        }
+      } catch (error) {
         alert(error);
       }
     },
