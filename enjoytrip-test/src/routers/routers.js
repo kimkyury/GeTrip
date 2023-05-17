@@ -13,6 +13,7 @@ import SignUpPage from "@/components/user/SignUpPage";
 export default new VueRouter({
     routes: [
         {
+            name: 'Home',
             path: "/",
             component: HomePage,
         },
