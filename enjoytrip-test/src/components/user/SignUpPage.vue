@@ -118,7 +118,7 @@ export default {
           // logincontroller에 CORS처리 및 @ReqeustBody
           let { data } = await http.post("/login", loginObj);
           console.log(data);
-          this.$store.commit("login/SET_LOGIN", { isLogin: true, userName: data.userName, userProfileImageUrl: data.userProfileImageUrl });
+          this.$store.commit("SET_LOGIN", { isLogin: true, userName: data.userName, userProfileImageUrl: data.userProfileImageUrl });
           this.$router.push("/board");
         } catch (error) {
           console.log("LoginVue: error : ");

@@ -19,7 +19,6 @@
             </ul>
 
             <ul class="list-inline mb-0" v-if="isLogin">
-                {{ $store.state.login.isLogin }}
               <li class="list-inline-item">
                 <a
                   class="text-xs text-uppercase fw-bold text-reset"
