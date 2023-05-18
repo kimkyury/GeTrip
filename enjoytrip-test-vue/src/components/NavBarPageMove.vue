@@ -5,13 +5,14 @@
                 <!-- Navbar brand--><a class="navbar-brand" href="index.html"
                     ><img
                         class="d-none d-md-inline-block"
-                        src="img/logo.png"
+                        src="@/assets/img/enjoytrip/ssafy_logo_small.png"
                         alt="Universal logo"
                     /><img
                         class="d-inline-block d-md-none"
-                        src="img/logo-small.png"
+                        src="@/assets/img/enjoytrip/ssafy_logo_small.png"
                         alt="Universal logo"
-                    /><span class="sr-only">Universal - go to homepage</span></a
+                    />
+                    <span class="sr-only">Universal - go to homepage</span></a
                 >
                 <!-- Navbar toggler-->
                 <button

@@ -46,7 +46,7 @@
                     </table>
                 </div>
                 <div class="modal-footer">
-                    <!-- <button
+                    <button
                         v-show="$store.state.board.sameUser"
                         @click="changeToUpdate"
                         class="btn btn-sm btn-primary btn-outline"
@@ -63,7 +63,7 @@
                         type="button"
                     >
                         글 삭제하기
-                    </button> -->
+                    </button>
                 </div>
             </div>
         </div>
@@ -73,12 +73,12 @@
 <script>
 export default {
     methods: {
-        // changeToUpdate() {
-        //     this.$emit("call-parent-change-to-update");
-        // },
-        // changeToDelete() {
-        //     this.$emit("call-parent-change-to-delete");
-        // },
+        changeToUpdate() {
+            this.$emit("call-parent-change-to-update");
+        },
+        changeToDelete() {
+            this.$emit("call-parent-change-to-delete");
+        },
     },
 };
 </script>

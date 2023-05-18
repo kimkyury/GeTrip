@@ -4,6 +4,7 @@
             <div class="container py-4">
                 <div class="row gy-5">
                     <div class="col-lg-9">
+                        <h1>Change My Info</h1>
                         <p class="lead mb-4">회원정보 수정 페이지입니다.</p>
                         <p class="text-muted mb-5">
                             본인의 개인정보 혹은 비밀번호의 수정이 가능합니다.

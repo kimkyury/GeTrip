@@ -5,7 +5,10 @@ Vue.use(VueRouter);
 
 import HomePage from "@/components/HomePage";
 import BoardPage from "@/components/board/BoardPage";
+
 import PlacePage from "@/components/place/PlacePage";
+import HotPlacePage from "@/components/place/HotPlacePage";
+
 import LoginPage from "@/components/user/LoginPage";
 import SignUpPage from "@/components/user/SignUpPage";
 
@@ -38,6 +41,11 @@ export default new VueRouter({
             name: "PlacePage",
             path: "/places",
             component: PlacePage,
+        },
+        {
+            name: "HotPlacePage",
+            path: "/places",
+            component: HotPlacePage,
         },
         {
             name: "MyPage",

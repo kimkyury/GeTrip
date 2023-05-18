@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import http from "@/common/axios.js";
 import util from "@/common/util.js";
+import routers from "@/routers/routers";
 
 Vue.use(Vuex);
 export default new Vuex.Store({
@@ -11,9 +12,20 @@ export default new Vuex.Store({
 
             userName: "",
             userProfileImageUrl: "",
-
             userEmail: "",
             userPassword: "",
+            userRegisterDate: "",
+
+            /* 0518 Add */
+            birthYear: "",
+            birthMonth: "",
+            birthDay: "",
+
+            // 아래는 공통코드에서 fk로 이름을 가져와야함
+            gender: "", // gender table
+            sido: "", // sido Table
+            gugun: "", // gugun Table
+            userClsfName: "", // group_code table
         },
         board: {
             list: [],
@@ -44,11 +56,35 @@ export default new Vuex.Store({
             state.login.isLogin = payload.isLogin;
             state.login.userName = payload.userName;
             state.login.userProfileImageUrl = payload.userProfileImageUrl;
+
+            // 0518 ADD
+            state.login.birthYear = payload.birthYear;
+            state.login.birthYear = payload.birthYear;
+            state.login.birthMonth = payload.birthMonth;
+            state.login.birthDay = payload.birthDay;
+
+            state.login.gender = payload.gender;
+
+            state.login.sido = payload.sido;
+            state.login.gugun = payload.gugun;
+            state.login.userClsfName = payload.userClsfName;
         },
         SET_LOGOUT(state) {
             state.login.isLogin = false;
             state.login.userName = "";
             state.login.userProfileImageUrl = "";
+
+            // 0518 ADD
+            state.login.birthYear = "";
+            state.login.birthYear = "";
+            state.login.birthMonth = "";
+            state.login.birthDay = "";
+
+            state.login.gender = "";
+
+            state.login.sido = "";
+            state.login.gugun = "";
+            state.login.userClsfName = "";
         },
         SET_BOARD_LIST(state, list) {
             state.board.list = list;
@@ -91,7 +127,6 @@ export default new Vuex.Store({
     },
     actions: {
         async boardList({ state, commit }) {
-            console.log("boardList 수행");
             let params = {
                 limit: state.board.limit,
                 offset: state.board.offset,
@@ -100,18 +135,17 @@ export default new Vuex.Store({
 
             try {
                 let { data } = await http.get("/boards", { params });
-                console.log("------BOARD LIST -------");
                 console.log(data);
 
-                commit("SET_BOARD_LIST", data.list);
-                commit("SET_BOARD_TOTAL_LIST_ITEM_COUNT", data.count);
+                if (data.result == "login") {
+                    routers.push("/login");
+                } else {
+                    commit("SET_BOARD_LIST", data.list);
+                    commit("SET_BOARD_TOTAL_LIST_ITEM_COUNT", data.count);
+                }
             } catch (error) {
                 console.log(error);
             }
-        },
-
-        testAction() {
-            console.log("testAction");
         },
     },
     getters: {

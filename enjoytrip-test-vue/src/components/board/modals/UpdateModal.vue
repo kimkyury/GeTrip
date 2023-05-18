@@ -55,8 +55,6 @@ export default {
     data() {
         return {
             CKEditor: "",
-            attachFile: false,
-            fileList: [],
         };
     },
 
@@ -74,8 +72,6 @@ export default {
         // modal 초기화
         initUI() {
             this.CKEditor.setData(this.$store.state.board.content);
-
-            document.querySelector("#inputFileUploadUpdate").value = "";
         },
 
         async boardUpdate() {
@@ -98,6 +94,13 @@ export default {
 
                 console.log("UpdateModalVue: data : ");
                 console.log(data);
+
+                if (data.result == "login") {
+                    this.doLogout();
+                } else {
+                    this.$alertify.success("글이 수정되었습니다.");
+                    this.closeModal();
+                }
             } catch (error) {
                 console.log("UpdateModalVue: error ");
                 console.log(error);
@@ -105,6 +108,14 @@ export default {
         },
         closeModal() {
             this.$emit("call-parent-update");
+        },
+        doLogout() {
+            this.$store.commit("SET_LOGIN", {
+                isLogin: false,
+                userName: "",
+                userProfileImageUrl: "",
+            });
+            this.$router.push("/login");
         },
     },
 

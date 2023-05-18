@@ -3,6 +3,7 @@
         <div class="container py-4">
             <div class="row g-5">
                 <div class="col-lg-9">
+                    <h1>My Favorite Attraction</h1>
                     <p class="lead mb-5">당신이 찜한 여행지 목록입니다.</p>
                     <div class="row gy-5 align-items-stretch">
                         <div class="col-lg-3 col-md-6">
