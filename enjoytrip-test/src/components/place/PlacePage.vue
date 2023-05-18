@@ -14,76 +14,33 @@
                     <select
                         id="area1List"
                         class="form-select me-2"
-                        v-model="areaCode"
+                        v-model="sidoCode"
                         @change="getArea2List()"
                     >
                         <option value="">시도를 선택하세요</option>
                         <option
                             v-for="(area, index) in areaList1"
                             :key="index"
-                            v-bind:value="area.code"
+                            v-bind:value="area.sidoCode"
                         >
-                            {{ area.name }}
+                            {{ area.sidoName }}
                         </option>
                     </select>
                     <select
                         id="area2List"
                         class="form-select me-2"
-                        v-model="sigunguCode"
+                        v-model="gugunCode"
                         @change="getCat1List()"
                     >
                         <option value="">구군을 선택하세요</option>
                         <option
                             v-for="(area, index) in areaList2"
                             :key="index"
-                            v-bind:value="area.code"
+                            v-bind:value="area.gugunCode"
                         >
-                            {{ area.name }}
+                            {{ area.gugunName }}
                         </option>
                     </select>
-                    <select
-                        id="cat1List"
-                        class="form-select me-2"
-                        v-model="cat1"
-                        @change="getCat2List()"
-                    >
-                        <option value="">대분류 선택하세요</option>
-                        <option
-                            v-for="(cat, index) in catList1"
-                            :key="index"
-                            v-bind:value="cat.code"
-                        >
-                            {{ cat.name }}
-                        </option>
-                    </select>
-                    <select
-                        id="cat2List"
-                        class="form-select me-2"
-                        v-model="cat2"
-                        @change="getCat3List()"
-                    >
-                        <option value="">중분류 선택하세요</option>
-                        <option
-                            v-for="(cat, index) in catList2"
-                            :key="index"
-                            v-bind:value="cat.code"
-                        >
-                            {{ cat.name }}
-                        </option>
-                    </select>
-                    <select id="cat3List" class="form-select me-2" v-model="cat3">
-                        <option value="">소분류 선택하세요</option>
-                        <option
-                            v-for="(cat, index) in catList3"
-                            :key="index"
-                            v-bind:value="cat.code"
-                        >
-                            {{ cat.name }}
-                        </option>
-                    </select>
-                </form>
-
-                <div class="d-flex">
                     <input
                         id="search-keyword"
                         class="form-control me-2"
@@ -100,36 +57,11 @@
                     >
                         검색
                     </button>
-                </div>
+                </form>
 
                 <!-- kakao map start -->
                 <div id="map" class="my-3" style="width: 100%; height: 400px"></div>
                 <!-- kakao map end -->
-
-                <!-- 카드 추가-->
-                <!-- <div class="card-group" id="cardSection">
-                    <div
-                        class="row row-cols-2 row-cols-lg-5"
-                        v-for="(area, index) in trips"
-                        :key="index"
-                    >
-                        <div class="col">
-                            <div class="card">
-                                <img
-                                    src="@/img/ssafy_logo.png"
-                                    class="card-img-top"
-                                    style="height: 20rem"
-                                    alt="..."
-                                />
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">{{ area.title }}</h5>
-                                    <p class="card-text">주소 : {{ area.addr1 }}</p>
-                                    <a href="#" class="btn btn-primary">상세보기</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
             </div>
         </div>
         <!-- 카드 추가-->
@@ -137,14 +69,14 @@
             <div class="col-lg-4 col-md-6" v-for="(area, index) in trips" :key="index">
                 <div class="box-image">
                     <div class="mb-4 primary-overlay">
-                        <img v-if="area.firstimage == ''"
+                        <img v-if="area.firstImage == ''"
                             src="@/img/ssafy_logo.png"
                             class="card-img-top"
                             style="height: 20rem"
                             alt="..."
                         />
                         <img v-else
-                            :src="area.firstimage"
+                            :src="area.firstImage"
                             class="card-img-top"
                             style="height: 20rem"
                             alt="..."
@@ -174,19 +106,13 @@ import http from "@/common/axios.js";
 export default {
   data() {
     return {
-      numOfRows: 10,
-      pageNo: 1,
-      areaCode: "",
-      sigunguCode: "",
-      cat1: "",
-      cat2: "",
-      cat3: "",
-      search: "",
+      limit: 10,
+      offset: 0,
+      sidoCode: "",
+      gugunCode: "",
+      searchWord: "",
       areaList1: [],
       areaList2: [],
-      catList1: [],
-      catList2: [],
-      catList3: [],
       trips: [],
       positions: [],
       markers: [],
@@ -195,12 +121,11 @@ export default {
   methods: {
     makeCard(data) {
       this.positions = [];
-      this.trips = data.response.body.items.item;
+      this.trips = data.list;
       this.trips.forEach((area) => {
-        area.default_image = `@/img/ssafy_logo.png`;
         let markerInfo = {
           title: area.title,
-          latlng: new window.kakao.maps.LatLng(area.mapy, area.mapx),
+          latlng: new window.kakao.maps.LatLng(area.latitude, area.longitude),
         };
         this.positions.push(markerInfo);
       });
@@ -241,23 +166,20 @@ export default {
     },
     searchButton() {
       this.sigungCode = document.querySelector("#area2List").value;
-      this.cat3 = document.querySelector("#cat3List").value;
-      this.search = document.querySelector("#search-keyword").value;
+      this.searchWord = document.querySelector("#search-keyword").value;
       this.getList();
     },
     async getList() {
       let $this = this;
       let params = {
-        numOfRows: this.numOfRows,
-        pageNo: this.pageNo,
-        areaCode: this.areaCode,
-        sigunguCode: this.sigunguCode,
-        cat1: this.cat1,
-        cat2: this.cat2,
-        cat3: this.cat3,
-        search: this.search,
+        limit: this.limit,
+        offset: this.offset,
+        sidoCode: this.sidoCode,
+        gugunCode: this.gugunCode,
+        searchWord: this.searchWord,
       };
-      let response = await http.get("/trip/list", { params });
+
+      let response = await http.get("/trips", { params });
 
       let { data } = response;
       console.log(data);
@@ -265,56 +187,15 @@ export default {
       $this.makeCard(data);
     },
     async getArea1List() {
-      let params = {
-        numOfRows: this.numOfRows,
-        pageNo: this.pageNo,
-      };
-      let response = await http.get("/trip/areaCode", { params });
-      let { data } = response;
+      let { data } = await http.get("/codes");
       console.log(data);
-      this.areaList1 = data.response.body.items.item;
+      this.areaList1 = data.list;
       console.log(this.areaList1);
     },
     async getArea2List() {
-      console.log(this.areaCode);
-      let params = {
-        numOfRows: this.numOfRows,
-        pageNo: this.pageNo,
-        areaCode: this.areaCode,
-      };
-      let response = await http.get("/trip/areaCode", { params });
+      let response = await http.get("/codes/" + this.sidoCode);
       let { data } = response;
-      this.areaList2 = data.response.body.items.item;
-    },
-    async getCat1List() {
-      let params = {
-        numOfRows: this.numOfRows,
-        pageNo: this.pageNo,
-      };
-      let response = await http.get("/trip/categoryCode", { params });
-      let { data } = response;
-      this.catList1 = data.response.body.items.item;
-    },
-    async getCat2List() {
-      let params = {
-        numOfRows: this.numOfRows,
-        pageNo: this.pageNo,
-        cat1: this.cat1,
-      };
-      let response = await http.get("/trip/categoryCode", { params });
-      let { data } = response;
-      this.catList2 = data.response.body.items.item;
-    },
-    async getCat3List() {
-      let params = {
-        numOfRows: this.numOfRows,
-        pageNo: this.pageNo,
-        cat1: this.cat1,
-        cat2: this.cat2,
-      };
-      let response = await http.get("/trip/categoryCode", { params });
-      let { data } = response;
-      this.catList3 = data.response.body.items.item;
+      this.areaList2 = data.list;
     },
   },
   mounted() {
@@ -340,7 +221,6 @@ export default {
         this.map = new window.kakao.maps.Map(mapContainer, mapOption);
       });
       await this.getArea1List();
-      await this.getCat1List();
       await this.getList();
     });
     document.head.appendChild(script);
