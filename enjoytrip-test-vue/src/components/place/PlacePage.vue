@@ -32,7 +32,7 @@
                         v-model="gugunCode"
                         @change="getCat1List()"
                     >
-                        <option value="">구군을 선택하세요</option>
+                        <option value="0">구군을 선택하세요</option>
                         <option
                             v-for="(area, index) in areaList2"
                             :key="index"
@@ -109,7 +109,7 @@ export default {
       limit: 10,
       offset: 0,
       sidoCode: "",
-      gugunCode: "",
+      gugunCode: "0",
       searchWord: "",
       areaList1: [],
       areaList2: [],
@@ -131,7 +131,7 @@ export default {
       });
       this.displayMarker();
     },
-    displayMarker() {
+    async displayMarker() {
       for (let i = 0; i < this.markers.length; i++) {
         this.markers[i].setMap(null);
       }
@@ -159,6 +159,7 @@ export default {
         this.markers.push(marker);
       }
       // 첫번째 검색 정보를 이용하여 지도 중심을 이동 시킵니다
+      
       this.map.setCenter(this.positions[0].latlng);
     },
     moveCenter(lat, lng) {
@@ -188,11 +189,10 @@ export default {
     },
     async getArea1List() {
       let { data } = await http.get("/codes");
-      console.log(data);
       this.areaList1 = data.list;
-      console.log(this.areaList1);
     },
     async getArea2List() {
+      this.gugunCode = "0";
       let response = await http.get("/codes/" + this.sidoCode);
       let { data } = response;
       this.areaList2 = data.list;
@@ -203,10 +203,10 @@ export default {
     script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=20d8b1fb60682e2256b9d4e10ea6a783&libraries=services,clusterer,drawing`;
 
     /*global kakao*/
-    script.addEventListener("load", async () => {
+    script.addEventListener("load", () => {
       // 스크립트 로딩이 완료되었을 때 실행되는 코드
       // Kakao 지도 API를 사용하는 코드를 이곳에 작성합니다.
-      kakao.maps.load(() => {
+      kakao.maps.load( async () => {
         // 카카오맵 API 로드 완료 후 실행할 코드
         // 지도 생성, 마커 추가 등을 이곳에 작성하면 됩니다.
         console.log("loaded", kakao);
@@ -219,9 +219,10 @@ export default {
 
         // // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
         this.map = new window.kakao.maps.Map(mapContainer, mapOption);
+        
+        await this.getArea1List();
+        await this.getList();
       });
-      await this.getArea1List();
-      await this.getList();
     });
     document.head.appendChild(script);
   },
