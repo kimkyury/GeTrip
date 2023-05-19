@@ -55,7 +55,7 @@
                             <input
                                 id="search-keyword"
                                 class="form-control me-2"
-                                v-model="$store.state.searchWord"
+                                v-model="$store.state.placeStore.searchWord"
                                 type="search"
                                 name="search"
                                 placeholder="검색어"
