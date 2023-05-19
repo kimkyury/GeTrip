@@ -1,68 +1,81 @@
-
-const loginStore ={
-    namespaced : true,
-    state:{
+const loginStore = {
+    namespaced: true,
+    state: {
         isLogin: false,
 
-            userName: "",
-            userProfileImageUrl: "",
-            userEmail: "",
-            userPassword: "",
-            userRegisterDate: "",
+        userSeq: "",
+        userName: "",
+        userProfileImageUrl: "",
+        userEmail: "",
+        userRegisterDate: "",
 
-            /* 0518 Add */
-            birthYear: "",
-            birthMonth: "",
-            birthDay: "",
+        userGenderCode: "",
+        userGenderName: "",
 
-            // 아래는 공통코드에서 fk로 이름을 가져와야함
-            gender: "", // gender table
-            sido: "", // sido Table
-            gugun: "", // gugun Table
-            userClsfName: "", // group_code table
+        userBirthYear: "",
+        userBirthMonth: "",
+        userBirthDay: "",
+
+        // 아래는 공통코드에서 fk로 이름을 가져와야함
+        userSidoCode: "", // sido Table
+        userSidoName: "",
+
+        userGugunCode: "",
+        userGugunName: "",
+
+        userClsfCode: "",
+        userClsfName: "", // group_code table
     },
-    getters:{
+    getters: {
         IsLogin: function (state) {
             return state.isLogin;
         },
     },
-    actions:{},
-    mutations:{
+    actions: {},
+    mutations: {
         SET_LOGIN(state, payload) {
             state.isLogin = payload.isLogin;
+
+            state.userSeq = payload.userSeq;
             state.userName = payload.userName;
             state.userProfileImageUrl = payload.userProfileImageUrl;
+            state.userEmail = payload.userEmail;
 
-            // 0518 ADD
-            state.birthYear = payload.birthYear;
-            state.birthYear = payload.birthYear;
-            state.birthMonth = payload.birthMonth;
-            state.birthDay = payload.birthDay;
+            state.userRegisterDate = payload.userRegisterDate;
 
-            state.gender = payload.gender;
+            state.userGenderCode = payload.userGenderCode;
+            state.userGenderName = payload.userGenderName;
+            state.userBirthYear = payload.userBirthYear;
+            state.userBirthMonth = payload.userBirthMonth;
+            state.userBirthDay = payload.userBirthDay;
 
-            state.sido = payload.sido;
-            state.gugun = payload.gugun;
+            state.userSidoCode = payload.userSidoCode;
+            state.userSidoName = payload.userSidoName;
+            state.userGugunCode = payload.userGugunCode;
+            state.userGugunName = payload.userGugunName;
+            state.userClsfCode = payload.userClsfCode;
             state.userClsfName = payload.userClsfName;
         },
         SET_LOGOUT(state) {
             state.isLogin = false;
+            state.userSeq = "";
             state.userName = "";
             state.userProfileImageUrl = "";
-
-            // 0518 ADD
-            state.birthYear = "";
-            state.birthYear = "";
-            state.birthMonth = "";
-            state.birthDay = "";
-
-            state.gender = "";
-
-            state.sido = "";
-            state.gugun = "";
+            state.userEmail = "";
+            state.userRegisterDate = "";
+            state.userGenderCode = "";
+            state.userGenderName = "";
+            state.userBirthYear = "";
+            state.userBirthMonth = "";
+            state.userBirthDay = "";
+            state.userSidoCode = "";
+            state.userSidoName = "";
+            state.userGugunCode = "";
+            state.userGugunName = "";
+            state.userClsfCode = "";
             state.userClsfName = "";
         },
-    }
-}
+    },
+};
 
 export default loginStore;

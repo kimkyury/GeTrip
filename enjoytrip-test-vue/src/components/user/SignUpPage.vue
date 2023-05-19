@@ -69,7 +69,7 @@
                                     class="form-control"
                                     v-model="signupUserPassword"
                                     id="userpassword"
-                                    type="text"
+                                    type="password"
                                     name="userpassword"
                                     placeholder="Enter your password"
                                 />
@@ -77,24 +77,35 @@
 
                             <!-- 0518 ADDED -->
                             <div class="form-group mb-3">
-                                <label class="form-label" for="userpassword"></label>
+                                <label class="form-label" for="userpasswordConfirm"></label>
                                 <input
                                     class="form-control"
                                     v-model="signupUserPasswordConfirm"
                                     id="userpasswordConfirm"
-                                    type="text"
+                                    type="password"
                                     name="userpasswordConfirm"
                                     placeholder="Enter your password"
                                 />
                             </div>
 
-                            <!-- sido_code, gugun_code -->
+                            <div class="form-group mb-3">
+                                <label class="form-label" for="profileImage">이미지 선택</label>
+                                <input
+                                    class="form-control"
+                                    v-model="signupUserProfileImageUrl"
+                                    id="profileImage"
+                                    type="text"
+                                    name="profileImage"
+                                    placeholder="test용 img url"
+                                />
+                            </div>
 
                             <!-- birth_year, birth_day, birth_month -->
                             <div class="row">
-                                <div class="col-md-6 mb-3 col-lg-3">
+                                <div class="col-md-3 mb-3 col-lg-3">
                                     <label class="form-label" for="gender">성별</label>
                                     <select
+                                        v-model="signupUserGender"
                                         class="form-select js-states"
                                         id="gender"
                                         name="gender"
@@ -105,32 +116,83 @@
                                     </select>
                                 </div>
 
-                                <div class="col-md-6 mb-3 col-lg-3">
+                                <div class="col-md-4 mb-3 col-lg-3">
                                     <label class="form-label" for="birthYear">태어난 년도</label>
                                     <input
+                                        v-model="signupUserBirthYear"
                                         class="form-control"
                                         id="birthYear"
                                         type="text"
                                         name="birthYear"
                                     />
                                 </div>
-                                <div class="col-md-6 mb-3 col-lg-3">
+                                <div class="col-md-4 mb-3 col-lg-3">
                                     <label class="form-label" for="birthMonth">월 </label>
                                     <input
+                                        v-model="signupUserBirthMonth"
                                         class="form-control"
                                         id="birthMonth"
                                         type="text"
                                         name="birthMonth"
                                     />
                                 </div>
-                                <div class="col-md-6 mb-3 col-lg-3">
+                                <div class="col-md-4 mb-3 col-lg-3">
                                     <label class="form-label" for="birthDay">일</label>
                                     <input
+                                        v-model="signupUserBirthDay"
                                         class="form-control"
                                         id="birthDay"
                                         type="text"
                                         name="birthDay"
                                     />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 mb-3 col-lg-6">
+                                    <label class="form-label" for="sido"> 8도 선택 </label>
+                                    <!-- Using a select element to create a dropdown menu -->
+                                    <select
+                                        v-model="signupSidoCode"
+                                        class="form-control"
+                                        id="sido"
+                                        name="sido"
+                                        @change="getGuguns"
+                                    >
+                                        <!-- Loop through sidos array with v-for directive -->
+
+                                        <option disabled value="">8도 중 하나를 선택하세요.</option>
+                                        <option
+                                            v-for="sido in areaList1"
+                                            :key="sido.sidoCode"
+                                            :value="sido.sidoCode"
+                                        >
+                                            {{ sido.sidoName }}
+                                        </option>
+                                    </select>
+                                </div>
+
+                                <div class="col-md-6 mb-3 col-lg-6">
+                                    <label class="form-label" for="gugun"> 도시 선택 </label>
+                                    <!-- Using a select element to create a dropdown menu -->
+                                    <select
+                                        v-model="signupGugunCode"
+                                        class="form-control"
+                                        id="gugun"
+                                        name="gugun"
+                                    >
+                                        <!-- Loop through sidos array with v-for directive -->
+
+                                        <option disabled value="">
+                                            도시 중 하나를 선택하세요.
+                                        </option>
+                                        <option
+                                            v-for="gugun in guguns"
+                                            :key="gugun.gugunCode"
+                                            :value="gugun.gugunCode"
+                                        >
+                                            {{ gugun.gugunName }}
+                                        </option>
+                                    </select>
                                 </div>
                             </div>
 
@@ -155,6 +217,7 @@
 <script>
 import http from "@/common/axios";
 import LoginPage from "@/components/user/LoginPage";
+import { mapState, mapActions } from "vuex";
 
 const SUCCESS = 1;
 
@@ -162,24 +225,64 @@ export default {
     components: { LoginPage },
     data() {
         return {
+            guguns: [],
             // 회원가입
             isSignupUserNamelValid: false,
             isSignupUserEmailValid: false,
             isSignupUserPasswordValid: false,
-            signupUserName: "",
-            signupUserEmail: "",
-            signupUserPassword: "",
-            signupUserPasswordConfirm: "",
+
+            signupUserProfileImageUrl: "img/animal/cat.png",
+
+            // TODO: 공란으로 비울 것
+            signupUserName: "테스트용",
+            signupUserEmail: "t@nav.com",
+            signupUserPassword: "@qw1",
+            signupUserPasswordConfirm: "@qw1",
+
+            signupUserGender: "01",
+
+            signupUserBirthYear: "2000",
+            signupUserBirthMonth: "09",
+            signupUserBirthDay: "18",
+
+            signupSidoCode: "6",
+            signupGugunCode: "4",
 
             // 유효성 검사
         };
     },
     methods: {
+        ...mapActions("placeStore", ["getArea1List", "getArea2List"]),
+
+        getSidos() {
+            console.log("getSidos 수행");
+            this.getArea1List();
+        },
+
+        async getGuguns() {
+            console.log(this.signupSidoCode);
+            let { data } = await http.get("/codes/" + this.signupSidoCode);
+            console.log(data);
+            this.guguns = data.list;
+
+            console.log(this.guguns);
+        },
+
         async signup() {
             let signupObj = {
                 userName: this.signupUserName,
                 userEmail: this.signupUserEmail,
                 userPassword: this.signupUserPassword,
+                userProfileImageUrl: this.signupUserProfileImageUrl,
+
+                gender: this.signupUserGender,
+
+                birthYear: this.signupUserBirthYear,
+                birthMonth: this.signupUserBirthMonth,
+                birthDay: this.signupUserBirthDay,
+
+                sidoCode: this.signupSidoCode,
+                gugunCode: this.signupGugunCode,
             };
 
             console.log(signupObj);
@@ -197,6 +300,14 @@ export default {
             }
         },
     },
+
+    computed: {
+        ...mapState("placeStore", ["areaList1", "areaList2"]),
+    },
+
+    created() {
+        this.getSidos();
+    },
 };
 </script>
-<style lang=""></style>
+<style scoped></style>

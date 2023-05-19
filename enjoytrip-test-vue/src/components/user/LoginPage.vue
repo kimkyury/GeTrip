@@ -38,7 +38,7 @@
 </template>
 <script>
 import http from "@/common/axios";
-import { mapMutations } from 'vuex';
+import { mapMutations } from "vuex";
 const loginStore = "loginStore";
 
 export default {
@@ -47,13 +47,14 @@ export default {
             // 로그인
             isLoginUserEmailValid: false,
             isLoginUserPasswordValid: false,
+
             loginUserEmail: "",
             loginUserPassword: "",
         };
     },
 
     methods: {
-        ...mapMutations(loginStore,{setLogin : "SET_LOGIN"}),
+        ...mapMutations(loginStore, { setLogin: "SET_LOGIN" }),
         async validate() {
             if (this.loginUserEmail.length > 0) this.isLoginUserEmailValid = true;
             if (this.loginUserPassword.length > 0) this.isLoginUserPasswordValid = true;
@@ -72,9 +73,26 @@ export default {
                     console.log(data);
                     this.setLogin({
                         isLogin: true,
+
+                        userSeq: this.userSeq,
                         userName: data.userName,
+                        userEmail: data.userEmail,
                         userProfileImageUrl: data.userProfileImageUrl,
+                        userRegisterDate: data.userRegisterDate,
+                        userGenderCode: data.genderCode,
+                        userGenderName: data.genderName,
+                        userBirthYear: data.userBirthYear,
+                        userBirthMonth: data.userBirthMonth,
+                        userBirthDay: data.userBirthDay,
+                        userSidoCode: data.userSidoCode,
+                        userSidoName: data.userSidoName,
+                        userGugunCode: data.userGugunCode,
+                        userGugunName: data.userGugunName,
+                        userClsfCode: data.userClsfCode,
+                        userClsfName: data.userClsfName,
                     });
+
+                    localStorage.setItem("userInfo", data);
                     this.$router.push("/");
                 } catch (error) {
                     console.log("LoginVue: error : ");
