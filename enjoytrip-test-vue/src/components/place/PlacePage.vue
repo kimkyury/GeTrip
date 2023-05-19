@@ -75,6 +75,26 @@
                 
             </section>
             <!-- 카드 추가-->
+            <!-- <div class="row gy-4 mb-5">
+                <div class="col-lg-4">
+                  <div class="ratio ratio-4x3 mb-3">
+                    <iframe src="//www.youtube.com/embed/upZJpGrppJA" title="YouTube video" allowfullscreen></iframe>
+                  </div>
+                </div>
+                <div class="col-lg-8">
+                  <h2 class="h3 text-uppercase mb-3"><a class="text-dark" href="post.html">Who is who - example blog post</a></h2>
+                  <div class="row gy-2 mb-4">
+                    <div class="col-xl-6">
+                      <p class="text-sm text-uppercase mb-0 fw-light text-muted">By <a class="fw-normal" href="#">John Snow</a> in <a class="fw-normal" href="blog.html">Webdesign                  </a></p>
+                    </div>
+                    <div class="col-xl-6">
+                      <p class="text-xl-end text-sm mb-0 text-muted"><a class="text-muted me-3" href="blog-post.html"><i class="far fa-calendar me-1"></i> June 20, 2020</a><a class="text-muted" href="blog-post.html"><i class="far fa-comment me-1"></i> 12 Comments</a></p>
+                    </div>
+                  </div>
+                  <p class="text-sm text-gray-700 mb-3">Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+                  <p class="text-end"><a class="btn btn-outline-primary" href="blog-post.html">Continue reading</a></p>
+                </div>
+            </div> -->
             <div class="row gy-5 mb-5">
                 <div v-for="(area, index) in trips" :key="index">
                     <div class="box-image">
