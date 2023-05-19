@@ -16,7 +16,7 @@
                             </li>
                         </ul>
 
-                        <ul class="list-inline mb-0" v-if="isLogin">
+                        <ul class="list-inline mb-0" v-if="$store.state.loginStore.isLogin">
                             <li class="list-inline-item">
                                 <a
                                     class="text-xs text-uppercase fw-bold text-reset"
@@ -69,6 +69,9 @@
     </div>
 </template>
 <script>
+import {mapGetters, mapMutations} from "vuex";
+const loginStore = "loginStore";
+
 export default {
     metaInfo: {
         link: [
@@ -86,14 +89,16 @@ export default {
         ],
     },
     methods: {
+        ...mapMutations(loginStore, ["SET_LOGOUT"]),
         logout() {
-            this.$store.commit("login/SET_LOGOUT");
+            this.SET_LOGOUT();
             this.$router.push("/signup");
         },
     },
     computed: {
+        ...mapGetters(loginStore, ["IsLogin"]),
         isLogin() {
-            return this.$store.state.login.isLogin;
+            return this.IsLogin;
         },
     },
 };

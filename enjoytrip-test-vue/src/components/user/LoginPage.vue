@@ -38,6 +38,8 @@
 </template>
 <script>
 import http from "@/common/axios";
+import { mapMutations } from 'vuex';
+const loginStore = "loginStore";
 
 export default {
     data() {
@@ -51,6 +53,7 @@ export default {
     },
 
     methods: {
+        ...mapMutations(loginStore,{setLogin : "SET_LOGIN"}),
         async validate() {
             if (this.loginUserEmail.length > 0) this.isLoginUserEmailValid = true;
             if (this.loginUserPassword.length > 0) this.isLoginUserPasswordValid = true;
@@ -67,7 +70,7 @@ export default {
                     // logincontroller에 CORS처리 및 @ReqeustBody
                     let { data } = await http.post("/login", loginObj);
                     console.log(data);
-                    this.$store.commit("SET_LOGIN", {
+                    this.setLogin({
                         isLogin: true,
                         userName: data.userName,
                         userProfileImageUrl: data.userProfileImageUrl,

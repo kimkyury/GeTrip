@@ -4,29 +4,16 @@ import http from "@/common/axios.js";
 import util from "@/common/util.js";
 import routers from "@/routers/routers";
 
+import placeStore from "@/store/modules/placeStore"
+import loginStore from "@/store/modules/loginStore"
+
 Vue.use(Vuex);
 export default new Vuex.Store({
+    modules:{
+        placeStore,
+        loginStore,
+    },
     state: {
-        login: {
-            isLogin: false,
-
-            userName: "",
-            userProfileImageUrl: "",
-            userEmail: "",
-            userPassword: "",
-            userRegisterDate: "",
-
-            /* 0518 Add */
-            birthYear: "",
-            birthMonth: "",
-            birthDay: "",
-
-            // 아래는 공통코드에서 fk로 이름을 가져와야함
-            gender: "", // gender table
-            sido: "", // sido Table
-            gugun: "", // gugun Table
-            userClsfName: "", // group_code table
-        },
         board: {
             list: [],
             limit: 10,
@@ -52,40 +39,7 @@ export default new Vuex.Store({
         },
     },
     mutations: {
-        SET_LOGIN(state, payload) {
-            state.login.isLogin = payload.isLogin;
-            state.login.userName = payload.userName;
-            state.login.userProfileImageUrl = payload.userProfileImageUrl;
-
-            // 0518 ADD
-            state.login.birthYear = payload.birthYear;
-            state.login.birthYear = payload.birthYear;
-            state.login.birthMonth = payload.birthMonth;
-            state.login.birthDay = payload.birthDay;
-
-            state.login.gender = payload.gender;
-
-            state.login.sido = payload.sido;
-            state.login.gugun = payload.gugun;
-            state.login.userClsfName = payload.userClsfName;
-        },
-        SET_LOGOUT(state) {
-            state.login.isLogin = false;
-            state.login.userName = "";
-            state.login.userProfileImageUrl = "";
-
-            // 0518 ADD
-            state.login.birthYear = "";
-            state.login.birthYear = "";
-            state.login.birthMonth = "";
-            state.login.birthDay = "";
-
-            state.login.gender = "";
-
-            state.login.sido = "";
-            state.login.gugun = "";
-            state.login.userClsfName = "";
-        },
+        // Board
         SET_BOARD_LIST(state, list) {
             state.board.list = list;
         },
@@ -126,6 +80,7 @@ export default new Vuex.Store({
         },
     },
     actions: {
+        // Board
         async boardList({ state, commit }) {
             let params = {
                 limit: state.board.limit,
@@ -149,9 +104,6 @@ export default new Vuex.Store({
         },
     },
     getters: {
-        isLogin: function (state) {
-            return state.login.isLogin;
-        },
         getBoardList: function (state) {
             return state.board.list;
         },
@@ -164,13 +116,13 @@ export default new Vuex.Store({
                 //10, 20...맨마지막
                 return (
                     (state.board.currentPageIndex / state.board.pageLinkCount - 1) *
-                        state.board.pageLinkCount +
+                    state.board.pageLinkCount +
                     1
                 );
             } else {
                 return (
                     Math.floor(state.board.currentPageIndex / state.board.pageLinkCount) *
-                        state.board.pageLinkCount +
+                    state.board.pageLinkCount +
                     1
                 );
             }
@@ -181,12 +133,12 @@ export default new Vuex.Store({
                 //10, 20...맨마지막
                 ret =
                     (state.board.currentPageIndex / state.board.pageLinkCount - 1) *
-                        state.board.pageLinkCount +
+                    state.board.pageLinkCount +
                     state.board.pageLinkCount;
             } else {
                 ret =
                     Math.floor(state.board.currentPageIndex / state.board.pageLinkCount) *
-                        state.board.pageLinkCount +
+                    state.board.pageLinkCount +
                     state.board.pageLinkCount;
             }
             // 위 오류나는 코드를 아래와 같이 비교해서 처리
@@ -202,7 +154,7 @@ export default new Vuex.Store({
         getNext: function (state, getters) {
             if (
                 Math.floor(getters.getPageCount / state.board.pageLinkCount) *
-                    state.board.pageLinkCount <
+                state.board.pageLinkCount <
                 state.board.currentPageIndex
             ) {
                 return false;

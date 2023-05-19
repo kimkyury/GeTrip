@@ -169,6 +169,7 @@ export default {
             signupUserName: "",
             signupUserEmail: "",
             signupUserPassword: "",
+            signupUserPasswordConfirm: "",
 
             // 유효성 검사
         };
