@@ -13,6 +13,15 @@ const placeStore = {
         trips: [],
         positions: [],
         markers: [],
+
+        // detail
+        contentId: "",
+        overview: "",
+        title: "",
+        addr1: "",
+        firstImage: "",
+        latitude: "",
+        longitude: "",
     },
     getters: {
         getAreaList1: function (state) {
@@ -54,28 +63,6 @@ const placeStore = {
                 });
             });
             document.head.appendChild(script);
-        },
-        async getArea1List({ commit }) {
-            let { data } = await http.get("/codes");
-            commit("SET_AREA_LIST_1", data.list);
-        },
-        async getArea2List({ state, commit }) {
-            commit("SET_GUGUN_CODE", "0");
-            let { data } = await http.get("/codes/" + state.sidoCode);
-            commit("SET_AREA_LIST_2", data.list);
-        },
-        async getList({ state, dispatch }) {
-            let params = {
-                limit: state.limit,
-                offset: state.offset,
-                sidoCode: state.sidoCode,
-                gugunCode: state.gugunCode,
-                searchWord: state.searchWord,
-            };
-
-            let { data } = await http.get("/trips", { params });
-
-            await dispatch("makeCard", data);
         },
         async makeCard({ state, dispatch, commit }, data) {
             commit("SET_POSITIONS", []);
@@ -130,9 +117,35 @@ const placeStore = {
                 console.log("검색결과 없음.");
             }
         },
+        async getArea1List({ commit }) {
+            let { data } = await http.get("/codes");
+            commit("SET_AREA_LIST_1", data.list);
+        },
+        async getArea2List({ state, commit }) {
+            commit("SET_GUGUN_CODE", "0");
+            let { data } = await http.get("/codes/" + state.sidoCode);
+            commit("SET_AREA_LIST_2", data.list);
+        },
+        async getList({ state, dispatch }) {
+            let params = {
+                limit: state.limit,
+                offset: state.offset,
+                sidoCode: state.sidoCode,
+                gugunCode: state.gugunCode,
+                searchWord: state.searchWord,
+            };
+
+            let { data } = await http.get("/trips", { params });
+
+            await dispatch("makeCard", data);
+        },
+        async getTripDetail({ commit }, contentId) {
+            let { data } = await http.get("/trips/" + contentId);
+            commit("SET_CONTENT", data);
+        },
         async moveCenter({ state }, { lat, lng }) {
             state.map.setCenter(new window.kakao.maps.LatLng(lat, lng));
-        }
+        },
     },
     mutations: {
         SET_GUGUN_CODE(state, gugunCode) {
@@ -158,7 +171,16 @@ const placeStore = {
         },
         PUSH_MARKERS(state, marker) {
             state.markers.push(marker);
-        }
+        },
+        SET_CONTENT(state, data) {
+            state.contentId = data.dto.contentId;
+            state.overview = data.dto.overview; 
+            state.title = data.dto.title;
+            state.addr1 = data.dto.addr1;
+            state.firstImage = data.dto.firstImage;
+            state.latitude = data.dto.latitude;
+            state.longitude = data.dto.longitude;
+        },
     },
 };
 

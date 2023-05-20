@@ -8,6 +8,7 @@ import BoardPage from "@/components/board/BoardPage";
 
 import PlacePage from "@/components/place/PlacePage";
 import HotPlacePage from "@/components/place/HotPlacePage";
+import PlaceDetailPage from "@/components/place/PlaceDetailPage";
 
 import LoginPage from "@/components/user/LoginPage";
 import SignUpPage from "@/components/user/SignUpPage";
@@ -41,6 +42,11 @@ export default new VueRouter({
             name: "PlacePage",
             path: "/places",
             component: PlacePage,
+        },
+        {
+            name: "PlaceDetailPage",
+            path: "/places",
+            component: PlaceDetailPage,
         },
         {
             name: "HotPlacePage",
