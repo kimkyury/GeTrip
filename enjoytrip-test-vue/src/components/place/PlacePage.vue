@@ -89,10 +89,13 @@
                     </div>
                 </div>
                 <div class="col-8" id="sideText">
-                  <h2 class="h4 text-uppercase mb-3" @click="tripDetail(area.contentId)">{{ area.title }}</h2>
+                  <h2 class="h4 text-uppercase mb-3" @click="moveMap(area.latitude, area.longitude)">{{ area.title }}</h2>
                   <div class="row gy-2 mb-4">
                     <div class="col-12">
                       <p class="text-sm text-uppercase mb-0" >{{ area.addr1 }}</p>
+                    </div>
+                    <div class="col-12">
+                    <p class="btn btn-outline-primary" @click="tripDetail(area.contentId)">자세히 보기</p>
                     </div>
                   </div>
                 </div>
@@ -113,6 +116,7 @@ export default {
       "getList",
       "getArea2List",
       "getTripDetail",
+      "moveCenter",
       "mapView",
     ]),
     viewList() {
@@ -120,6 +124,9 @@ export default {
     },
     selectArea2List() {
       this.getArea2List();
+    },
+    moveMap(lat, lng) {
+      this.moveCenter({ lat, lng });
     },
     tripDetail(contentId) {
       this.getTripDetail(contentId);
@@ -151,7 +158,7 @@ export default {
   position: fixed;
   left: 0px;
   top: 120px;
-  width: 400px;
+  width: 420px;
   height: 87vh;
   z-index: -1;
   overflow-y: scroll;
