@@ -85,7 +85,6 @@
                             class="card-img-top"
                             alt="..."
                             style="border-radius: 20px; margin:5px;"
-
                         />                  
                     </div>
                 </div>
