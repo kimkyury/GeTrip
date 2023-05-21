@@ -3,7 +3,7 @@
         <!-- kakao map start -->
         <div id="map"></div>
         <!-- kakao map end -->
-        <div id="sideBar">
+        <div id="sideBar" class="p-2">
             <!-- <div style="height: 70px"></div> -->
             <section>
                 <!-- 중앙 center content end -->
@@ -66,10 +66,9 @@
                         </form>
                     </div>    
                 </div>
-                
             </section>
             <!-- 카드 추가-->
-            <div class="row gy-4 mb-5" id="cardFream" v-for="(area, index) in trips" :key="index">
+            <div class="row" id="cardFream" v-for="(area, index) in trips" :key="index">
                 <div class="col-4" >
                     <div class="ratio ratio-4x3 mb-3">
                         <img
@@ -95,7 +94,8 @@
                       <p class="text-sm text-uppercase mb-0" >{{ area.addr1 }}</p>
                     </div>
                     <div class="col-12">
-                    <p class="btn btn-outline-primary" @click="tripDetail(area.contentId)">자세히 보기</p>
+                    <p class="btn btn-outline-primary m-1" @click="tripDetail(area.contentId)">자세히 보기</p>
+                    <p class="btn btn-success m-1" @click="tripNaverSearch(area.title)">Naver</p>
                     </div>
                   </div>
                 </div>
@@ -132,6 +132,12 @@ export default {
       this.getTripDetail(contentId);
       this.$router.push({ name: "PlaceDetailPage" });
     },
+    tripNaverSearch(title) {
+      window.open(
+        "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=" +
+          title
+      );
+    },
   },
   computed: {
     ...mapState(placeStore, ["areaList1", "areaList2", "trips"]),
@@ -158,7 +164,7 @@ export default {
   position: fixed;
   left: 0px;
   top: 120px;
-  width: 420px;
+  width: 430px;
   height: 87vh;
   z-index: -1;
   overflow-y: scroll;
