@@ -12,7 +12,7 @@
         <div class="container">
             <br />
             <h3 class="h4 lined text-uppercase mb-4">Search</h3>
-            <div class="input-group mb-3">
+            <!-- <div class="input-group mb-3">
                 <input
                     v-model="$store.state.board.searchWord"
                     @keydown.enter="boardList"
@@ -24,7 +24,7 @@
                 <button @click="boardList" class="btn btn-primary" type="button">
                     <i class="fas fa-search"></i>
                 </button>
-            </div>
+            </div> -->
             <br /><br />
             <table class="table table-hover">
                 <thead>
@@ -53,10 +53,12 @@
             </table>
 
             <div class="col-lg-12 text-center">
-                <board-pagination></board-pagination>
+                <board-pagination v-on:call-parent="movePage"></board-pagination>
             </div>
 
-            <button class="btn btn-sm btn-primary" @click="showInsertModal">글쓰기</button>
+            <button class="btn btn-sm btn-primary" @click="showInsertModal">
+                글쓰기
+            </button>
             <insert-modal v-on:call-parent-insert="closeAfterInsert"></insert-modal>
             <detail-modal
                 v-on:call-parent-change-to-update="changeToUpdate"
@@ -79,6 +81,8 @@ import InsertModal from "./modals/InsertModal";
 import UpdateModal from "./modals/UpdateModal";
 import BoardPagination from "./BoardPagination.vue";
 
+import { mapMutations, mapGetters, mapActions, mapState } from "vuex";
+
 Vue.use(VueAlertify);
 
 export default {
@@ -93,19 +97,20 @@ export default {
         };
     },
     computed: {
+        ...mapState("boardStore", ["boardId"]),
+        ...mapGetters("boardStore", ["getBoardList"]),
         listGetters() {
-            return this.$store.getters["getBoardList"]; // no getBoardList()
+            return this.getBoardList; // no getBoardList()
         },
     },
 
     methods: {
-        boardList() {
-            this.$store.dispatch("boardList");
-        },
-        movePage(pageIndex) {
-            this.$store.commit("SET_BOARD_MOVE_PAGE", pageIndex);
-            this.boardList();
-        },
+        ...mapActions("boardStore", ["boardList"]),
+        ...mapMutations("boardStore", [
+            "SET_BOARD_MOVE_PAGE",
+            "SET_BOARD_DETAIL",
+            // "boardStore", "SET_BOARD_MOVE_PAGE, "pageIndex"
+        ]),
 
         makeDateStr: util.makeDateStr,
 
@@ -120,9 +125,7 @@ export default {
 
         changeToUpdate() {
             this.detailModal.hide();
-            console.log("changeToUpdate()");
             this.updateModal.show();
-            console.log("changeToUpdate-updateModal()");
         },
         closeAfterUpdate() {
             this.updateModal.hide();
@@ -147,6 +150,7 @@ export default {
         },
 
         async boardDetail(boardId) {
+            console.log("boardId", boardId);
             try {
                 let { data } = await http.get("/boards/" + boardId);
                 console.log(data);
@@ -155,8 +159,9 @@ export default {
                     this.doLogout(); // this.$router.push("/login"); 에서 변경
                 } else {
                     let { dto } = data;
+
                     // 여기에서 boardId가 클릭한 것으로 지정됨
-                    this.$store.commit("SET_BOARD_DETAIL", dto);
+                    this.SET_BOARD_DETAIL(dto);
                     this.detailModal.show();
                 }
             } catch (error) {
@@ -167,7 +172,7 @@ export default {
 
         async boardDelete() {
             try {
-                let { data } = await http.delete("/boards/" + this.$store.state.board.boardId);
+                let { data } = await http.delete("/boards/" + this.boardId);
                 console.log(data);
 
                 if (data.result == "login") {
@@ -182,13 +187,9 @@ export default {
             }
         },
 
-        doLogout() {
-            this.$store.commit("SET_LOGIN", {
-                isLogin: false,
-                userName: "",
-                userProfileImageUrl: "",
-            });
-            this.$router.push("/login");
+        movePage(pageIndex) {
+            this.SET_BOARD_MOVE_PAGE(pageIndex);
+            this.boardList();
         },
     },
 

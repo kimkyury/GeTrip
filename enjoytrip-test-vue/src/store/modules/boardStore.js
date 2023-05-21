@@ -3,7 +3,7 @@ import util from "@/common/util.js";
 import routers from "@/routers/routers";
 
 const boardStore = {
-    namespaced : true,
+    namespaced: true,
     state: {
         list: [],
         limit: 10,
@@ -40,13 +40,13 @@ const boardStore = {
                 //10, 20...맨마지막
                 return (
                     (state.currentPageIndex / state.pageLinkCount - 1) *
-                    state.pageLinkCount +
+                        state.pageLinkCount +
                     1
                 );
             } else {
                 return (
                     Math.floor(state.currentPageIndex / state.pageLinkCount) *
-                    state.pageLinkCount +
+                        state.pageLinkCount +
                     1
                 );
             }
@@ -57,12 +57,12 @@ const boardStore = {
                 //10, 20...맨마지막
                 ret =
                     (state.currentPageIndex / state.pageLinkCount - 1) *
-                    state.pageLinkCount +
+                        state.pageLinkCount +
                     state.pageLinkCount;
             } else {
                 ret =
                     Math.floor(state.currentPageIndex / state.pageLinkCount) *
-                    state.pageLinkCount +
+                        state.pageLinkCount +
                     state.pageLinkCount;
             }
             // 위 오류나는 코드를 아래와 같이 비교해서 처리
@@ -78,7 +78,7 @@ const boardStore = {
         getNext: function (state, getters) {
             if (
                 Math.floor(getters.getPageCount / state.pageLinkCount) *
-                state.pageLinkCount <
+                    state.pageLinkCount <
                 state.currentPageIndex
             ) {
                 return false;
@@ -149,7 +149,7 @@ const boardStore = {
         SET_BOARD_SEARCH_WORD(state, searchWord) {
             state.searchWord = searchWord;
         },
-    }
-}
+    },
+};
 
 export default boardStore;

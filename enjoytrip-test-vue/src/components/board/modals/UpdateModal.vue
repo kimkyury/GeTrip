@@ -48,6 +48,7 @@ import VueAlertify from "vue-alertify";
 Vue.use(CKEditor).use(VueAlertify);
 
 import http from "@/common/axios.js";
+import { mapState, mapMutations } from "vuex";
 
 export default {
     name: "UpdateModal",
@@ -59,26 +60,28 @@ export default {
     },
 
     computed: {
+        ...mapState("boardStore", ["title", "content", "boardId"]),
+        ...mapMutations("boardStore", ["SET_BOARD_TITLE"]),
         storeTitle: {
             get() {
-                return this.$store.state.board.title;
+                return this.title;
             },
             set(title) {
-                this.$store.commit("SET_BOARD_TITLE", title);
+                this.SET_BOARD_TITLE(title);
             },
         },
     },
     methods: {
         // modal 초기화
         initUI() {
-            this.CKEditor.setData(this.$store.state.board.content);
+            this.CKEditor.setData(this.content);
         },
 
         async boardUpdate() {
             // post form data
             let formData = new FormData();
-            formData.append("boardId", this.$store.state.board.boardId);
-            formData.append("title", this.$store.state.board.title);
+            formData.append("boardId", this.boardId);
+            formData.append("title", this.title);
             formData.append("content", this.CKEditor.getData());
 
             let options = {
@@ -87,7 +90,7 @@ export default {
 
             try {
                 let { data } = await http.put(
-                    "/boards/" + this.$store.state.board.boardId,
+                    "/boards/" + this.boardId,
                     formData,
                     options
                 );
@@ -109,19 +112,21 @@ export default {
         closeModal() {
             this.$emit("call-parent-update");
         },
-        doLogout() {
-            this.$store.commit("SET_LOGIN", {
-                isLogin: false,
-                userName: "",
-                userProfileImageUrl: "",
-            });
-            this.$router.push("/login");
-        },
+        // doLogout() {
+        //     this.$store.commit("SET_LOGIN", {
+        //         isLogin: false,
+        //         userName: "",
+        //         userProfileImageUrl: "",
+        //     });
+        //     this.$router.push("/login");
+        // },
     },
 
     async mounted() {
         try {
-            this.CKEditor = await ClassicEditor.create(document.querySelector("#divEditorUpdate"));
+            this.CKEditor = await ClassicEditor.create(
+                document.querySelector("#divEditorUpdate")
+            );
         } catch (error) {
             console.error(error);
         }
