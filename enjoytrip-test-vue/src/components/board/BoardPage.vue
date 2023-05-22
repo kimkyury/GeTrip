@@ -188,6 +188,7 @@ export default {
         },
 
         movePage(pageIndex) {
+            console.log("movePage: " + pageIndex);
             this.SET_BOARD_MOVE_PAGE(pageIndex);
             this.boardList();
         },

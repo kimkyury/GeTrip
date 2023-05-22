@@ -1,11 +1,11 @@
 <template>
-    <nav class="mb-5" aria-label="Page navigation example">
-        <ul class="pagination">
-            <li class="page-item">
+    <nav class="mb-5" aria-label="Page navigation">
+        <ul class="pagination justify-content-center">
+            <!-- <li class="page-item">
                 <a class="page-link" href="#" aria-label="Previous"
                     ><span aria-hidden="true">«</span></a
                 >
-            </li>
+            </li> -->
 
             <li v-if="prev" class="page-item">
                 <a
@@ -14,7 +14,7 @@
                     aria-label="Previous"
                     @click="paginationChanged(startPageIndex - 1)"
                 >
-                    <span aria-hidden="true">&laquo;</span>
+                    <span aria-hidden="true">«</span>
                 </a>
             </li>
 
@@ -42,7 +42,7 @@
                     aria-label="Next"
                     @click="paginationChanged(endPageIndex + 1)"
                 >
-                    <span aria-hidden="true">&raquo;</span>
+                    <span aria-hidden="true">»</span>
                 </a>
             </li>
         </ul>
@@ -77,7 +77,7 @@ export default {
     },
     methods: {
         paginationChanged(pageIndex) {
-            console.log("paginationVue : paginationChanged : pageIndex : " + pageIndex);
+            console.log("paginationChanged: " + pageIndex);
             this.$emit("call-parent", pageIndex);
         },
     },

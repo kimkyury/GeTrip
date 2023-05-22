@@ -76,6 +76,16 @@ const boardStore = {
             }
         },
         getNext: function (state, getters) {
+            console.log(
+                "getNext: ",
+                getters.getPageCount, // pagination의 리스트 개수
+                " ",
+                state.pageLinkCount,
+                " ",
+
+                state.currentPageIndex
+            );
+            // 현재페이지보다 큰 숫자로 넘어갈 수 있다면
             if (
                 Math.floor(getters.getPageCount / state.pageLinkCount) *
                     state.pageLinkCount <
