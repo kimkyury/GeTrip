@@ -17,6 +17,11 @@ import UserInfoChange from "@/components/user/mypage/UserInfoChange";
 import UserWishList from "@/components/user/mypage/UserWishList";
 import MyPage from "@/components/user/mypage/MyPage";
 
+import store from "@/store/store";
+import VueAlertify from "vue-alertify";
+
+Vue.use(VueAlertify);
+
 export default new VueRouter({
     routes: [
         {
@@ -57,6 +62,14 @@ export default new VueRouter({
             name: "MyPage",
             path: "/member/mypage",
             component: MyPage,
+            beforeEnter: (to, from, next) => {
+                if (store.state.loginStore.isLogin != false) {
+                    return next();
+                }
+                Vue.prototype.$alertify.error("로그인이 필요한 서비스입니다. ");
+
+                next("/");
+            },
         },
         {
             name: "UserInfoChange",
