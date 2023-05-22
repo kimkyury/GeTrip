@@ -1,6 +1,6 @@
 <template>
     <div>
-        <section class="bg-pentagon py-4">
+        <!-- <section class="bg-pentagon py-4">
             <div class="container py-3">
                 <div class="row d-flex align-items-center gy-4">
                     <div class="col-md-7">
@@ -8,10 +8,24 @@
                     </div>
                 </div>
             </div>
-        </section>
+        </section> -->
         <div class="container">
-            <br />
-            <h3 class="h4 lined text-uppercase mb-4">Search</h3>
+            <section class="py-4">
+                <div class="container py-3">
+                    <h1 class="h1 lined text-uppercase mb-4">자유게시판</h1>
+                    <br />
+                </div>
+            </section>
+
+            <ul class="justify-content-center">
+                <button
+                    class="btn btn-sm btn-primary justify-content-center"
+                    @click="showInsertModal"
+                >
+                    글쓰기
+                </button>
+            </ul>
+
             <!-- <div class="input-group mb-3">
                 <input
                     v-model="$store.state.board.searchWord"
@@ -25,7 +39,6 @@
                     <i class="fas fa-search"></i>
                 </button>
             </div> -->
-            <br /><br />
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -56,9 +69,6 @@
                 <board-pagination v-on:call-parent="movePage"></board-pagination>
             </div>
 
-            <button class="btn btn-sm btn-primary" @click="showInsertModal">
-                글쓰기
-            </button>
             <insert-modal v-on:call-parent-insert="closeAfterInsert"></insert-modal>
             <detail-modal
                 v-on:call-parent-change-to-update="changeToUpdate"
