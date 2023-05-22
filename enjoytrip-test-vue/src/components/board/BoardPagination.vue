@@ -1,12 +1,6 @@
 <template>
     <nav class="mb-5" aria-label="Page navigation">
         <ul class="pagination justify-content-center">
-            <!-- <li class="page-item">
-                <a class="page-link" href="#" aria-label="Previous"
-                    ><span aria-hidden="true">«</span></a
-                >
-            </li> -->
-
             <li v-if="prev" class="page-item">
                 <a
                     class="page-link"
@@ -30,7 +24,7 @@
                 <a
                     @click="paginationChanged(startPageIndex + index - 1)"
                     class="page-link"
-                    href="#"
+                    :href="pageLink"
                 >
                     {{ startPageIndex + index - 1 }}</a
                 >
@@ -54,6 +48,12 @@ import { mapState } from "vuex";
 import { mapGetters } from "vuex";
 
 export default {
+    props: ["page"],
+    data() {
+        return {
+            pageLink: "#/" + this.page,
+        };
+    },
     computed: {
         ...mapGetters("boardStore", {
             pageCount: "getPageCount",
