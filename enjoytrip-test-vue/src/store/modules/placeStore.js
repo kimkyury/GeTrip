@@ -68,10 +68,10 @@ const placeStore = {
       let { data } = await http.get("/codes");
       commit("SET_AREA_LIST_1", data.list);
     },
-    async getArea2List({ state, commit }) {
+    async getUpdateArea2List({ state, commit }){
       commit("SET_GUGUN_CODE", "0");
       let { data } = await http.get("/codes/" + state.sidoCode);
-      commit("SET_AREA_LIST_2", data.list);
+      commit("SET_UPDATE_AREA_LIST_2", data.list);
     },
     async getList({ state, dispatch }) {
       let params = {

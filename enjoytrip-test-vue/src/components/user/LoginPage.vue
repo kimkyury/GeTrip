@@ -71,10 +71,11 @@ export default {
                     // logincontroller에 CORS처리 및 @ReqeustBody
                     let { data } = await http.post("/login", loginObj);
                     console.log(data);
+                    console.log(data.userSeq);
                     this.setLogin({
                         isLogin: true,
 
-                        userSeq: this.userSeq,
+                        userSeq: data.userSeq,
                         userName: data.userName,
                         userEmail: data.userEmail,
                         userProfileImageUrl: data.userProfileImageUrl,
