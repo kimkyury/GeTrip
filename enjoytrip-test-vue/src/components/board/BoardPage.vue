@@ -65,9 +65,10 @@
                 </tbody>
             </table>
 
-            <div class="col-lg-12 text-center">
-                <board-pagination v-on:call-parent="movePage"></board-pagination>
-            </div>
+            <board-pagination
+                v-on:call-parent="movePage"
+                page="boards"
+            ></board-pagination>
 
             <insert-modal v-on:call-parent-insert="closeAfterInsert"></insert-modal>
             <detail-modal
