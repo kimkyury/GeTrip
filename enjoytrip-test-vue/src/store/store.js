@@ -13,5 +13,9 @@ export default new Vuex.Store({
         placeStore,
         loginStore,
     },
-    plugins: [createPersistedState()],
+    plugins: [
+        createPersistedState({
+            paths: ["loginStore", "boardStore"],
+        }),
+    ],
 });
