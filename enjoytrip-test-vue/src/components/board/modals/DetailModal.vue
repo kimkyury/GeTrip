@@ -16,38 +16,38 @@
                         <tbody>
                             <tr>
                                 <td>글번호</td>
-                                <td>{{ $store.state.board.boardId }}</td>
+                                <td>{{ boardId }}</td>
                             </tr>
                             <tr>
                                 <td>제목</td>
-                                <td>{{ $store.state.board.title }}</td>
+                                <td>{{ title }}</td>
                             </tr>
                             <tr>
                                 <td>내용</td>
-                                <td v-html="$store.state.board.content"></td>
+                                <td v-html="content"></td>
                             </tr>
                             <tr>
                                 <td>작성자</td>
-                                <td>{{ $store.state.board.userName }}</td>
+                                <td>{{ userName }}</td>
                             </tr>
 
                             <tr>
                                 <td>작성일시</td>
                                 <td>
-                                    {{ $store.state.board.regDate }}
-                                    {{ $store.state.board.regTime }}
+                                    {{ regDate }}
+                                    {{ regTime }}
                                 </td>
                             </tr>
                             <tr>
                                 <td>조회수</td>
-                                <td>{{ $store.state.board.readCount }}</td>
+                                <td>{{ readCount }}</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
                 <div class="modal-footer">
                     <button
-                        v-show="$store.state.board.sameUser"
+                        v-show="sameUser"
                         @click="changeToUpdate"
                         class="btn btn-sm btn-primary btn-outline"
                         data-dismiss="modal"
@@ -56,7 +56,7 @@
                         글 수정하기
                     </button>
                     <button
-                        v-show="$store.state.board.sameUser"
+                        v-show="sameUser"
                         @click="changeToDelete"
                         class="btn btn-sm btn-warning btn-outline"
                         data-dismiss="modal"
@@ -71,7 +71,22 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
+    computed: {
+        ...mapState("boardStore", [
+            "sameUser",
+            "boardId",
+            "title",
+            "content",
+            "userName",
+            "regDate",
+            "regTime",
+            "readCount",
+        ]),
+    },
+
     methods: {
         changeToUpdate() {
             this.$emit("call-parent-change-to-update");

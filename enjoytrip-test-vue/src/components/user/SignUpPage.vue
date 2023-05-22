@@ -34,8 +34,8 @@
                             <p class="lead">Not our registered customer yet?</p>
                         </header>
                         <p class="text-muted mb-4">
-                            EnjoyTrip에 아직 회원이 아니신가요? 회원가입을 통해 당신의 여행을
-                            즐겨보세요!
+                            EnjoyTrip에 아직 회원이 아니신가요? 회원가입을 통해 당신의
+                            여행을 즐겨보세요!
                         </p>
 
                         <hr class="border-gray-200" />
@@ -77,7 +77,10 @@
 
                             <!-- 0518 ADDED -->
                             <div class="form-group mb-3">
-                                <label class="form-label" for="userpasswordConfirm"></label>
+                                <label
+                                    class="form-label"
+                                    for="userpasswordConfirm"
+                                ></label>
                                 <input
                                     class="form-control"
                                     v-model="signupUserPasswordConfirm"
@@ -89,7 +92,9 @@
                             </div>
 
                             <div class="form-group mb-3">
-                                <label class="form-label" for="profileImage">이미지 선택</label>
+                                <label class="form-label" for="profileImage"
+                                    >이미지 선택</label
+                                >
                                 <input
                                     class="form-control"
                                     v-model="signupUserProfileImageUrl"
@@ -117,7 +122,9 @@
                                 </div>
 
                                 <div class="col-md-4 mb-3 col-lg-3">
-                                    <label class="form-label" for="birthYear">태어난 년도</label>
+                                    <label class="form-label" for="birthYear"
+                                        >태어난 년도</label
+                                    >
                                     <input
                                         v-model="signupUserBirthYear"
                                         class="form-control"
@@ -149,7 +156,9 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6 mb-3 col-lg-6">
-                                    <label class="form-label" for="sido"> 8도 선택 </label>
+                                    <label class="form-label" for="sido">
+                                        8도 선택
+                                    </label>
                                     <!-- Using a select element to create a dropdown menu -->
                                     <select
                                         v-model="signupSidoCode"
@@ -160,7 +169,9 @@
                                     >
                                         <!-- Loop through sidos array with v-for directive -->
 
-                                        <option disabled value="">8도 중 하나를 선택하세요.</option>
+                                        <option disabled value="">
+                                            8도 중 하나를 선택하세요.
+                                        </option>
                                         <option
                                             v-for="sido in areaList1"
                                             :key="sido.sidoCode"
@@ -172,7 +183,9 @@
                                 </div>
 
                                 <div class="col-md-6 mb-3 col-lg-6">
-                                    <label class="form-label" for="gugun"> 도시 선택 </label>
+                                    <label class="form-label" for="gugun">
+                                        도시 선택
+                                    </label>
                                     <!-- Using a select element to create a dropdown menu -->
                                     <select
                                         v-model="signupGugunCode"

@@ -4,12 +4,14 @@ import http from "@/common/axios.js";
 import util from "@/common/util.js";
 import routers from "@/routers/routers";
 
-import placeStore from "@/store/modules/placeStore"
-import loginStore from "@/store/modules/loginStore"
+import placeStore from "@/store/modules/placeStore";
+import loginStore from "@/store/modules/loginStore";
+import boardStore from "@/store/modules/boardStore";
 
 Vue.use(Vuex);
 export default new Vuex.Store({
-    modules:{
+    modules: {
+        boardStore,
         placeStore,
         loginStore,
     },
@@ -116,13 +118,13 @@ export default new Vuex.Store({
                 //10, 20...맨마지막
                 return (
                     (state.board.currentPageIndex / state.board.pageLinkCount - 1) *
-                    state.board.pageLinkCount +
+                        state.board.pageLinkCount +
                     1
                 );
             } else {
                 return (
                     Math.floor(state.board.currentPageIndex / state.board.pageLinkCount) *
-                    state.board.pageLinkCount +
+                        state.board.pageLinkCount +
                     1
                 );
             }
@@ -133,12 +135,12 @@ export default new Vuex.Store({
                 //10, 20...맨마지막
                 ret =
                     (state.board.currentPageIndex / state.board.pageLinkCount - 1) *
-                    state.board.pageLinkCount +
+                        state.board.pageLinkCount +
                     state.board.pageLinkCount;
             } else {
                 ret =
                     Math.floor(state.board.currentPageIndex / state.board.pageLinkCount) *
-                    state.board.pageLinkCount +
+                        state.board.pageLinkCount +
                     state.board.pageLinkCount;
             }
             // 위 오류나는 코드를 아래와 같이 비교해서 처리
@@ -154,7 +156,7 @@ export default new Vuex.Store({
         getNext: function (state, getters) {
             if (
                 Math.floor(getters.getPageCount / state.board.pageLinkCount) *
-                state.board.pageLinkCount <
+                    state.board.pageLinkCount <
                 state.board.currentPageIndex
             ) {
                 return false;
