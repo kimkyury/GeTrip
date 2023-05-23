@@ -44,15 +44,22 @@
                                 <p class="text-white box-image-text-description">
                                     {{ hotplace.addr1 }}
                                 </p>
+                                <p class="text-white box-image-text-description">
+                                    좋아요한 회원 수 : {{ hotplace.favoriteCnt }}
+                                </p>
+
                                 <ul class="list-inline mb-0 box-image-text-content">
                                     <li class="list-inline-item">
-                                        <a class="btn btn-outline-light" href="#"
+                                        <a
+                                            class="btn btn-outline-light"
+                                            href="#"
+                                            @click="tripDetail(hotplace.contentId)"
                                             >자세히보기</a
                                         >
                                     </li>
                                     <li class="list-inline-item">
                                         <a class="btn btn-outline-light" href="#"
-                                            >좋아요(구독)</a
+                                            >좋아요!</a
                                         >
                                     </li>
                                 </ul>
@@ -68,11 +75,17 @@
 import PlaceSection from "./PlaceSection.vue";
 import { mapState, mapActions } from "vuex";
 const favoriteStore = "favoriteStore";
-
+const placeStore = "placeStore";
 export default {
     components: { PlaceSection },
     methods: {
         ...mapActions(favoriteStore, ["getHotplaceList", "getFavoriteCount"]),
+        ...mapActions(placeStore, ["getTripDetail"]),
+
+        tripDetail(contentId) {
+            this.getTripDetail(contentId);
+            this.$router.push({ name: "PlaceDetailPage" });
+        },
     },
     computed: {
         ...mapState(favoriteStore, ["hotplaceList", "hotplaceCount"]),
