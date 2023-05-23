@@ -84,6 +84,8 @@ const favoriteStore = {
         },
 
         async postFavorite({ favoriteInfo }) {
+            console.log("favoriteInfo : ", favoriteInfo);
+
             let userSeq = favoriteInfo.userSeq;
 
             let params = {
