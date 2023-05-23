@@ -14,3 +14,45 @@
         </nav>
     </div>
 </template>
+<script>
+import { mapState, mapActions, mapMutations } from "vuex";
+const favoriteStore = "favoriteStore";
+const loginStore = "loginStore";
+
+export default {
+    methods: {
+        ...mapMutations(favoriteStore, ["SET_USERINFO"]),
+        ...mapActions(favoriteStore, [
+            "getHotplaceList",
+            "getHotplaceListFromUser",
+            "getFavoriteList",
+        ]),
+    },
+
+    computed: {
+        ...mapState(loginStore, [
+            "userSeq",
+            "userName",
+            "userSidoName",
+            "userSidoCode",
+            "userGugunName",
+            "userGugunCode",
+        ]),
+    },
+
+    async created() {
+        console.log("userSeq: ", this.userSeq);
+        this.SET_USERINFO({
+            userSeq: this.userSeq,
+            userSidoName: this.userSidoName,
+            userSidoCode: this.userSidoCode,
+            userGugunName: this.userGugunName,
+        });
+
+        await this.getHotplaceList();
+        await this.getHotplaceListFromUser();
+        console.log("hotplaceList", this.hotplaceListFromUser);
+        console.log("hotplaceCount", this.hotplaceCountFromUser);
+    },
+};
+</script>

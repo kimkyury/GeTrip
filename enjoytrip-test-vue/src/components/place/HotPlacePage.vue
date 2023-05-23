@@ -60,9 +60,9 @@
                                         >
                                     </li>
                                     <li class="list-inline-item">
-                                        <a class="btn btn-outline-light" href="#"
-                                            >좋아요!</a
-                                        >
+                                        <a class="btn btn-outline-dark" href="#">
+                                            💗 -> 🖤
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
@@ -81,22 +81,21 @@ const placeStore = "placeStore";
 export default {
     components: { PlaceSection },
     methods: {
-        ...mapActions(favoriteStore, ["getHotplaceList", "getFavoriteCount"]),
+        ...mapActions(favoriteStore, ["getFavoriteCount", "postFavorite"]),
         ...mapActions(placeStore, ["getTripDetail"]),
 
         tripDetail(contentId) {
             this.getTripDetail(contentId);
             this.$router.push({ name: "PlaceDetailPage" });
         },
+
+        changeFavoriteState() {
+            // 1. 이미 유저가 좋아요를 누른 것인지 확인
+            // 2. 유저가 좋아요를 누른 목록은 하트 취소
+        },
     },
     computed: {
-        ...mapState(favoriteStore, ["hotplaceList", "hotplaceCount"]),
-    },
-
-    async created() {
-        await this.getHotplaceList();
-        console.log("hotplaceList", this.hotplaceList);
-        console.log("hotplaceCount", this.hotplaceCount);
+        ...mapState(favoriteStore, ["hotplaceList", "hotplaceCount", "favoriteList"]),
     },
 };
 </script>

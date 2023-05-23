@@ -78,7 +78,7 @@
 </template>
 <script>
 import PlaceSection from "./PlaceSection.vue";
-import { mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions } from "vuex";
 const favoriteStore = "favoriteStore";
 const placeStore = "placeStore";
 const loginStore = "loginStore";
@@ -86,11 +86,7 @@ const loginStore = "loginStore";
 export default {
     components: { PlaceSection },
     methods: {
-        ...mapMutations(favoriteStore, ["SET_USERINFO"]),
-        ...mapActions(favoriteStore, [
-            "getHotplaceListFromUser",
-            "getHotplaceCountFromUser",
-        ]),
+        ...mapActions(favoriteStore, ["getHotplaceCountFromUser"]),
         ...mapActions(placeStore, ["getTripDetail"]),
 
         tripDetail(contentId) {
@@ -99,28 +95,11 @@ export default {
         },
     },
     computed: {
-        ...mapState(loginStore, [
-            "userSeq",
-            "userName",
-            "userSidoName",
-            "userSidoCode",
-            "userGugunName",
-            "userGugunCode",
-        ]),
-
+        ...mapState(loginStore, ["userSeq", "userName", "userSidoName"]),
         ...mapState(favoriteStore, ["hotplaceListFromUser", "hotplaceCountFromUser"]),
     },
 
     async created() {
-        console.log("userSeq: ", this.userSeq);
-        this.SET_USERINFO({
-            userSeq: this.userSeq,
-            userSidoName: this.userSidoName,
-            userSidoCode: this.userSidoCode,
-            userGugunName: this.userGugunName,
-        });
-
-        await this.getHotplaceListFromUser();
         console.log("hotplaceList", this.hotplaceListFromUser);
         console.log("hotplaceCount", this.hotplaceCountFromUser);
     },
