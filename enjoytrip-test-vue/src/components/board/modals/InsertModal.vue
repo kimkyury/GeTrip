@@ -91,7 +91,9 @@ export default {
     },
     async mounted() {
         try {
-            this.CKEditor = await ClassicEditor.create(document.querySelector("#divEditorInsert"));
+            this.CKEditor = await ClassicEditor.create(
+                document.querySelector("#divEditorInsert")
+            );
         } catch (error) {
             console.error(error);
         }

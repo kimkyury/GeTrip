@@ -44,8 +44,8 @@
                                     {{ area.gugunName }}
                                 </option>
                             </select>
-                            </form>
-                             <form class="d-flex my-3">
+                        </form>
+                        <form class="d-flex my-3">
                             <input
                                 id="search-keyword"
                                 class="form-control me-2"
@@ -64,40 +64,55 @@
                                 검색
                             </button>
                         </form>
-                    </div>    
+                    </div>
                 </div>
             </section>
             <!-- 카드 추가-->
             <div class="row" id="cardFream" v-for="(area, index) in trips" :key="index">
-                <div class="col-4" >
+                <div class="col-4">
                     <div class="ratio ratio-4x3 mb-3">
                         <img
                             v-if="area.firstImage == ''"
                             src="@/img/ssafy_logo.png"
                             class="card-img-top"
                             alt="..."
-                            style="border-radius: 20px; margin:5px;"
+                            style="border-radius: 20px; margin: 5px"
                         />
                         <img
                             v-else
                             :src="area.firstImage"
                             class="card-img-top"
                             alt="..."
-                            style="border-radius: 20px; margin:5px;"
-                        />                  
+                            style="border-radius: 20px; margin: 5px"
+                        />
                     </div>
                 </div>
                 <div class="col-8" id="sideText">
-                  <h2 class="h4 text-uppercase mb-3" @click="moveMap(area.latitude, area.longitude)">{{ area.title }}</h2>
-                  <div class="row gy-2 mb-4">
-                    <div class="col-12">
-                      <p class="text-sm text-uppercase mb-0" >{{ area.addr1 }}</p>
+                    <h2
+                        class="h4 text-uppercase mb-3"
+                        @click="moveMap(area.latitude, area.longitude)"
+                    >
+                        {{ area.title }}
+                    </h2>
+                    <div class="row gy-2 mb-4">
+                        <div class="col-12">
+                            <p class="text-sm text-uppercase mb-0">{{ area.addr1 }}</p>
+                        </div>
+                        <div class="col-12">
+                            <p
+                                class="btn btn-outline-primary m-1"
+                                @click="tripDetail(area.contentId)"
+                            >
+                                자세히 보기
+                            </p>
+                            <p
+                                class="btn btn-success m-1"
+                                @click="tripNaverSearch(area.title)"
+                            >
+                                Naver
+                            </p>
+                        </div>
                     </div>
-                    <div class="col-12">
-                    <p class="btn btn-outline-primary m-1" @click="tripDetail(area.contentId)">자세히 보기</p>
-                    <p class="btn btn-success m-1" @click="tripNaverSearch(area.title)">Naver</p>
-                    </div>
-                  </div>
                 </div>
             </div>
         </div>
@@ -110,73 +125,73 @@ import { mapState, mapActions } from "vuex";
 const placeStore = "placeStore";
 
 export default {
-  components: { PlaceSection },
-  methods: {
-    ...mapActions(placeStore, [
-      "getList",
-      "getArea2List",
-      "getTripDetail",
-      "moveCenter",
-      "mapView",
-    ]),
-    viewList() {
-      this.getList();
+    components: { PlaceSection },
+    methods: {
+        ...mapActions(placeStore, [
+            "getList",
+            "getArea2List",
+            "getTripDetail",
+            "moveCenter",
+            "mapView",
+        ]),
+        viewList() {
+            this.getList();
+        },
+        selectArea2List() {
+            this.getArea2List();
+        },
+        moveMap(lat, lng) {
+            this.moveCenter({ lat, lng });
+        },
+        tripDetail(contentId) {
+            this.getTripDetail(contentId);
+            this.$router.push({ name: "PlaceDetailPage" });
+        },
+        tripNaverSearch(title) {
+            window.open(
+                "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=" +
+                    title
+            );
+        },
     },
-    selectArea2List() {
-      this.getArea2List();
+    computed: {
+        ...mapState(placeStore, ["areaList1", "areaList2", "trips"]),
     },
-    moveMap(lat, lng) {
-      this.moveCenter({ lat, lng });
+    async mounted() {
+        await this.mapView();
     },
-    tripDetail(contentId) {
-      this.getTripDetail(contentId);
-      this.$router.push({ name: "PlaceDetailPage" });
-    },
-    tripNaverSearch(title) {
-      window.open(
-        "https://search.naver.com/search.naver?where=nexearch&sm=top_hty&fbm=0&ie=utf8&query=" +
-          title
-      );
-    },
-  },
-  computed: {
-    ...mapState(placeStore, ["areaList1", "areaList2", "trips"]),
-  },
-  async mounted() {
-    await this.mapView();
-  },
 };
 </script>
 <style scoped>
 .container {
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
 }
 #map {
-  position: fixed;
-  top: 120px;
-  width: 100vw;
-  height: 87vh;
-  z-index: -2;
+    position: fixed;
+    top: 120px;
+    width: 100vw;
+    height: 87vh;
+    z-index: -2;
 }
 #sideBar {
-  position: fixed;
-  left: 0px;
-  top: 120px;
-  width: 430px;
-  height: 87vh;
-  z-index: -1;
-  overflow-y: scroll;
-  overflow-x: hidden;
-  background-color: lightgray;
-  background-color: rgba(255, 255, 255, 0.7);
-  text-align: center;
+    position: fixed;
+    left: 0px;
+    top: 120px;
+    width: 430px;
+    height: 87vh;
+    z-index: -1;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    background-color: lightgray;
+    background-color: rgba(255, 255, 255, 0.7);
+    text-align: center;
 }
 form {
-  margin: 10px;
+    margin: 10px;
 }
 h1 {
-  font-size: 1rem;
+    font-size: 1rem;
 }
 </style>
