@@ -14,7 +14,7 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <input
-                            v-model="storeTitle"
+                            v-model="inputTitle"
                             type="text"
                             class="form-control"
                             placeholder="제목"
@@ -56,21 +56,24 @@ export default {
     data() {
         return {
             CKEditor: "",
+            inputTitle: this.title,
         };
     },
 
     computed: {
         ...mapState("boardStore", ["title", "content", "boardId"]),
         ...mapMutations("boardStore", ["SET_BOARD_TITLE"]),
-        storeTitle: {
-            get() {
-                return this.title;
-            },
-            set(title) {
-                this.SET_BOARD_TITLE(title);
-            },
-        },
+
+        // storeTitle: {
+        //     get() {
+        //         return this.title;
+        //     },
+        //     set(title) {
+        //         this.SET_BOARD_TITLE(title);
+        //     },
+        // },
     },
+
     methods: {
         // modal 초기화
         initUI() {
@@ -81,7 +84,7 @@ export default {
             // post form data
             let formData = new FormData();
             formData.append("boardId", this.boardId);
-            formData.append("title", this.title);
+            formData.append("title", this.inputTitle);
             formData.append("content", this.CKEditor.getData());
 
             let options = {
@@ -123,6 +126,7 @@ export default {
     },
 
     async mounted() {
+        this.inputTitle = this.title;
         try {
             this.CKEditor = await ClassicEditor.create(
                 document.querySelector("#divEditorUpdate")
