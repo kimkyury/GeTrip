@@ -231,8 +231,8 @@ export default {
       formData.append("birthMonth", this.$store.state.loginStore.updateUserBirthYear);
       formData.append("birthDay", this.$store.state.loginStore.updateUserBirthMonth);
       formData.append("gender", this.$store.state.loginStore.updateUserBirthDay);
-      formData.append("sido", this.$store.state.loginStore.updateUserSidoCode);
-      formData.append("gugun", this.$store.state.loginStore.updateUserGugunCode);
+      formData.append("sidoCode", this.$store.state.loginStore.updateUserSidoCode);
+      formData.append("gugunCode", this.$store.state.loginStore.updateUserGugunCode);
       console.log(this.$store.state.loginStore.userSeq)
       let options = {
         headers: { "Content-Type": "multipart/form-data" },
