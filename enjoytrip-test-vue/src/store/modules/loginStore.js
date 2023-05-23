@@ -4,7 +4,7 @@ const loginStore = {
     state: {
         isLogin: false,
 
-        userSeq: "",
+        userSeq: "", 
         userName: "",
         userProfileImageUrl: "",
         userEmail: "",
