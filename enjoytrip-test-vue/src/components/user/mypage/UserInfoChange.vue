@@ -227,10 +227,10 @@ export default {
       formData.append("userEmail", this.$store.state.loginStore.updateUserEmail);
       formData.append("userName", this.$store.state.loginStore.updateUserName);
       formData.append("userProfileImageUrl", this.$store.state.loginStore.updateUserProfileImageUrl);
-      formData.append("birthYear", this.$store.state.loginStore.updateUserGenderCode);
-      formData.append("birthMonth", this.$store.state.loginStore.updateUserBirthYear);
-      formData.append("birthDay", this.$store.state.loginStore.updateUserBirthMonth);
-      formData.append("gender", this.$store.state.loginStore.updateUserBirthDay);
+      formData.append("birthYear", this.$store.state.loginStore.updateUserBirthYear);
+      formData.append("birthMonth", this.$store.state.loginStore.updateUserBirthMonth);
+      formData.append("birthDay", this.$store.state.loginStore.updateUserBirthDay);
+      formData.append("gender", this.$store.state.loginStore.updateUserGenderCode);
       formData.append("sidoCode", this.$store.state.loginStore.updateUserSidoCode);
       formData.append("gugunCode", this.$store.state.loginStore.updateUserGugunCode);
       console.log(this.$store.state.loginStore.userSeq)
