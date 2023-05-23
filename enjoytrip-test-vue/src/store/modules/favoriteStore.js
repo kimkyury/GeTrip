@@ -15,27 +15,33 @@ const favoriteStore = {
 
         favoriteList: [],
         favoriteCount: 0,
+
+        userSeq: 0,
+        userSidoCode: 0,
+        userSidoName: "",
+        userGugunCode: 0,
+        userGugunName: "",
     },
     getters: {
-        getHotplaceList: function (state) {
+        getStoreHotplaceList: function (state) {
             return state.hotplacelist;
         },
-        getHotplaceCount: function (state) {
+        getStoreHotplaceCount: function (state) {
             return state.hotplaceCount;
         },
 
-        getHotplaceListFromUser: function (state) {
+        getStoreHotplaceListFromUser: function (state) {
             return state.hotplaceListFromUser;
         },
 
-        getHotplaceCountFromUser: function (state) {
+        getStoreHotplaceCountFromUser: function (state) {
             return state.hotplaceCountFromUser;
         },
 
-        getFavoriteList: function (state) {
+        getStoreFavoriteList: function (state) {
             return state.favoriteList;
         },
-        getFavoriteCount: function (state) {
+        getStoreFavoriteCount: function (state) {
             return state.favoriteCount;
         },
     },
@@ -52,9 +58,10 @@ const favoriteStore = {
             }
         },
 
-        async getHotplaceListFromUser({ userSeq, commit }) {
+        async getHotplaceListFromUser({ state, commit }) {
             try {
-                let { data } = await http.get(`/places/hotplaces/${userSeq}`);
+                console.log("getHotplaceListFromUser: ", state.userSeq);
+                let { data } = await http.get(`/places/hotplaces/${state.userSeq}`);
                 console.log("GET HOTPLACE FROM USER: " + data);
 
                 commit("SET_HOTPLACE_FROM_USER", data.hotplaceGetDtoList);
@@ -64,9 +71,9 @@ const favoriteStore = {
             }
         },
 
-        async getFavoriteList({ userSeq, commit }) {
+        async getFavoriteList({ state, commit }) {
             try {
-                let { data } = await http.get(`/users/${userSeq}/places/favorites`);
+                let { data } = await http.get(`/users/${state.userSeq}/places/favorites`);
                 console.log("GET HOTPLACE FROM USER: " + data.hotplaceGetDtoList);
 
                 commit("SET_FAVORITE_LIST", data.hotplaceGetDtoList);
@@ -98,6 +105,14 @@ const favoriteStore = {
         },
     },
     mutations: {
+        SET_USERINFO(state, payload) {
+            state.userSeq = payload.userSeq;
+            state.userGugunCode = payload.userGugunCode;
+            state.userSidoCode = payload.userSidoCode;
+            state.userGugunName = payload.userGugunName;
+            state.userSidoName = payload.userSidoName;
+        },
+
         SET_HOTPLACE_LIST(state, list) {
             state.hotplaceList = list;
         },
