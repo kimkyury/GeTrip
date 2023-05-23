@@ -32,7 +32,6 @@
                 <button type="button" class="btn btn-outline-primary" @click="login()">
                     <i class="fas fa-door-open me-2"></i>Log in
                 </button>
-                <div id="naver_id_login"></div>
             </div>
         </form>
     </div>
@@ -110,14 +109,5 @@ export default {
             }
         },
     },
-    mounted(){
-        var naver_id_login = new window.naver_id_login("Nhj7Kk8s1SUSops65jH2", "http://localhost:5500");
-        var state = naver_id_login.getUniqState();
-        naver_id_login.setButton("white", 2,40);
-        naver_id_login.setDomain("http://localhost:5500/#/signup");
-        naver_id_login.setState(state);
-        naver_id_login.setPopup();
-        naver_id_login.init_naver_id_login(); 
-    }
 };
 </script>

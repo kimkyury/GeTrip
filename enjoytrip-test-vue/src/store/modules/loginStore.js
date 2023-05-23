@@ -46,106 +46,132 @@ const loginStore = {
             {
                 name : "박쥐",
                 path : "@/assets/img/animal/bat.png",
+                imageView : require('@/assets/img/animal/bat.png'),
             },
             {
                 name : "곰",
                 path : "@/assets/img/animal/bear.png",
+                imageView : require("@/assets/img/animal/bear.png"),
             },
             {
                 name : "벌",
                 path : "@/assets/img/animal/bee.png",
+                imageView : require("@/assets/img/animal/bee.png"),
             },
             {
                 name : "새",
                 path : "@/assets/img/animal/bird.png",
+                imageView : require("@/assets/img/animal/bird.png"),
             },
             {
                 name : "벌레",
                 path : "@/assets/img/animal/bug.png",
+                imageView : require("@/assets/img/animal/bug.png"),
             },
             {
                 name : "나비",
                 path : "@/assets/img/animal/butterfly.png",
+                imageView : require("@/assets/img/animal/butterfly.png"),
             },
             {
                 name : "낙타",
                 path : "@/assets/img/animal/camel.png",
+                imageView : require("@/assets/img/animal/camel.png"),
             },
             {
                 name : "고양이",
                 path : "@/assets/img/animal/cat.png",
+                imageView : require("@/assets/img/animal/cat.png"),
             },
             {
                 name : "치타",
                 path : "@/assets/img/animal/cheetah.png",
+                imageView : require("@/assets/img/animal/cheetah.png"),
             },
             {
                 name : "닭",
                 path : "@/assets/img/animal/chicken.png",
+                imageView : require("@/assets/img/animal/chicken.png"),
             },
             {
                 name : "코알라",
                 path : "@/assets/img/animal/coala.png",
+                imageView : require("@/assets/img/animal/coala.png"),
             },
             {
                 name : "소",
                 path : "@/assets/img/animal/cow.png",
+                imageView : require("@/assets/img/animal/cow.png"),
             },
             {
                 name : "악어",
                 path : "@/assets/img/animal/crocodile.png",
+                imageView : require("@/assets/img/animal/crocodile.png"),
             },
             {
                 name : "공룡",
                 path : "@/assets/img/animal/dinosaur.png",
+                imageView : require("@/assets/img/animal/dinosaur.png"),
             },
             {
                 name : "개",
                 path : "@/assets/img/animal/dog.png",
+                imageView : require("@/assets/img/animal/dog.png"),
             },
             {
                 name : "돌고래",
                 path : "@/assets/img/animal/dolphin.png",
+                imageView : require("@/assets/img/animal/dolphin.png"),
             },
             {
                 name : "비둘기",
                 path : "@/assets/img/animal/dove.png",
+                imageView : require("@/assets/img/animal/dove.png"),
             },
             {
                 name : "오리",
                 path : "@/assets/img/animal/duck.png",
+                imageView : require("@/assets/img/animal/duck.png"),
             },
             {
                 name : "독수리",
                 path : "@/assets/img/animal/eagle.png",
+                imageView : require("@/assets/img/animal/eagle.png"),
             },
             {
                 name : "코끼리",
                 path : "@/assets/img/animal/elephant.png",
+                imageView : require("@/assets/img/animal/elephant.png"),
             },
             {
                 name : "물고기",
                 path : "@/assets/img/animal/fish.png",
+                imageView : require("@/assets/img/animal/fish.png"),
             },
             {
                 name : "플라밍고",
                 path : "@/assets/img/animal/flamingo.png",
+                imageView : require("@/assets/img/animal/flamingo.png"),
             },
             {
                 name : "여우",
                 path : "@/assets/img/animal/fox.png",
+                imageView : require("@/assets/img/animal/fox.png"),
             },
             {
                 name : "개구리",
                 path : "@/assets/img/animal/frog.png",
+                imageView : require("@/assets/img/animal/frog.png"),
             },
             {
                 name : "고릴라",
                 path : "@/assets/img/animal/gorilla.png",
+                imageView : require("@/assets/img/animal/gorilla.png"),
             },
             {
                 name : "말",
                 path : "@/assets/img/animal/horse.png",
+                imageView : require("@/assets/img/animal/horse.png"),
             },
         ]
     },
@@ -156,7 +182,6 @@ const loginStore = {
     },
     actions: {
     async getUpdateArea2List({ state }){
-        state.updateUserGugunCode = "0";
         let { data } = await http.get("/codes/" + state.updateUserSidoCode);
         state.gugunList = data.list;
       },
