@@ -253,17 +253,14 @@ export default {
             );
             formData.append(
                 "birthYear",
-                this.$store.state.loginStore.updateUserGenderCode
-            );
-            formData.append(
-                "birthMonth",
                 this.$store.state.loginStore.updateUserBirthYear
             );
             formData.append(
-                "birthDay",
+                "birthMonth",
                 this.$store.state.loginStore.updateUserBirthMonth
             );
-            formData.append("gender", this.$store.state.loginStore.updateUserBirthDay);
+            formData.append("birthDay", this.$store.state.loginStore.updateUserBirthDay);
+            formData.append("gender", this.$store.state.loginStore.updateUserGenderCode);
             formData.append("sidoCode", this.$store.state.loginStore.updateUserSidoCode);
             formData.append(
                 "gugunCode",
