@@ -60,8 +60,25 @@
                                         >
                                     </li>
                                     <li class="list-inline-item">
-                                        <a class="btn btn-outline-dark" href="#">
+                                        <a
+                                            class="btn btn-outline-dark"
+                                            href="#"
+                                            v-if="isFavorite(hotplace.contentId)"
+                                            @click="
+                                                changeFavoriteState(1, hotplace.contentId)
+                                            "
+                                        >
                                             💗 -> 🖤
+                                        </a>
+                                        <a
+                                            class="btn btn-outline-dark"
+                                            href="#"
+                                            v-else
+                                            @click="
+                                                changeFavoriteState(0, hotplace.contentId)
+                                            "
+                                        >
+                                            🖤 -> 💗
                                         </a>
                                     </li>
                                 </ul>
@@ -76,8 +93,10 @@
 <script>
 import PlaceSection from "./PlaceSection.vue";
 import { mapState, mapActions } from "vuex";
+import http from "@/common/axios.js";
 const favoriteStore = "favoriteStore";
 const placeStore = "placeStore";
+
 export default {
     components: { PlaceSection },
     methods: {
@@ -88,14 +107,54 @@ export default {
             this.getTripDetail(contentId);
             this.$router.push({ name: "PlaceDetailPage" });
         },
+        async changeFavoriteState(curState, contentId) {
+            console.log(curState);
+            console.log("userSeq: " + this.userSeq);
 
-        changeFavoriteState() {
+            let params = {
+                userSeq: this.userSeq,
+                contentId: contentId,
+            };
+
+            console.log(params);
+
+            try {
+                let { data } = await http.post(
+                    `/users/${this.userSeq}/places/favorites`,
+
+                    params
+                );
+
+                if (data.result == 1) {
+                    this.$alertify.success("클릭하였습니다");
+                }
+            } catch (error) {
+                console.log(error);
+            }
             // 1. 이미 유저가 좋아요를 누른 것인지 확인
             // 2. 유저가 좋아요를 누른 목록은 하트 취소
+        },
+        isFavorite(contentId) {
+            console.log(this.favoriteHotplaceList);
+
+            return this.favoriteHotplaceList.some(
+                (favorite) => favorite.content_id === contentId
+            );
         },
     },
     computed: {
         ...mapState(favoriteStore, ["hotplaceList", "hotplaceCount", "favoriteList"]),
+
+        ...mapState("loginStore", ["userSeq"]),
+        // 유저의 favoriteList와 Hotplace의 일치하는 배열만 리턴
+        favoriteHotplaceList() {
+            return this.hotplaceList.filter((hotplace) =>
+                this.favoriteList.some(
+                    (favorite) => favorite.content_id === hotplace.content_id
+                )
+            );
+        },
     },
+    mounted() {},
 };
 </script>
