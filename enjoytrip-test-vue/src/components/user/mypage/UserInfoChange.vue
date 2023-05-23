@@ -181,11 +181,21 @@
                       {{ image.name }}
                     </option>
                   </select>
-                  <!-- <img v-for="(image, index) in $store.state.loginStore.profileImage"
-                    :key="index"
-                      :src="image.path"
-                      style="width: 100px; height: 100px"
-                    /> -->
+                </div>
+                <div
+                  v-for="(image, index) in $store.state.loginStore.profileImage"
+                  :key="index"
+                  style="padding: 0px; width: 0px;"
+                  id="imageRoop"
+                >
+                  <img
+                    v-if="
+                      image.path ==
+                      $store.state.loginStore.updateUserProfileImageUrl
+                    "
+                    :src="image.imageView"
+                    style="width: 100px; height: 100px"
+                  />
                 </div>
               </div>
               <div class="col-lg-12 text-center">
@@ -219,21 +229,45 @@ export default {
     ...mapActions(loginStore, ["getUpdateArea2List"]),
     // area가 place의 state sido_code와 연결되어있음.
     updateArea2List() {
+      this.$store.state.loginStore.updateUserGugunCode = "0";
       this.getUpdateArea2List();
     },
     async userUpdate() {
       let formData = new FormData();
-      console.log(this.$store.state.loginStore.updateUserEmail)
-      formData.append("userEmail", this.$store.state.loginStore.updateUserEmail);
+      formData.append(
+        "userEmail",
+        this.$store.state.loginStore.updateUserEmail
+      );
       formData.append("userName", this.$store.state.loginStore.updateUserName);
-      formData.append("userProfileImageUrl", this.$store.state.loginStore.updateUserProfileImageUrl);
-      formData.append("birthYear", this.$store.state.loginStore.updateUserGenderCode);
-      formData.append("birthMonth", this.$store.state.loginStore.updateUserBirthYear);
-      formData.append("birthDay", this.$store.state.loginStore.updateUserBirthMonth);
-      formData.append("gender", this.$store.state.loginStore.updateUserBirthDay);
-      formData.append("sido", this.$store.state.loginStore.updateUserSidoCode);
-      formData.append("gugun", this.$store.state.loginStore.updateUserGugunCode);
-      console.log(this.$store.state.loginStore.userSeq)
+      formData.append(
+        "userProfileImageUrl",
+        this.$store.state.loginStore.updateUserProfileImageUrl
+      );
+      formData.append(
+        "birthYear",
+        this.$store.state.loginStore.updateUserBirthYear
+      );
+      formData.append(
+        "birthMonth",
+        this.$store.state.loginStore.updateUserBirthMonth
+      );
+      formData.append(
+        "birthDay",
+        this.$store.state.loginStore.updateUserBirthDay
+      );
+      formData.append(
+        "gender",
+        this.$store.state.loginStore.updateUserGenderCode
+      );
+      formData.append(
+        "sidoCode",
+        this.$store.state.loginStore.updateUserSidoCode
+      );
+      formData.append(
+        "gugunCode",
+        this.$store.state.loginStore.updateUserGugunCode
+      );
+      console.log(this.$store.state.loginStore.userSeq);
       let options = {
         headers: { "Content-Type": "multipart/form-data" },
       };
@@ -244,10 +278,27 @@ export default {
           formData,
           options
         );
-
-        console.log("UpdateUserVue: data : ");
+        
+        this.$store.state.loginStore.userName = this.$store.state.loginStore.updateUserName;
+        this.$store.state.loginStore.userProfileImageUrl = this.$store.state.loginStore.updateUserProfileImageUrl;
+        this.$store.state.loginStore.userGenderCode = this.$store.state.loginStore.updateUserGenderCode;
+        this.$store.state.loginStore.userBirthYear = this.$store.state.loginStore.updateUserBirthYear;
+        this.$store.state.loginStore.userBirthMonth = this.$store.state.loginStore.updateUserBirthMonth;
+        this.$store.state.loginStore.userBirthDay = this.$store.state.loginStore.updateUserBirthDay;
+        this.$store.state.loginStore.userSidoCode = this.$store.state.loginStore.updateUserSidoCode;
+        this.$store.state.loginStore.userGugunCode = this.$store.state.loginStore.updateUserGugunCode;
+        
+        // ssesionStorage 처리
+        sessionStorage.removeItem("vuex");
+        let loginStore = this.$store.state.loginStore
+        let boardStore = this.$store.state.boardStore
+        let store = {loginStore , boardStore}
+        const objString = JSON.stringify(store);
+        sessionStorage.setItem("vuex", objString )
+        sessionStorage.getItem("vuex");
+        
         console.log(data);
-        alert("업데이트 햇슴다.")
+        alert("업데이트 햇슴다.");
         // if (data.result == "login") {
         //   this.doLogout();
         // } else {
@@ -266,6 +317,9 @@ export default {
   },
   mounted() {
     this.getArea1List();
+    this.getUpdateArea2List();
   },
 };
 </script>
+<style scoped>
+</style>

@@ -7,7 +7,10 @@
                 <div class="row g-5">
                     <div class="col-lg-9">
                         <h1>HotPlaces</h1>
-                        <p class="lead mb-5">전국의 인기많은 관광지를 알려줄게요</p>
+                        <p class="lead mb-5">
+                            [{{ userName }}]님의 지역, [{{ userSidoName }}] 의 인기많은
+                            관광지를 알려줄게요
+                        </p>
                     </div>
                     <place-section></place-section>
                 </div>
@@ -18,21 +21,21 @@
                 <div class="row gy-4">
                     <div
                         class="col-lg-4"
-                        v-for="(hotplace, index) in hotplaceList"
+                        v-for="(hotplace, index) in hotplaceListFromUser"
                         :key="index"
                     >
                         <!-- Portfolio item-->
                         <div class="box-image-text text-center primary-overlay">
                             <img
-                                v-if="hotplace.firstImage == ''"
                                 style="height: 250px"
+                                v-if="hotplace.firstImage == ''"
                                 class="img-fluid"
                                 src="@/assets/img/enjoytrip/unfind.png"
                                 alt="..."
                             />
                             <img
-                                v-else
                                 style="height: 250px"
+                                v-else
                                 :src="hotplace.firstImage"
                                 class="img-fluid"
                                 alt="..."
@@ -60,26 +63,9 @@
                                         >
                                     </li>
                                     <li class="list-inline-item">
-                                        <a
-                                            class="btn btn-outline-dark"
-                                            href="#"
-                                            v-if="isFavorite(hotplace.contentId)"
-                                            @click="
-                                                changeFavoriteState(1, hotplace.contentId)
-                                            "
+                                        <a class="btn btn-outline-light" href="#"
+                                            >좋아요!</a
                                         >
-                                            💗 -> 🖤
-                                        </a>
-                                        <a
-                                            class="btn btn-outline-dark"
-                                            href="#"
-                                            v-else
-                                            @click="
-                                                changeFavoriteState(0, hotplace.contentId)
-                                            "
-                                        >
-                                            🖤 -> 💗
-                                        </a>
                                     </li>
                                 </ul>
                             </div>
@@ -93,68 +79,29 @@
 <script>
 import PlaceSection from "./PlaceSection.vue";
 import { mapState, mapActions } from "vuex";
-import http from "@/common/axios.js";
 const favoriteStore = "favoriteStore";
 const placeStore = "placeStore";
+const loginStore = "loginStore";
 
 export default {
     components: { PlaceSection },
     methods: {
-        ...mapActions(favoriteStore, ["getFavoriteCount", "postFavorite"]),
+        ...mapActions(favoriteStore, ["getHotplaceCountFromUser"]),
         ...mapActions(placeStore, ["getTripDetail"]),
 
         tripDetail(contentId) {
             this.getTripDetail(contentId);
             this.$router.push({ name: "PlaceDetailPage" });
         },
-        async changeFavoriteState(curState, contentId) {
-            console.log(curState);
-            console.log("userSeq: " + this.userSeq);
-
-            let params = {
-                userSeq: this.userSeq,
-                contentId: contentId,
-            };
-
-            console.log(params);
-
-            try {
-                let { data } = await http.post(
-                    `/users/${this.userSeq}/places/favorites`,
-
-                    params
-                );
-
-                if (data.result == 1) {
-                    this.$alertify.success("클릭하였습니다");
-                }
-            } catch (error) {
-                console.log(error);
-            }
-            // 1. 이미 유저가 좋아요를 누른 것인지 확인
-            // 2. 유저가 좋아요를 누른 목록은 하트 취소
-        },
-        isFavorite(contentId) {
-            console.log(this.favoriteHotplaceList);
-
-            return this.favoriteHotplaceList.some(
-                (favorite) => favorite.content_id === contentId
-            );
-        },
     },
     computed: {
-        ...mapState(favoriteStore, ["hotplaceList", "hotplaceCount", "favoriteList"]),
-
-        ...mapState("loginStore", ["userSeq"]),
-        // 유저의 favoriteList와 Hotplace의 일치하는 배열만 리턴
-        favoriteHotplaceList() {
-            return this.hotplaceList.filter((hotplace) =>
-                this.favoriteList.some(
-                    (favorite) => favorite.content_id === hotplace.content_id
-                )
-            );
-        },
+        ...mapState(loginStore, ["userSeq", "userName", "userSidoName"]),
+        ...mapState(favoriteStore, ["hotplaceListFromUser", "hotplaceCountFromUser"]),
     },
-    mounted() {},
+
+    async created() {
+        console.log("hotplaceList", this.hotplaceListFromUser);
+        console.log("hotplaceCount", this.hotplaceCountFromUser);
+    },
 };
 </script>
