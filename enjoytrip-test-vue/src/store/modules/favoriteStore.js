@@ -8,34 +8,33 @@ const favoriteStore = {
     namespaced: true,
     state: {
         hotplaceList: [],
-        hotplaceListFromUser: [],
-        favoriteList: [],
-
         hotplaceCount: 0,
+
+        hotplaceListFromUser: [],
         hotplaceCountFromUser: 0,
+
+        favoriteList: [],
         favoriteCount: 0,
     },
     getters: {
         getHotplaceList: function (state) {
             return state.hotplacelist;
         },
+        getHotplaceCount: function (state) {
+            return state.hotplaceCount;
+        },
 
         getHotplaceListFromUser: function (state) {
             return state.hotplaceListFromUser;
-        },
-
-        getFavoriteList: function (state) {
-            return state.favoriteList;
-        },
-
-        getHotplaceCount: function (state) {
-            return state.hotplaceCount;
         },
 
         getHotplaceCountFromUser: function (state) {
             return state.hotplaceCountFromUser;
         },
 
+        getFavoriteList: function (state) {
+            return state.favoriteList;
+        },
         getFavoriteCount: function (state) {
             return state.favoriteCount;
         },
@@ -68,7 +67,7 @@ const favoriteStore = {
         async getFavoriteList({ userSeq, commit }) {
             try {
                 let { data } = await http.get(`/users/${userSeq}/places/favorites`);
-                console.log("GET HOTPLACE FROM USER: " + data);
+                console.log("GET HOTPLACE FROM USER: " + data.hotplaceGetDtoList);
 
                 commit("SET_FAVORITE_LIST", data.hotplaceGetDtoList);
                 commit("SET_FAVORITE_COUNT", data.count);

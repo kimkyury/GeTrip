@@ -16,76 +16,44 @@
         <section class="py-5">
             <div class="container py-4">
                 <div class="row gy-4">
-                    <div class="col-lg-4">
+                    <div
+                        class="col-lg-4"
+                        v-for="(hotplace, index) in hotplaceList"
+                        :key="index"
+                    >
                         <!-- Portfolio item-->
                         <div class="box-image-text text-center primary-overlay">
-                            <img class="img-fluid" src="img/portfolio-1.jpg" alt="..." />
+                            <img
+                                class="img-fluid"
+                                v-if="hotplace.firstImage == ''"
+                                src="@/img/ssafy_logo.png"
+                                alt="..."
+                            />
+                            <img
+                                v-else
+                                :src="hotplace.firstImage"
+                                class="img-fluid"
+                                alt="..."
+                            />
                             <div
                                 class="overlay-content d-flex flex-column justify-content-center p-4"
                             >
                                 <h3 class="text-uppercase box-image-text-heading">
-                                    Portfolio item
+                                    {{ hotplace.title }}
                                 </h3>
                                 <p class="text-white box-image-text-description">
-                                    Pellentesque habitant morbi tristique senectus et netus et
-                                    malesuada
+                                    {{ hotplace.addr1 }}
                                 </p>
                                 <ul class="list-inline mb-0 box-image-text-content">
                                     <li class="list-inline-item">
-                                        <a class="btn btn-outline-light" href="#">View</a>
+                                        <a class="btn btn-outline-light" href="#"
+                                            >자세히보기</a
+                                        >
                                     </li>
                                     <li class="list-inline-item">
-                                        <a class="btn btn-outline-light" href="#">Website</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <!-- Portfolio item-->
-                        <div class="box-image-text text-center primary-overlay">
-                            <img class="img-fluid" src="img/portfolio-2.jpg" alt="..." />
-                            <div
-                                class="overlay-content d-flex flex-column justify-content-center p-4"
-                            >
-                                <h3 class="text-uppercase box-image-text-heading">
-                                    Portfolio item
-                                </h3>
-                                <p class="text-white box-image-text-description">
-                                    Pellentesque habitant morbi tristique senectus et netus et
-                                    malesuada
-                                </p>
-                                <ul class="list-inline mb-0 box-image-text-content">
-                                    <li class="list-inline-item">
-                                        <a class="btn btn-outline-light" href="#">View</a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a class="btn btn-outline-light" href="#">Website</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4">
-                        <!-- Portfolio item-->
-                        <div class="box-image-text text-center primary-overlay">
-                            <img class="img-fluid" src="img/portfolio-3.jpg" alt="..." />
-                            <div
-                                class="overlay-content d-flex flex-column justify-content-center p-4"
-                            >
-                                <h3 class="text-uppercase box-image-text-heading">
-                                    Portfolio item
-                                </h3>
-                                <p class="text-white box-image-text-description">
-                                    Pellentesque habitant morbi tristique senectus et netus et
-                                    malesuada
-                                </p>
-                                <ul class="list-inline mb-0 box-image-text-content">
-                                    <li class="list-inline-item">
-                                        <a class="btn btn-outline-light" href="#">View</a>
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <a class="btn btn-outline-light" href="#">Website</a>
+                                        <a class="btn btn-outline-light" href="#"
+                                            >좋아요(구독)</a
+                                        >
                                     </li>
                                 </ul>
                             </div>
@@ -98,8 +66,22 @@
 </template>
 <script>
 import PlaceSection from "./PlaceSection.vue";
+import { mapState, mapActions } from "vuex";
+const favoriteStore = "favoriteStore";
 
 export default {
     components: { PlaceSection },
+    methods: {
+        ...mapActions(favoriteStore, ["getHotplaceList", "getFavoriteCount"]),
+    },
+    computed: {
+        ...mapState(favoriteStore, ["hotplaceList", "hotplaceCount"]),
+    },
+
+    async created() {
+        await this.getHotplaceList();
+        console.log("hotplaceList", this.hotplaceList);
+        console.log("hotplaceCount", this.hotplaceCount);
+    },
 };
 </script>
