@@ -40,28 +40,6 @@
                                 >
                             </li>
                         </ul>
-                        <ul class="list-inline mb-0 ms-lg-4">
-                            <li class="list-inline-item text-gray-600 m-0">
-                                <a class="text-xs social-link-hover" href="#" title="Facebook"
-                                    ><i class="fab fa-facebook-f"></i
-                                ></a>
-                            </li>
-                            <li class="list-inline-item text-gray-600 m-0">
-                                <a class="text-xs social-link-hover" href="#" title="Twitter"
-                                    ><i class="fab fa-twitter"></i
-                                ></a>
-                            </li>
-                            <li class="list-inline-item text-gray-600 m-0">
-                                <a class="text-xs social-link-hover" href="#" title="Linkedin"
-                                    ><i class="fab fa-linkedin-in"></i
-                                ></a>
-                            </li>
-                            <li class="list-inline-item text-gray-600 m-0">
-                                <a class="text-xs social-link-hover" href="#" title="Email"
-                                    ><i class="fas fa-envelope"></i
-                                ></a>
-                            </li>
-                        </ul>
                     </div>
                 </div>
             </div>
