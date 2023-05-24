@@ -12,7 +12,7 @@
     <nav-bar></nav-bar>
     <nav-bar-page-move></nav-bar-page-move>
     <transition name="fade">
-      <router-view /> 
+      <router-view />
     </transition>
   </div>
 </template>
@@ -70,10 +70,13 @@ export default {
 </script>
 
 <style scoped>
-.fade-enter-active, .fade-leave-active{
-    transition: opacity .3s;
+.fade-leave-active {
+  transition: opacity 0.1s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */{
-    opacity: 0;
+.fade-enter-active {
+  transition: opacity 0.6s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
