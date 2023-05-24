@@ -62,10 +62,6 @@ export default {
         await this.getHotplaceList();
         await this.getHotplaceListFromUser();
         await this.getFavoriteList();
-
-        // console.log("PS- hotplaceList: ", this.hotplaceList);
-        // console.log("PS- hotplaceCountFromUser: ", this.hotplaceCountFromUser);
-        // console.log("PS- favoriteList: ", this.favoriteList);
     },
 };
 </script>
