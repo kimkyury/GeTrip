@@ -112,18 +112,18 @@
                                 Naver
                             </p>
                             <p
-                                class="btn btn-outline-pink btn-sm"
-                                v-if="checkIsFavorite(area.contentId)"
-                                @click="changeFavoriteState(1, area.contentId)"
-                            >
-                                💗 좋아요
-                            </p>
-                            <p
                                 class="btn btn-outline-dark btn-sm"
-                                v-else
+                                v-if="checkIsFavorite(area.contentId)"
                                 @click="changeFavoriteState(0, area.contentId)"
                             >
                                 🖤 취소
+                            </p>
+                            <p
+                                class="btn btn-outline-pink btn-sm"
+                                v-else
+                                @click="changeFavoriteState(1, area.contentId)"
+                            >
+                                💗 좋아요
                             </p>
                         </div>
                     </div>
@@ -189,9 +189,9 @@ export default {
                 );
 
                 if (data.result == 1) {
-                    if (curState == 0) {
+                    if (curState == 1) {
                         this.$alertify.success("좋아요에 담았습니다");
-                    } else if (curState == 1) {
+                    } else if (curState == 0) {
                         this.$alertify.error("좋아요를 취소했습니다");
                     }
                 }
@@ -227,13 +227,13 @@ export default {
         ...mapState(placeStore, ["areaList1", "areaList2", "trips"]),
         ...mapState(favoriteStore, [
             "hotplaceList",
-            "hotplaceListFromUser",
-
             "hotplaceCount",
+
+            "hotplaceListFromUser",
             "hotplaceCountFromUser",
 
             "favoriteList",
-            "favoriteListCount",
+            "favoriteCount",
         ]),
 
         // 유저의 favoriteList와 Hotplace의 일치하는 배열만 리턴
