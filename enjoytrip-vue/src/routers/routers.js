@@ -75,7 +75,7 @@ export default new VueRouter({
                 }
                 Vue.prototype.$alertify.error("로그인이 필요한 서비스입니다. ");
 
-                next("/");
+                next("/signup");
             },
         },
         {
