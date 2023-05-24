@@ -8,8 +8,23 @@
                     <div class="col-lg-9">
                         <h1>HotPlaces around You</h1>
                         <p class="lead mb-5">
-                            [{{ userName }}]님의 지역, [{{ userSidoName }}] 의 인기많은
-                            관광지를 알려줄게요
+                            "<span
+                                v-for="(t, index) in userName"
+                                :key="index"
+                                class="custom-item"
+                                :style="{ animationDelay: index * 200 + 'ms' }"
+                                v-text="t"
+                            />
+
+                            "님의 지역, "
+                            <span
+                                v-for="(t, index) in userSidoName"
+                                :key="index"
+                                class="custom-item"
+                                :style="{ animationDelay: index * 200 + 'ms' }"
+                                v-text="t"
+                            />
+                            "의 인기많은 관광지를 알려줄게요
                         </p>
                     </div>
                     <place-section></place-section>
@@ -100,6 +115,12 @@ const placeStore = "placeStore";
 const loginStore = "loginStore";
 
 export default {
+    data() {
+        return {
+            nameText: this.userName,
+            sidoText: this.userSidoName,
+        };
+    },
     components: { PlaceSection },
     methods: {
         ...mapActions(placeStore, ["getTripDetail"]),
@@ -189,6 +210,23 @@ export default {
     async mounted() {
         await this.getHotplaceList();
         await this.getFavoriteList();
+        console.log("mounted");
+        this.showUserName = true;
+        this.showUserSidoName = true;
     },
 };
 </script>
+<style scoped>
+@keyframes text-in {
+    0% {
+        transform: translate(0, -20px);
+        opacity: 0;
+    }
+}
+.custom-item {
+    display: inline-block;
+    min-width: 0.3em;
+    font-size: 1.5rem;
+    animation: text-in 0.8s cubic-bezier(0.22, 0.15, 0.25, 1.43) 0s backwards;
+}
+</style>
