@@ -8,7 +8,8 @@
                     <div class="col-lg-9">
                         <h1>HotPlaces around You</h1>
                         <p class="lead mb-5">
-                            "<span
+                            "
+                            <span
                                 v-for="(t, index) in userName"
                                 :key="index"
                                 class="custom-item"
@@ -115,12 +116,6 @@ const placeStore = "placeStore";
 const loginStore = "loginStore";
 
 export default {
-    data() {
-        return {
-            nameText: this.userName,
-            sidoText: this.userSidoName,
-        };
-    },
     components: { PlaceSection },
     methods: {
         ...mapActions(placeStore, ["getTripDetail"]),
@@ -165,11 +160,12 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+            console.log(this.favoriteList);
         },
 
         checkIsFavorite(contentId) {
             let result = this.isFavorite(contentId);
-            // console.log(contentId + "의 FH 존재결과: ", result);
+            console.log(contentId + "의 FH 존재결과: ", result);
             return result;
         },
         isFavorite(contentId) {
@@ -208,11 +204,8 @@ export default {
     },
 
     async mounted() {
-        await this.getHotplaceList();
-        await this.getFavoriteList();
-        console.log("mounted");
-        this.showUserName = true;
-        this.showUserSidoName = true;
+        // await this.getHotplaceList();
+        // await this.getFavoriteList();
     },
 };
 </script>
