@@ -32,13 +32,29 @@
                 <h3 class="text-uppercase lined">당신의 프로필정보</h3>
               </div>
 
-              <div class="col-md-6 mb-3">
+              <div class="row">
+                <div
+                  v-for="(image, index) in $store.state.loginStore.profileImage"
+                  :key="index"
+                  style="padding: 0px; width: 0px, margin:10px;"
+                  id="firstname"
+                >
+                  <img
+                    v-if="
+                      image.path ==
+                      $store.state.loginStore.userProfileImageUrl
+                    "
+                    :src="image.imageView"
+                    style="width: 100px; height: 100px"
+                  />
+                </div>
+              </div>
+              <!-- <div class="col-md-6 mb-3">
                 <label class="form-label" for="firstname"> 이미지 </label>
                 <label class="form-control" id="firstname" type="text">
-                  <!--@/assets/img/animal/cat.png-->
                   <img :src="getProfileImageUrl" />
                 </label>
-              </div>
+              </div> -->
 
               <div class="row">
                 <div class="col-md-6 mb-3">
