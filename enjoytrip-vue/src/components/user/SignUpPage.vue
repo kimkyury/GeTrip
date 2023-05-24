@@ -184,7 +184,7 @@
                                         class="form-control"
                                         id="sido"
                                         name="sido"
-                                        @change="getGuguns"
+                                        @change="getGuguns()"
                                     >
                                         <!-- Loop through sidos array with v-for directive -->
 
@@ -277,8 +277,8 @@ export default {
       signupUserBirthMonth: "09",
       signupUserBirthDay: "18",
 
-      signupSidoCode: "6",
-      signupGugunCode: "4",
+      signupSidoCode: "",
+      signupGugunCode: "",
 
       // 유효성 검사
     };
@@ -293,6 +293,7 @@ export default {
 
     async getGuguns() {
       console.log(this.signupSidoCode);
+      this.signupGugunCode="";
       let { data } = await http.get("/codes/" + this.signupSidoCode);
       console.log(data);
       this.guguns = data.list;
