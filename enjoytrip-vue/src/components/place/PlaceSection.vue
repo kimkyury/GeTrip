@@ -6,10 +6,10 @@
                 <i class="me-2 fas fa-user"></i> 여행 검색
             </router-link>
             <router-link class="nav-link text-sm" :to="{ name: 'HotPlacePage' }">
-                <i class="me-2 fas fa-heart"></i> 핫 플레이스
+                <i class="me-2 fas fa-heart"></i> 전국 핫플
             </router-link>
             <router-link class="nav-link text-sm" :to="{ name: 'HotPlaceFromUserPage' }">
-                <i class="me-2 fas fa-heart"></i> 내 지역 핫플레이스
+                <i class="me-2 fas fa-heart"></i> 내 지역 핫플
             </router-link>
         </nav>
     </div>

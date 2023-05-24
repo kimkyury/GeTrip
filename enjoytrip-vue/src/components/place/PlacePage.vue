@@ -9,7 +9,34 @@
                 <!-- 중앙 center content end -->
                 <div class="col-md-12">
                     <div class="container py-4">
-                        <place-section class="col-lg-12"></place-section>
+                        <div class="row">
+                            <br />
+                            <h4 class="h4 text-uppercase mb-4">Place</h4>
+                            <div class="row" id="linkMoveList">
+                                <div class="d-flex justify-content-center">
+                                    <nav class="nav flex-row nav-pills">
+                                        <router-link
+                                            class="nav-link custom-text-small"
+                                            :to="{ name: 'PlacePage' }"
+                                        >
+                                            <i class="me-2 fas fa-user"></i> 여행 검색
+                                        </router-link>
+                                        <router-link
+                                            class="nav-link custom-text-small"
+                                            :to="{ name: 'HotPlacePage' }"
+                                        >
+                                            <i class="me-2 fas fa-heart"></i> 전국 핫플
+                                        </router-link>
+                                        <router-link
+                                            class="nav-link custom-text-small"
+                                            :to="{ name: 'HotPlaceFromUserPage' }"
+                                        >
+                                            <i class="me-2 fas fa-heart"></i> 내 지역 핫플
+                                        </router-link>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!--  java이용 api 가져오기 start -->
@@ -133,7 +160,7 @@
     </div>
 </template>
 <script>
-import PlaceSection from "@/components/place/PlaceSection";
+// import PlaceSection from "@/components/place/PlaceSection";
 import { mapState, mapActions } from "vuex";
 import http from "@/common/axios.js";
 const placeStore = "placeStore";
@@ -141,7 +168,7 @@ const favoriteStore = "favoriteStore";
 const loginStore = "loginStore";
 
 export default {
-    components: { PlaceSection },
+    components: {},
     methods: {
         ...mapActions(favoriteStore, [
             "getHotplaceList",
@@ -284,5 +311,9 @@ form {
 }
 h1 {
     font-size: 1rem;
+}
+/* 아래는 자체제작 css*/
+.custom-text-small {
+    font-size: 0.75rem;
 }
 </style>
