@@ -61,22 +61,22 @@
                                     </li>
                                     <li class="list-inline-item">
                                         <a
-                                            class="btn btn-outline-dark"
+                                            class="btn btn-outline-pink"
                                             v-if="checkIsFavorite(hotplace.contentId)"
-                                            @click="
-                                                changeFavoriteState(1, hotplace.contentId)
-                                            "
-                                        >
-                                            💗 좋아요
-                                        </a>
-                                        <a
-                                            class="btn btn-success"
-                                            v-else
                                             @click="
                                                 changeFavoriteState(0, hotplace.contentId)
                                             "
                                         >
                                             🖤 취소
+                                        </a>
+                                        <a
+                                            class="btn btn-outline-dark"
+                                            v-else
+                                            @click="
+                                                changeFavoriteState(1, hotplace.contentId)
+                                            "
+                                        >
+                                            💗 좋아요
                                         </a>
                                     </li>
                                 </ul>
@@ -124,9 +124,9 @@ export default {
                 );
 
                 if (data.result == 1) {
-                    if (curState == 0) {
+                    if (curState == 1) {
                         this.$alertify.success("좋아요에 담았습니다");
-                    } else if (curState == 1) {
+                    } else if (curState == 0) {
                         this.$alertify.error("좋아요를 취소했습니다");
                     }
                 }
