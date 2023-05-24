@@ -1,0 +1,21 @@
+@import url("https://fonts.googleapis.com/css2?family=Gamja+Flower&family=Hi+Melody&family=Jua&display=swap");
+
+.f-gd {
+  font-family: "Gowun Dodum";
+}
+
+.card h3 {
+  font-family: "Hi Melody", cursive;
+}
+.rightPosition {
+  float: right;
+}
+
+.hColor {
+  font-family: "Gowun Dodum";
+  color: #769fcd;
+}
+
+.hightBlue {
+  color: #d6e6f2;
+}

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mycom.trip.dao.FavoriteDao">
+
+	<select id="isExistFavorite" 
+		parameterType="com.mycom.trip.dto.favorite.FavoriteDto"
+		resultType ="int">
+			SELECT count(*) FROM favorite_attraction 
+			WHERE user_seq = #{userSeq} AND content_id = #{contentId}
+	</select>
+	<insert id="createFavorite" 
+		parameterType="com.mycom.trip.dto.favorite.FavoriteDto">
+			INSERT INTO favorite_attraction (user_seq, content_id, updated_date ) 
+			VALUES (#{userSeq}, #{contentId}, now() )
+	</insert>
+	<update id="updateFavorite"
+		parameterType="com.mycom.trip.dto.favorite.FavoriteDto">
+		UPDATE favorite_attraction
+		SET state = CASE 
+		    WHEN state = 1 THEN 0
+		    WHEN state = 0 THEN 1
+	    	ELSE state
+		END
+		WHERE user_seq = #{userSeq}
+			AND content_id = #{contentId}
+	</update>
+	
+	
+	<select id="cntFavoriteFromUser" 
+		parameterType="int"
+		resultType ="int">
+			SELECT count(*) FROM favorite_attraction 
+			WHERE user_seq = #{userSeq} 
+				AND state = 1
+	</select>
+	<select id="getFavoriteGetDtoList"
+		parameterType="int"
+		resultType = "com.mycom.trip.dto.favorite.FavoriteGetDto">
+			SELECT i.content_id, i.title, i.addr1, i.first_image, d.overview, f.updated_date
+			FROM attraction_info i
+			JOIN attraction_description d 
+				ON i.content_id = d.content_id
+			JOIN favorite_attraction f 
+				ON i.content_id = f.content_id
+			WHERE f.user_seq = #{usrSeq} 
+				AND f.state = 1
+			ORDER BY f.updated_date DESC
+	</select>
+	
+	
+	<select id="getHotplaceGetDtoList"
+		resultType = "com.mycom.trip.dto.favorite.HotplaceGetDto">
+
+		SELECT 
+		    i.content_id, 
+		    i.title, 
+		    i.addr1, 
+		    i.first_image, 
+		    d.overview, 
+		    subquery.count as "favorite_cnt"
+		FROM 
+		    attraction_info i
+		INNER JOIN 
+		    attraction_description d ON i.content_id = d.content_id 
+		INNER JOIN (
+		    SELECT 
+		        content_id, 
+		        COUNT(*) AS count
+		    FROM 
+		        favorite_attraction
+		    WHERE 
+		        state = 1
+		    GROUP BY 
+		        content_id
+		    ORDER BY 
+		        COUNT(*) DESC
+		    LIMIT 9
+		) AS subquery ON i.content_id = subquery.content_id;
+
+	</select>
+	
+	<select id="getHotplaceGetDtoListFromUser"
+		parameterType="Int"
+		resultType = "com.mycom.trip.dto.favorite.HotplaceGetDto">
+		SELECT 
+		    i.content_id, 
+		    i.title, 
+		    i.addr1, 
+		    i.first_image, 
+		    d.overview, 
+		    i.latitude, 
+		    i.longitude, 
+		    subquery.count as "favorite_cnt"
+		FROM 
+		    attraction_info i
+		INNER JOIN 
+		    attraction_description d ON i.content_id = d.content_id 
+		INNER JOIN (
+		    SELECT 
+		        f.content_id, 
+		        COUNT(*) AS count
+		    FROM 
+		        favorite_attraction f
+		    INNER JOIN
+		        attraction_info ai ON f.content_id = ai.content_id
+		    WHERE 
+		        f.state = 1 AND
+		        ai.sido_code = (SELECT u.sido_code FROM users u WHERE u.user_seq = #{userSeq})
+		    GROUP BY 
+		        f.content_id
+		    ORDER BY 
+		        COUNT(*) DESC
+		    LIMIT 9
+		) AS subquery ON i.content_id = subquery.content_id;
+		
+	</select>
+	
+	
+
+</mapper>

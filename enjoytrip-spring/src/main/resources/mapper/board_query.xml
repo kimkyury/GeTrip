@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycom.trip.dao.BoardDao">
+
+	<select id="boardList" parameterType="map"
+		resultType="com.mycom.trip.dto.BoardDto">
+		SELECT b.BOARD_ID, b.USER_SEQ, u.USER_NAME,
+		b.TITLE, b.CONTENT, b.REG_DT, b.READ_COUNT
+		FROM BOARD b, USERS u
+		WHERE
+		b.USER_SEQ = u.USER_SEQ
+		ORDER BY b.BOARD_ID DESC
+		LIMIT #{limit} OFFSET
+		#{offset}
+	</select>
+
+	<!-- boardListTOtalCount -->
+	<select id="boardListTotalCount" resultType="int">
+		SELECT COUNT(*) FROM
+		BOARD
+	</select>
+
+	<!-- boardDetail -->
+	<select id="boardDetail" parameterType="int"
+		resultType="com.mycom.trip.dto.BoardDto">
+		SELECT b.BOARD_ID, b.USER_SEQ, u.USER_NAME,
+		b.TITLE, b.CONTENT, b.REG_DT, b.READ_COUNT
+		FROM BOARD b, USERS u
+		WHERE
+		b.BOARD_ID = #{boardId}
+		AND b.USER_SEQ = u.USER_SEQ
+	</select>
+
+	<!-- boardInsert -->
+	<insert id="boardInsert"
+		parameterType="com.mycom.trip.dto.BoardDto" useGeneratedKeys="true"
+		keyProperty="boardId">
+		INSERT INTO BOARD ( USER_SEQ, TITLE, CONTENT, REG_DT,
+		READ_COUNT )
+		VALUES ( #{userSeq}, #{title}, #{content}, now(), 0 )
+	</insert>
+
+
+	<!-- boardUpdate -->
+	<update id="boardUpdate"
+		parameterType="com.mycom.trip.dto.BoardDto">
+		UPDATE BOARD
+		SET TITLE = #{title},
+		CONTENT = #{content}
+		WHERE BOARD_ID = #{boardId}
+	</update>
+
+
+	<!-- boardDelete -->
+	<delete id="boardDelete" parameterType="int">
+		DELETE FROM BOARD WHERE
+		BOARD_ID = #{boardId}
+	</delete>
+
+	<!-- boardReadCountUpdate -->
+	<update id="boardReadCountUpdate" parameterType="int">
+		UPDATE board set
+		READ_COUNT = READ_COUNT + 1
+		WHERE BOARD_ID = #{boardId}
+	</update>
+
+</mapper>

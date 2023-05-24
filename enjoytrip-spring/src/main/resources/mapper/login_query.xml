@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mycom.trip.dao.LoginDao">
+	<select id="login" parameterType="string"
+		resultType="com.mycom.trip.dto.UserGetDto">
+
+		SELECT u.user_seq, u.user_name, u.user_email, u.user_register_date, 
+				u.user_profile_image_url, 
+				u.birth_year, u.birth_month, u.birth_day,
+				gd.code as gender_code, gd.value as gender_name,
+				s.sido_code, s.sido_name, g.gugun_code, g.gugun_name, 
+				gc.code as user_clsf_code, gc.value as user_clsf_name
+		FROM users u
+			JOIN sido s ON u.sido_code = s.sido_code
+			JOIN gugun g 
+				ON u.gugun_code = g.gugun_code
+				AND g.sido_code = u.sido_code
+			JOIN group_code gc 
+				ON u.user_clsf = gc.code
+			JOIN gender gd
+				ON u.gender = gd.code
+		WHERE u.user_email = #{userEmail};
+	</select>
+</mapper>
