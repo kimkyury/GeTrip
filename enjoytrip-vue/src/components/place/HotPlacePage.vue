@@ -94,12 +94,12 @@ import { mapState, mapActions } from "vuex";
 import http from "@/common/axios.js";
 const favoriteStore = "favoriteStore";
 const placeStore = "placeStore";
+const loginStore = "loginStore";
 
 export default {
     components: { PlaceSection },
     methods: {
         ...mapActions(placeStore, ["getTripDetail"]),
-
         ...mapActions(favoriteStore, [
             "getHotplaceList",
             "getHotplaceListFromUser",
@@ -155,6 +155,7 @@ export default {
         },
     },
     computed: {
+        ...mapState(loginStore, ["userSeq"]),
         ...mapState(favoriteStore, [
             "hotplaceList",
             "hotplaceListFromUser",
@@ -165,7 +166,7 @@ export default {
             "favoriteList",
             "favoriteListCount",
         ]),
-        ...mapState("loginStore", ["userSeq"]),
+
         // 유저의 favoriteList와 Hotplace의 일치하는 배열만 리턴
         favoriteHotplaceList() {
             // console.log("FavoriteHot place 계산");
