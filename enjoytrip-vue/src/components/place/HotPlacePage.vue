@@ -90,7 +90,7 @@
 </template>
 <script>
 import PlaceSection from "./PlaceSection.vue";
-import { mapState, mapActions } from "vuex";
+import { mapMutations, mapState, mapActions } from "vuex";
 import http from "@/common/axios.js";
 const favoriteStore = "favoriteStore";
 const placeStore = "placeStore";
@@ -98,7 +98,9 @@ const loginStore = "loginStore";
 
 export default {
     components: { PlaceSection },
+
     methods: {
+        ...mapMutations(favoriteStore, ["SET_USERINFO"]),
         ...mapActions(placeStore, ["getTripDetail"]),
         ...mapActions(favoriteStore, [
             "getHotplaceList",
@@ -155,7 +157,14 @@ export default {
         },
     },
     computed: {
-        ...mapState(loginStore, ["userSeq"]),
+        ...mapState(loginStore, [
+            "userSeq",
+            "userName",
+            "userSidoName",
+            "userSidoCode",
+            "userGugunName",
+            "userGugunCode",
+        ]),
         ...mapState(favoriteStore, [
             "hotplaceList",
             "hotplaceCount",
@@ -176,6 +185,18 @@ export default {
                 )
             );
         },
+    },
+    async created() {
+        this.SET_USERINFO({
+            userSeq: this.userSeq,
+            userSidoName: this.userSidoName,
+            userSidoCode: this.userSidoCode,
+            userGugunName: this.userGugunName,
+        });
+
+        await this.getHotplaceList();
+        await this.getHotplaceListFromUser();
+        await this.getFavoriteList();
     },
     async mounted() {
         await this.getHotplaceList();
