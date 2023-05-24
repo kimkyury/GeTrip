@@ -62,7 +62,7 @@
                                     <li class="list-inline-item">
                                         <a
                                             class="btn btn-outline-dark"
-                                            v-if="isFavorite(hotplace.contentId)"
+                                            v-if="checkIsFavorite(hotplace.contentId)"
                                             @click="
                                                 changeFavoriteState(1, hotplace.contentId)
                                             "
@@ -70,7 +70,7 @@
                                             💗 -> 🖤
                                         </a>
                                         <a
-                                            class="btn btn-outline-dark"
+                                            class="btn btn-success"
                                             v-else
                                             @click="
                                                 changeFavoriteState(0, hotplace.contentId)
@@ -98,8 +98,14 @@ const placeStore = "placeStore";
 export default {
     components: { PlaceSection },
     methods: {
-        ...mapActions(favoriteStore, ["getFavoriteCount", "postFavorite"]),
         ...mapActions(placeStore, ["getTripDetail"]),
+
+        ...mapActions(favoriteStore, [
+            "getHotplaceList",
+            "getHotplaceListFromUser",
+            "getFavoriteList",
+            "postFavorite",
+        ]),
 
         tripDetail(contentId) {
             this.getTripDetail(contentId);
@@ -114,40 +120,67 @@ export default {
             try {
                 let { data } = await http.post(
                     `/users/${this.userSeq}/places/favorites`,
-
                     params
                 );
 
                 if (data.result == 1) {
-                    this.$alertify.success("클릭하였습니다");
+                    if (curState == 0) {
+                        this.$alertify.success("좋아요에 담았습니다");
+                    } else if (curState == 1) {
+                        this.$alertify.error("좋아요를 취소했습니다");
+                    }
                 }
             } catch (error) {
                 console.log(error);
             }
-            // 1. 이미 유저가 좋아요를 누른 것인지 확인
-            // 2. 유저가 좋아요를 누른 목록은 하트 취소
+
+            // 담고 난 후, 리스트를 다시 계산해야 함
+            // console.log("Favorite place 계산");
+            try {
+                await this.getFavoriteList();
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        checkIsFavorite(contentId) {
+            let result = this.isFavorite(contentId);
+            // console.log(contentId + "의 FH 존재결과: ", result);
+            return result;
         },
         isFavorite(contentId) {
             return this.favoriteHotplaceList.some(
-                (favorite) => favorite.content_id === contentId
+                (favorite) => favorite.contentId === contentId
             );
         },
     },
     computed: {
-        ...mapState(favoriteStore, ["hotplaceList", "hotplaceCount", "favoriteList"]),
+        ...mapState(favoriteStore, [
+            "hotplaceList",
+            "hotplaceListFromUser",
+
+            "hotplaceCount",
+            "hotplaceCountFromUser",
+
+            "favoriteList",
+            "favoriteListCount",
+        ]),
         ...mapState("loginStore", ["userSeq"]),
         // 유저의 favoriteList와 Hotplace의 일치하는 배열만 리턴
         favoriteHotplaceList() {
+            // console.log("FavoriteHot place 계산");
             return this.hotplaceList.filter((hotplace) =>
                 this.favoriteList.some(
-                    (favorite) => favorite.content_id === hotplace.content_id
+                    (favorite) => favorite.contentId === hotplace.contentId
                 )
             );
         },
     },
-    mounted() {
-        // console.log("hotplaceList: ", this.hotplaceList.favoriteGetDtoList);
-        // console.log("favoriteList: ", this.favoriteList.favoriteGetDtoList);
+    async mounted() {
+        await this.getHotplaceList();
+        await this.getFavoriteList();
+        // console.log("hotplaceList: ", this.hotplaceList);
+        // console.log("favoriteList: ", this.favoriteList);
         // console.log("FH list: ", this.favoriteHotplaceList);
     },
 };

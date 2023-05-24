@@ -67,10 +67,10 @@ const favoriteStore = {
         },
 
         async getFavoriteList({ state, commit }) {
-            console.log("favorite UserSeq: ", state.userSeq);
+            // console.log("favorite UserSeq: ", state.userSeq);
             try {
                 let { data } = await http.get(`/users/${state.userSeq}/places/favorites`);
-                console.log("favoriteList: " + data.favoriteGetDtoList);
+                // console.log("favoriteList: " + data.favoriteGetDtoList);
 
                 commit("SET_FAVORITE_LIST", data.favoriteGetDtoList);
                 commit("SET_FAVORITE_COUNT", data.count);
