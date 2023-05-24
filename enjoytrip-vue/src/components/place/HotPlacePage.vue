@@ -67,7 +67,7 @@
                                                 changeFavoriteState(1, hotplace.contentId)
                                             "
                                         >
-                                            💗 -> 🖤
+                                            💗 좋아요
                                         </a>
                                         <a
                                             class="btn btn-success"
@@ -76,7 +76,7 @@
                                                 changeFavoriteState(0, hotplace.contentId)
                                             "
                                         >
-                                            🖤 -> 💗
+                                            🖤 취소
                                         </a>
                                     </li>
                                 </ul>
