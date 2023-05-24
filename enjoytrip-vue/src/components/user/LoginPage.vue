@@ -35,6 +35,7 @@
         <img
           height="38px"
           src="@/assets/kakao_login_button.png"
+          style="margin-left: 10px;"
           @click="kakaoLogin()"
         />
       </div>
@@ -173,7 +174,7 @@ export default {
                 let gender = "";
                 if (response.kakao_account.gender == "male") {
                   gender = "1";
-                } else {
+                } else { 
                   gender = "2";
                 }
                 let signupObj = {
