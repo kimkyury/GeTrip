@@ -158,13 +158,13 @@ export default {
         ...mapState(loginStore, ["userSeq"]),
         ...mapState(favoriteStore, [
             "hotplaceList",
-            "hotplaceListFromUser",
-
             "hotplaceCount",
+
+            "hotplaceListFromUser",
             "hotplaceCountFromUser",
 
             "favoriteList",
-            "favoriteListCount",
+            "favoriteCount",
         ]),
 
         // 유저의 favoriteList와 Hotplace의 일치하는 배열만 리턴

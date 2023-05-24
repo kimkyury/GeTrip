@@ -161,19 +161,19 @@ export default {
         ...mapState(loginStore, ["userSeq", "userName", "userSidoName"]),
         ...mapState(favoriteStore, [
             "hotplaceList",
-            "hotplaceListFromUser",
-
             "hotplaceCount",
+
+            "hotplaceListFromUser",
             "hotplaceCountFromUser",
 
             "favoriteList",
-            "favoriteListCount",
+            "favoriteCount",
         ]),
 
         // 유저의 favoriteList와 Hotplace의 일치하는 배열만 리턴
         favoriteHotplaceList() {
             // console.log("FavoriteHot place 계산");
-            return this.hotplaceList.filter((hotplace) =>
+            return this.hotplaceListFromUser.filter((hotplace) =>
                 this.favoriteList.some(
                     (favorite) => favorite.contentId === hotplace.contentId
                 )

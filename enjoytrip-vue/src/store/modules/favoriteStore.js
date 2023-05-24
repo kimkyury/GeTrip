@@ -7,6 +7,8 @@ Vue.use(VueAlertify);
 const favoriteStore = {
     namespaced: true,
     state: {
+        hasFavoritePlace: false,
+
         hotplaceList: [],
         hotplaceCount: 0,
 
@@ -23,6 +25,10 @@ const favoriteStore = {
         userGugunName: "",
     },
     getters: {
+        getFavoritePlace: function (state) {
+            return state.hasFavoritePlace;
+        },
+
         getStoreHotplaceList: function (state) {
             return state.hotplacelist;
         },
@@ -70,10 +76,16 @@ const favoriteStore = {
             // console.log("favorite UserSeq: ", state.userSeq);
             try {
                 let { data } = await http.get(`/users/${state.userSeq}/places/favorites`);
-                // console.log("favoriteList: " + data.favoriteGetDtoList);
 
-                commit("SET_FAVORITE_LIST", data.favoriteGetDtoList);
-                commit("SET_FAVORITE_COUNT", data.count);
+                if (data.count == 0) {
+                    this.hasFavoritePlace = false;
+                } else {
+                    this.hasFavoritePlace = true;
+                    commit("SET_FAVORITE_LIST", data.favoriteGetDtoList);
+                    commit("SET_FAVORITE_COUNT", data.count);
+                }
+
+                // console.log("favoriteList: " + data.favoriteGetDtoList);
             } catch (error) {
                 console.log(error);
             }

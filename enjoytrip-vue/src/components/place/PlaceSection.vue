@@ -41,13 +41,13 @@ export default {
 
         ...mapState(favoriteStore, [
             "hotplaceList",
-            "hotplaceListFromUser",
-
             "hotplaceCount",
+
+            "hotplaceListFromUser",
             "hotplaceCountFromUser",
 
             "favoriteList",
-            "favoriteListCount",
+            "favoriteCount",
         ]),
     },
 
