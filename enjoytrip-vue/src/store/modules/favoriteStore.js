@@ -49,8 +49,6 @@ const favoriteStore = {
         async getHotplaceList({ commit }) {
             try {
                 let { data } = await http.get(`/places/hotplaces`);
-                console.log("GET HOTPLACE: " + data);
-
                 commit("SET_HOTPLACE_LIST", data.hotplaceGetDtoList);
                 commit("SET_HOTPLACE_COUNT", data.count);
             } catch (error) {
@@ -60,10 +58,7 @@ const favoriteStore = {
 
         async getHotplaceListFromUser({ state, commit }) {
             try {
-                console.log("getHotplaceListFromUser: ", state.userSeq);
                 let { data } = await http.get(`/places/hotplaces/${state.userSeq}`);
-                console.log("GET HOTPLACE FROM USER: " + data);
-
                 commit("SET_HOTPLACE_FROM_USER", data.hotplaceGetDtoList);
                 commit("SET_HOTPLACE_COUNT_FROM_USER", data.count);
             } catch (error) {
@@ -72,11 +67,12 @@ const favoriteStore = {
         },
 
         async getFavoriteList({ state, commit }) {
+            console.log("favorite UserSeq: ", state.userSeq);
             try {
                 let { data } = await http.get(`/users/${state.userSeq}/places/favorites`);
-                console.log("GET HOTPLACE FROM USER: " + data.hotplaceGetDtoList);
+                console.log("favoriteList: " + data.favoriteGetDtoList);
 
-                commit("SET_FAVORITE_LIST", data.hotplaceGetDtoList);
+                commit("SET_FAVORITE_LIST", data.favoriteGetDtoList);
                 commit("SET_FAVORITE_COUNT", data.count);
             } catch (error) {
                 console.log(error);
@@ -84,8 +80,6 @@ const favoriteStore = {
         },
 
         async postFavorite({ favoriteInfo }) {
-            console.log("favoriteInfo : ", favoriteInfo);
-
             let userSeq = favoriteInfo.userSeq;
 
             let params = {

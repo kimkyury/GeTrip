@@ -56,12 +56,12 @@ export default new VueRouter({
         },
         {
             name: "HotPlacePage",
-            path: "/places",
+            path: "/places/hotplaces",
             component: HotPlacePage,
         },
         {
             name: "HotPlaceFromUserPage",
-            path: "/places/user",
+            path: "/places/hotplaces/user",
             component: HotPlaceFromUserPage,
         },
 
