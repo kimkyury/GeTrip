@@ -6,7 +6,7 @@
             <div class="container py-4">
                 <div class="row g-5">
                     <div class="col-lg-9">
-                        <h1>HotPlaces</h1>
+                        <h1>HotPlaces around You</h1>
                         <p class="lead mb-5">
                             [{{ userName }}]님의 지역, [{{ userSidoName }}] 의 인기많은
                             관광지를 알려줄게요
@@ -63,9 +63,24 @@
                                         >
                                     </li>
                                     <li class="list-inline-item">
-                                        <a class="btn btn-outline-light" href="#"
-                                            >좋아요!</a
+                                        <a
+                                            class="btn btn-outline-dark"
+                                            v-if="checkIsFavorite(hotplace.contentId)"
+                                            @click="
+                                                changeFavoriteState(1, hotplace.contentId)
+                                            "
                                         >
+                                            💗 -> 🖤
+                                        </a>
+                                        <a
+                                            class="btn btn-success"
+                                            v-else
+                                            @click="
+                                                changeFavoriteState(0, hotplace.contentId)
+                                            "
+                                        >
+                                            🖤 -> 💗
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
@@ -79,6 +94,7 @@
 <script>
 import PlaceSection from "./PlaceSection.vue";
 import { mapState, mapActions } from "vuex";
+import http from "@/common/axios.js";
 const favoriteStore = "favoriteStore";
 const placeStore = "placeStore";
 const loginStore = "loginStore";
@@ -86,22 +102,93 @@ const loginStore = "loginStore";
 export default {
     components: { PlaceSection },
     methods: {
-        ...mapActions(favoriteStore, ["getHotplaceCountFromUser"]),
         ...mapActions(placeStore, ["getTripDetail"]),
+        ...mapActions(favoriteStore, [
+            "getHotplaceList",
+            "getHotplaceListFromUser",
+            "getFavoriteList",
+            "postFavorite",
+        ]),
 
         tripDetail(contentId) {
             this.getTripDetail(contentId);
             this.$router.push({ name: "PlaceDetailPage" });
         },
+        async changeFavoriteState(curState, contentId) {
+            let params = {
+                userSeq: this.userSeq,
+                contentId: contentId,
+            };
+
+            try {
+                let { data } = await http.post(
+                    `/users/${this.userSeq}/places/favorites`,
+                    params
+                );
+
+                if (data.result == 1) {
+                    if (curState == 0) {
+                        this.$alertify.success("좋아요에 담았습니다");
+                    } else if (curState == 1) {
+                        this.$alertify.error("좋아요를 취소했습니다");
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+            }
+
+            // 담고 난 후, 리스트를 다시 계산해야 함
+            // console.log("Favorite place 계산");
+            try {
+                await this.getFavoriteList();
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        checkIsFavorite(contentId) {
+            let result = this.isFavorite(contentId);
+            // console.log(contentId + "의 FH 존재결과: ", result);
+            return result;
+        },
+        isFavorite(contentId) {
+            return this.favoriteHotplaceList.some(
+                (favorite) => favorite.contentId === contentId
+            );
+        },
     },
     computed: {
         ...mapState(loginStore, ["userSeq", "userName", "userSidoName"]),
-        ...mapState(favoriteStore, ["hotplaceListFromUser", "hotplaceCountFromUser"]),
+        ...mapState(favoriteStore, [
+            "hotplaceList",
+            "hotplaceListFromUser",
+
+            "hotplaceCount",
+            "hotplaceCountFromUser",
+
+            "favoriteList",
+            "favoriteListCount",
+        ]),
+
+        // 유저의 favoriteList와 Hotplace의 일치하는 배열만 리턴
+        favoriteHotplaceList() {
+            // console.log("FavoriteHot place 계산");
+            return this.hotplaceList.filter((hotplace) =>
+                this.favoriteList.some(
+                    (favorite) => favorite.contentId === hotplace.contentId
+                )
+            );
+        },
     },
 
-    async created() {
-        console.log("hotplaceList", this.hotplaceListFromUser);
-        console.log("hotplaceCount", this.hotplaceCountFromUser);
+    created() {
+        // console.log("hotplaceList", this.hotplaceListFromUser);
+        // console.log("hotplaceCount", this.hotplaceCountFromUser);
+    },
+
+    async mounted() {
+        await this.getHotplaceList();
+        await this.getFavoriteList();
     },
 };
 </script>

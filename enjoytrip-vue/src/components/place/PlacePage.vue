@@ -111,6 +111,20 @@
                             >
                                 Naver
                             </p>
+                            <p
+                                class="btn btn-outline-dark btn-sm"
+                                v-if="checkIsFavorite(area.contentId)"
+                                @click="changeFavoriteState(1, area.contentId)"
+                            >
+                                💗 👉 🖤
+                            </p>
+                            <p
+                                class="btn btn-outline-light btn-sm"
+                                v-else
+                                @click="changeFavoriteState(0, area.contentId)"
+                            >
+                                🖤 👉 💗
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -121,12 +135,20 @@
 <script>
 import PlaceSection from "@/components/place/PlaceSection";
 import { mapState, mapActions } from "vuex";
-
+import http from "@/common/axios.js";
 const placeStore = "placeStore";
+const favoriteStore = "favoriteStore";
+const loginStore = "loginStore";
 
 export default {
     components: { PlaceSection },
     methods: {
+        ...mapActions(favoriteStore, [
+            "getHotplaceList",
+            "getHotplaceListFromUser",
+            "getFavoriteList",
+            "postFavorite",
+        ]),
         ...mapActions(placeStore, [
             "getList",
             "getArea2List",
@@ -153,11 +175,80 @@ export default {
                     title
             );
         },
+
+        async changeFavoriteState(curState, contentId) {
+            let params = {
+                userSeq: this.userSeq,
+                contentId: contentId,
+            };
+
+            try {
+                let { data } = await http.post(
+                    `/users/${this.userSeq}/places/favorites`,
+                    params
+                );
+
+                if (data.result == 1) {
+                    if (curState == 0) {
+                        this.$alertify.success("좋아요에 담았습니다");
+                    } else if (curState == 1) {
+                        this.$alertify.error("좋아요를 취소했습니다");
+                    }
+                }
+
+                // $nextTick() 사용
+                this.$nextTick(async () => {
+                    // 담고 난 후, 리스트를 다시 계산해야 함
+                    try {
+                        await this.getFavoriteList();
+                        console.log(this.favoriteList);
+                    } catch (error) {
+                        console.log(error);
+                    }
+                });
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+        checkIsFavorite(contentId) {
+            let result = this.isFavorite(contentId);
+            console.log(contentId + "의 FH 존재결과: ", result);
+            return result;
+        },
+        isFavorite(contentId) {
+            return this.favoriteHotplaceList.some(
+                (favorite) => favorite.contentId === contentId
+            );
+        },
     },
     computed: {
+        ...mapState(loginStore, ["userSeq"]),
         ...mapState(placeStore, ["areaList1", "areaList2", "trips"]),
+        ...mapState(favoriteStore, [
+            "hotplaceList",
+            "hotplaceListFromUser",
+
+            "hotplaceCount",
+            "hotplaceCountFromUser",
+
+            "favoriteList",
+            "favoriteListCount",
+        ]),
+
+        // 유저의 favoriteList와 Hotplace의 일치하는 배열만 리턴
+        favoriteHotplaceList() {
+            console.log("FavoriteHot place 계산");
+            return this.trips.filter((trip) =>
+                this.favoriteList.some(
+                    (favorite) => favorite.contentId === trip.contentId
+                )
+            );
+        },
     },
     async mounted() {
+        await this.getHotplaceList();
+        await this.getFavoriteList();
         await this.mapView();
     },
 };
