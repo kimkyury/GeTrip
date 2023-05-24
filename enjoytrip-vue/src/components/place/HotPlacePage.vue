@@ -62,7 +62,6 @@
                                     <li class="list-inline-item">
                                         <a
                                             class="btn btn-outline-dark"
-                                            href="#"
                                             v-if="isFavorite(hotplace.contentId)"
                                             @click="
                                                 changeFavoriteState(1, hotplace.contentId)
@@ -72,7 +71,6 @@
                                         </a>
                                         <a
                                             class="btn btn-outline-dark"
-                                            href="#"
                                             v-else
                                             @click="
                                                 changeFavoriteState(0, hotplace.contentId)
@@ -108,15 +106,10 @@ export default {
             this.$router.push({ name: "PlaceDetailPage" });
         },
         async changeFavoriteState(curState, contentId) {
-            console.log(curState);
-            console.log("userSeq: " + this.userSeq);
-
             let params = {
                 userSeq: this.userSeq,
                 contentId: contentId,
             };
-
-            console.log(params);
 
             try {
                 let { data } = await http.post(
@@ -135,8 +128,6 @@ export default {
             // 2. 유저가 좋아요를 누른 목록은 하트 취소
         },
         isFavorite(contentId) {
-            console.log(this.favoriteHotplaceList);
-
             return this.favoriteHotplaceList.some(
                 (favorite) => favorite.content_id === contentId
             );
@@ -144,7 +135,6 @@ export default {
     },
     computed: {
         ...mapState(favoriteStore, ["hotplaceList", "hotplaceCount", "favoriteList"]),
-
         ...mapState("loginStore", ["userSeq"]),
         // 유저의 favoriteList와 Hotplace의 일치하는 배열만 리턴
         favoriteHotplaceList() {
@@ -155,6 +145,10 @@ export default {
             );
         },
     },
-    mounted() {},
+    mounted() {
+        // console.log("hotplaceList: ", this.hotplaceList.favoriteGetDtoList);
+        // console.log("favoriteList: ", this.favoriteList.favoriteGetDtoList);
+        // console.log("FH list: ", this.favoriteHotplaceList);
+    },
 };
 </script>

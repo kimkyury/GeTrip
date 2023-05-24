@@ -38,10 +38,20 @@ export default {
             "userGugunName",
             "userGugunCode",
         ]),
+
+        ...mapState(favoriteStore, [
+            "hotplaceList",
+            "hotplaceListFromUser",
+
+            "hotplaceCount",
+            "hotplaceCountFromUser",
+
+            "favoriteList",
+            "favoriteListCount",
+        ]),
     },
 
     async created() {
-        console.log("userSeq: ", this.userSeq);
         this.SET_USERINFO({
             userSeq: this.userSeq,
             userSidoName: this.userSidoName,
@@ -51,8 +61,11 @@ export default {
 
         await this.getHotplaceList();
         await this.getHotplaceListFromUser();
-        console.log("hotplaceList", this.hotplaceListFromUser);
-        console.log("hotplaceCount", this.hotplaceCountFromUser);
+        await this.getFavoriteList();
+
+        console.log("PS- hotplaceList: ", this.hotplaceList);
+        console.log("PS- hotplaceCountFromUser: ", this.hotplaceCountFromUser);
+        console.log("PS- favoriteList: ", this.favoriteList);
     },
 };
 </script>
