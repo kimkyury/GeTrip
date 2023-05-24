@@ -67,19 +67,19 @@
                                             class="btn btn-outline-dark"
                                             v-if="checkIsFavorite(hotplace.contentId)"
                                             @click="
-                                                changeFavoriteState(1, hotplace.contentId)
-                                            "
-                                        >
-                                            💗 -> 🖤
-                                        </a>
-                                        <a
-                                            class="btn btn-success"
-                                            v-else
-                                            @click="
                                                 changeFavoriteState(0, hotplace.contentId)
                                             "
                                         >
-                                            🖤 -> 💗
+                                            🖤 취소
+                                        </a>
+                                        <a
+                                            class="btn btn-outline-pink"
+                                            v-else
+                                            @click="
+                                                changeFavoriteState(1, hotplace.contentId)
+                                            "
+                                        >
+                                            💗 좋아요
                                         </a>
                                     </li>
                                 </ul>
@@ -127,9 +127,9 @@ export default {
                 );
 
                 if (data.result == 1) {
-                    if (curState == 0) {
+                    if (curState == 1) {
                         this.$alertify.success("좋아요에 담았습니다");
-                    } else if (curState == 1) {
+                    } else if (curState == 0) {
                         this.$alertify.error("좋아요를 취소했습니다");
                     }
                 }
@@ -161,19 +161,19 @@ export default {
         ...mapState(loginStore, ["userSeq", "userName", "userSidoName"]),
         ...mapState(favoriteStore, [
             "hotplaceList",
-            "hotplaceListFromUser",
-
             "hotplaceCount",
+
+            "hotplaceListFromUser",
             "hotplaceCountFromUser",
 
             "favoriteList",
-            "favoriteListCount",
+            "favoriteCount",
         ]),
 
         // 유저의 favoriteList와 Hotplace의 일치하는 배열만 리턴
         favoriteHotplaceList() {
             // console.log("FavoriteHot place 계산");
-            return this.hotplaceList.filter((hotplace) =>
+            return this.hotplaceListFromUser.filter((hotplace) =>
                 this.favoriteList.some(
                     (favorite) => favorite.contentId === hotplace.contentId
                 )
