@@ -479,6 +479,21 @@ export default {
                 this.$store.state.loginStore.userGugunCode =
                     this.$store.state.loginStore.updateUserGugunCode;
 
+                /*        userSeq: 0,
+        userSidoCode: 0,
+        userSidoName: "",
+        userGugunCode: 0,
+        userGugunName: "",
+        */
+                this.$store.state.favoriteStore.userSidoCode =
+                    this.$store.state.loginStore.updateUserSidoCode;
+                this.$store.state.favoriteStore.userSidoName =
+                    this.$store.state.loginStore.updateUserSidoName;
+                this.$store.state.favoriteStore.userGugunCode =
+                    this.$store.state.loginStore.updateUserGugunCode;
+                this.$store.state.favoriteStore.userGugunName =
+                    this.$store.state.loginStore.updateUserGugunName;
+
                 // ssesionStorage 처리
                 sessionStorage.removeItem("vuex");
                 let loginStore = this.$store.state.loginStore;
