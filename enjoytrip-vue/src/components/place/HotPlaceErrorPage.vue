@@ -63,9 +63,11 @@
                                 v-text="t"
                             />
                         </p>
-                        <p class="centered-text">
-                            헉, 아직 조사가 부족한 지역이에요! 잠시만 기다려주세요.
-                        </p>
+                        <div v-if="isLogin">
+                            <p class="centered-text">
+                                헉, 아직 조사가 부족한 지역이에요! 잠시만 기다려주세요.
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
