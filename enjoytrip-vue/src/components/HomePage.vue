@@ -13,18 +13,33 @@
                         <div class="swiper-slide h-auto mb-5">
                             <div class="row gy-5 h-100 align-items-center">
                                 <div class="col-lg-5 text-lg-end">
-                                    <h1 class="text-uppercase">ENJOY TRIP</h1>
+                                    <h1 class="">STARTrip !</h1>
+                                </div>
+                                <div class="col-lg-7">
+                                    <img
+                                        class="ml-auto img-fluid"
+                                        src="@/assets/img/enjoytrip/trip.png"
+                                        alt=""
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="swiper-slide h-auto mb-5">
+                            <div class="row gy-5 h-100 align-items-center">
+                                <div class="col-lg-5 text-lg-end">
+                                    <h1 class="">STARTrip Developer</h1>
+
                                     <ul class="list-unstyled text-uppercase fw-bold mb-0">
-                                        <li class="mb-2">SSAFY. 부울경. 3반.</li>
-                                        <li>10조. 김규리. 이상훈.</li>
+                                        <li>PM. 이상훈</li>
+                                        <li class="mb-2">PL. 김규리</li>
+                                        <li></li>
+                                        <li>SSAFY. 부울경. 3반. 10조.</li>
                                     </ul>
                                 </div>
                                 <div class="col-lg-7">
                                     <img
                                         class="img-fluid"
-                                        width="250 "
-                                        height="250"
-                                        src="@/assets/img/enjoytrip/trip.png"
+                                        src="img/template-homepage.png"
                                         alt=""
                                     />
                                 </div>
@@ -36,5 +51,32 @@
         </div>
     </section>
 </template>
-<script></script>
-<style></style>
+<script>
+import Swiper from "swiper";
+import "swiper/swiper-bundle.css";
+
+export default {
+    mounted() {
+        new Swiper(".swiper-container", {
+            // Add your options here
+            // For example, enable navigation and pagination
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+        });
+    },
+};
+</script>
+
+<style>
+.swiper-slide {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+</style>

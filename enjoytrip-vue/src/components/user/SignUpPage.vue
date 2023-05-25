@@ -313,8 +313,8 @@ export default {
                 console.log("data: ", data);
                 console.log("data.result: ", data.result);
                 if (data.result == SUCCESS) {
-                    alert("회원가입 성공");
-                    this.$router.push("/login");
+                    alert("회원가입 성공, 로그인하세요!");
+                    this.$router.push("/signup");
                 }
             } catch (error) {
                 alert(error);
