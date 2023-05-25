@@ -1,10 +1,10 @@
 <template>
-    <section class="py-5">
+    <section class="py-4">
         <div class="container py-4">
             <div class="row g-5">
                 <div class="col-lg-9">
                     <h1>My Favorite Attraction</h1>
-                    <p class="lead mb-5">당신이 찜한 여행지 목록입니다.</p>
+                    <p class="lead mb-5">당신이 좋아요한 여행지 목록입니다.</p>
                     <div class="row gy-5 align-items-stretch">
                         <div
                             class="col-lg-3 col-md-6"
@@ -36,10 +36,14 @@
                                         {{ favorite.title }}
                                     </h3>
                                     <p class="mb-0">{{ favorite.addr1 }}</p>
-                                    <ul class="list-inline mb-0">
+                                    <ul
+                                        class="list-inline mb-0"
+                                        style="width: 0px; height: 0px"
+                                    >
                                         <li class="list-inline-item">
                                             <a
-                                                class="btn btn-outline-dark"
+                                                class="btn btn-danger"
+                                                id="cancelBtn"
                                                 v-if="checkIsFavorite(favorite.contentId)"
                                                 @click="
                                                     changeFavoriteState(
@@ -47,8 +51,16 @@
                                                         favorite.contentId
                                                     )
                                                 "
-                                                >🖤 좋아요 취소</a
+                                                >X</a
                                             >
+                                        </li>
+                                    </ul>
+                                    <ul class="list-unstyled p-0 ribbon-holder mb-0">
+                                        <li
+                                            class="mb-1"
+                                            v-if="getDateDiff(favorite.updatedDate) <= 10"
+                                        >
+                                            <div class="ribbon new ribbon-info">NEW</div>
                                         </li>
                                     </ul>
                                 </div>
@@ -77,7 +89,20 @@ export default {
     methods: {
         ...mapActions(placeStore, ["getTripDetail"]),
         ...mapActions(favoriteStore, ["getFavoriteList", "postFavorite"]),
+        getDateDiff(d) {
+            const date1 = new Date(
+                d.date.year,
+                d.date.month - 1,
+                d.date.day,
+                d.time.hour,
+                d.time.minute,
+                d.time.second
+            );
+            const date2 = new Date();
 
+            const diffDate = date1.getTime() - date2.getTime();
+            return Math.abs(diffDate / (1000 * 60 * 60 * 24)); // 밀리세컨 * 초 * 분 * 시 = 일
+        },
         tripDetail(contentId) {
             this.getTripDetail(contentId);
             this.$router.push({ name: "PlaceDetailPage" });
@@ -142,10 +167,17 @@ export default {
     },
     computed: {
         ...mapState(loginStore, ["userSeq", "userName", "userSidoName"]),
-        ...mapState(favoriteStore, ["favoriteList", "favoriteListCount"]),
+        ...mapState(favoriteStore, ["favoriteList", "favoriteCount"]),
     },
 
-    created() {},
+    async created() {
+        await this.getFavoriteList();
+
+        console.log("favoriteListCount: ", this.favoriteCount);
+        if (this.favoriteCount == 0) {
+            this.$router.push({ name: "WishListErrorPage" });
+        }
+    },
 
     async mounted() {
         await this.getFavoriteList();
@@ -153,3 +185,10 @@ export default {
     },
 };
 </script>
+<style scoped>
+#cancelBtn {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+</style>

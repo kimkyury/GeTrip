@@ -1,13 +1,22 @@
 <template lang="">
     <!-- <div style="height: 70px"></div> -->
     <div>
-        <section class="py-5">
+        <section class="py-4">
             <!-- 중앙 center content end -->
             <div class="container py-4">
                 <div class="row g-5">
                     <div class="col-lg-9">
                         <h1>HotPlaces</h1>
-                        <p class="lead mb-5">전국의 인기많은 관광지를 알려줄게요</p>
+                        <p class="lead mb-5">
+                            <span
+                                v-for="(guideChar, guideIndex) in guideText1"
+                                :key="'guide1-' + guideIndex"
+                                class="custom-item"
+                                :style="{ animationDelay: guideIndex * 200 + 'ms' }"
+                                v-text="guideChar"
+                            />
+                            의 인기많은 관광지를 알려줄게요
+                        </p>
                     </div>
                     <place-section></place-section>
                 </div>
@@ -22,11 +31,13 @@
                         :key="index"
                     >
                         <!-- Portfolio item-->
-                        <div class="box-image-text text-center primary-overlay">
+                        <div
+                            class="image-container box-image-text text-center primary-overlay"
+                        >
                             <img
                                 v-if="hotplace.firstImage == ''"
                                 style="height: 250px"
-                                class="img-fluid"
+                                class="img-fluid fit-image"
                                 src="@/assets/img/enjoytrip/unfind.png"
                                 alt="..."
                             />
@@ -34,13 +45,14 @@
                                 v-else
                                 style="height: 250px"
                                 :src="hotplace.firstImage"
-                                class="img-fluid"
+                                class="img-fluid fit-image"
                                 alt="..."
                             />
-                            <div
-                                class="overlay-content d-flex flex-column justify-content-center p-4"
-                            >
-                                <h4 class="text-uppercase box-image-text-heading">
+                            <div class="overlay-content p-4">
+                                <h4
+                                    class="text-uppercase box-image-text-heading"
+                                    style="margin-top: 20px"
+                                >
                                     {{ hotplace.title }}
                                 </h4>
                                 <p class="text-white box-image-text-description">
@@ -60,24 +72,32 @@
                                         >
                                     </li>
                                     <li class="list-inline-item">
-                                        <a
-                                            class="btn btn-outline-dark"
-                                            v-if="checkIsFavorite(hotplace.contentId)"
-                                            @click="
-                                                changeFavoriteState(1, hotplace.contentId)
-                                            "
-                                        >
-                                            💗 -> 🖤
-                                        </a>
-                                        <a
-                                            class="btn btn-success"
-                                            v-else
-                                            @click="
-                                                changeFavoriteState(0, hotplace.contentId)
-                                            "
-                                        >
-                                            🖤 -> 💗
-                                        </a>
+                                        <div v-if="isLogin">
+                                            <a
+                                                class="btn btn-outline-dark"
+                                                v-if="checkIsFavorite(hotplace.contentId)"
+                                                @click="
+                                                    changeFavoriteState(
+                                                        0,
+                                                        hotplace.contentId
+                                                    )
+                                                "
+                                            >
+                                                🖤 취소요
+                                            </a>
+                                            <a
+                                                class="btn btn-outline-pink"
+                                                v-else
+                                                @click="
+                                                    changeFavoriteState(
+                                                        1,
+                                                        hotplace.contentId
+                                                    )
+                                                "
+                                            >
+                                                💗 좋아요
+                                            </a>
+                                        </div>
                                     </li>
                                 </ul>
                             </div>
@@ -90,7 +110,7 @@
 </template>
 <script>
 import PlaceSection from "./PlaceSection.vue";
-import { mapState, mapActions } from "vuex";
+import { mapMutations, mapState, mapActions } from "vuex";
 import http from "@/common/axios.js";
 const favoriteStore = "favoriteStore";
 const placeStore = "placeStore";
@@ -98,7 +118,13 @@ const loginStore = "loginStore";
 
 export default {
     components: { PlaceSection },
+    data() {
+        return {
+            guideText1: "전국",
+        };
+    },
     methods: {
+        ...mapMutations(favoriteStore, ["SET_USERINFO"]),
         ...mapActions(placeStore, ["getTripDetail"]),
         ...mapActions(favoriteStore, [
             "getHotplaceList",
@@ -124,9 +150,9 @@ export default {
                 );
 
                 if (data.result == 1) {
-                    if (curState == 0) {
+                    if (curState == 1) {
                         this.$alertify.success("좋아요에 담았습니다");
-                    } else if (curState == 1) {
+                    } else if (curState == 0) {
                         this.$alertify.error("좋아요를 취소했습니다");
                     }
                 }
@@ -134,8 +160,6 @@ export default {
                 console.log(error);
             }
 
-            // 담고 난 후, 리스트를 다시 계산해야 함
-            // console.log("Favorite place 계산");
             try {
                 await this.getFavoriteList();
             } catch (error) {
@@ -145,7 +169,6 @@ export default {
 
         checkIsFavorite(contentId) {
             let result = this.isFavorite(contentId);
-            // console.log(contentId + "의 FH 존재결과: ", result);
             return result;
         },
         isFavorite(contentId) {
@@ -155,21 +178,28 @@ export default {
         },
     },
     computed: {
-        ...mapState(loginStore, ["userSeq"]),
+        ...mapState(loginStore, [
+            "isLogin",
+            "userSeq",
+            "userName",
+            "userSidoName",
+            "userSidoCode",
+            "userGugunName",
+            "userGugunCode",
+        ]),
         ...mapState(favoriteStore, [
             "hotplaceList",
-            "hotplaceListFromUser",
-
             "hotplaceCount",
+
+            "hotplaceListFromUser",
             "hotplaceCountFromUser",
 
             "favoriteList",
-            "favoriteListCount",
+            "favoriteCount",
         ]),
 
         // 유저의 favoriteList와 Hotplace의 일치하는 배열만 리턴
         favoriteHotplaceList() {
-            // console.log("FavoriteHot place 계산");
             return this.hotplaceList.filter((hotplace) =>
                 this.favoriteList.some(
                     (favorite) => favorite.contentId === hotplace.contentId
@@ -177,12 +207,50 @@ export default {
             );
         },
     },
-    async mounted() {
+    async created() {
+        this.SET_USERINFO({
+            userSeq: this.userSeq,
+            userSidoName: this.userSidoName,
+            userSidoCode: this.userSidoCode,
+            userGugunName: this.userGugunName,
+        });
+
+        if (this.isLogin) {
+            await this.getHotplaceListFromUser();
+            await this.getFavoriteList();
+        }
         await this.getHotplaceList();
-        await this.getFavoriteList();
-        // console.log("hotplaceList: ", this.hotplaceList);
-        // console.log("favoriteList: ", this.favoriteList);
-        // console.log("FH list: ", this.favoriteHotplaceList);
+    },
+    async mounted() {
+        if (this.isLogin) {
+            await this.getFavoriteList();
+        }
+        await this.getHotplaceList();
     },
 };
 </script>
+<style scoped>
+.image-container {
+    width: 350px;
+    height: 250px;
+    overflow: hidden;
+}
+.fit-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+@keyframes text-in {
+    0% {
+        transform: translate(0, -20px);
+        opacity: 0;
+    }
+}
+.custom-item {
+    display: inline-block;
+    min-width: 0.3em;
+    font-size: 1.5rem;
+    animation: text-in 0.8s cubic-bezier(0.22, 0.15, 0.25, 1.43) 0s backwards;
+}
+</style>

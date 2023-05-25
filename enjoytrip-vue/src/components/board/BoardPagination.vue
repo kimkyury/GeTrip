@@ -66,18 +66,9 @@ export default {
         ...mapState("boardStore", ["currentPageIndex"]),
     },
 
-    mounted() {
-        console.log("pCur", this.currentPageIndex);
-        console.log("pCnt", this.pageCount);
-        console.log("start", this.startPageIndex);
-        console.log("end", this.endPageIndex);
-
-        console.log("prev", this.prev);
-        console.log("next", this.next);
-    },
+    mounted() {},
     methods: {
         paginationChanged(pageIndex) {
-            console.log("paginationChanged: " + pageIndex);
             this.$emit("call-parent", pageIndex);
         },
     },

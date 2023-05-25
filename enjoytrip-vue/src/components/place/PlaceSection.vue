@@ -6,22 +6,21 @@
                 <i class="me-2 fas fa-user"></i> 여행 검색
             </router-link>
             <router-link class="nav-link text-sm" :to="{ name: 'HotPlacePage' }">
-                <i class="me-2 fas fa-heart"></i> 핫 플레이스
+                <i class="me-2 fas fa-heart"></i> 전국 핫플
             </router-link>
             <router-link class="nav-link text-sm" :to="{ name: 'HotPlaceFromUserPage' }">
-                <i class="me-2 fas fa-heart"></i> 내 지역 핫플레이스
+                <i class="me-2 fas fa-heart"></i> 내 지역 핫플
             </router-link>
         </nav>
     </div>
 </template>
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions } from "vuex";
 const favoriteStore = "favoriteStore";
 const loginStore = "loginStore";
 
 export default {
     methods: {
-        ...mapMutations(favoriteStore, ["SET_USERINFO"]),
         ...mapActions(favoriteStore, [
             "getHotplaceList",
             "getHotplaceListFromUser",
@@ -30,42 +29,16 @@ export default {
     },
 
     computed: {
-        ...mapState(loginStore, [
-            "userSeq",
-            "userName",
-            "userSidoName",
-            "userSidoCode",
-            "userGugunName",
-            "userGugunCode",
-        ]),
-
-        ...mapState(favoriteStore, [
-            "hotplaceList",
-            "hotplaceListFromUser",
-
-            "hotplaceCount",
-            "hotplaceCountFromUser",
-
-            "favoriteList",
-            "favoriteListCount",
-        ]),
+        ...mapState(loginStore, ["isLogin"]),
+        ...mapState(favoriteStore, ["hotplaceList", "hotplaceCount"]),
     },
 
     async created() {
-        this.SET_USERINFO({
-            userSeq: this.userSeq,
-            userSidoName: this.userSidoName,
-            userSidoCode: this.userSidoCode,
-            userGugunName: this.userGugunName,
-        });
-
+        if (this.isLogin) {
+            await this.getHotplaceListFromUser();
+            await this.getFavoriteList();
+        }
         await this.getHotplaceList();
-        await this.getHotplaceListFromUser();
-        await this.getFavoriteList();
-
-        // console.log("PS- hotplaceList: ", this.hotplaceList);
-        // console.log("PS- hotplaceCountFromUser: ", this.hotplaceCountFromUser);
-        // console.log("PS- favoriteList: ", this.favoriteList);
     },
 };
 </script>

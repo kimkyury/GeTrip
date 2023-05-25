@@ -10,6 +10,7 @@ import PlacePage from "@/components/place/PlacePage";
 import HotPlacePage from "@/components/place/HotPlacePage";
 import PlaceDetailPage from "@/components/place/PlaceDetailPage";
 import HotPlaceFromUserPage from "@/components/place/HotPlaceFromUserPage";
+import HotPlaceErrorPage from "@/components/place/HotPlaceErrorPage";
 
 import LoginPage from "@/components/user/LoginPage";
 import SignUpPage from "@/components/user/SignUpPage";
@@ -17,6 +18,7 @@ import SignUpPage from "@/components/user/SignUpPage";
 import UserInfoChange from "@/components/user/mypage/UserInfoChange";
 import UserWishList from "@/components/user/mypage/UserWishList";
 import MyPage from "@/components/user/mypage/MyPage";
+import WishListErrorPage from "@/components/user/mypage/WishListErrorPage";
 
 import store from "@/store/store";
 import VueAlertify from "vue-alertify";
@@ -64,6 +66,11 @@ export default new VueRouter({
             path: "/places/hotplaces/user",
             component: HotPlaceFromUserPage,
         },
+        {
+            name: "HotPlaceErrorPage",
+            path: "/places/hotplaces/user/error",
+            component: HotPlaceErrorPage,
+        },
 
         {
             name: "MyPage",
@@ -87,6 +94,11 @@ export default new VueRouter({
             name: "UserWishList",
             path: "/member/wishlist",
             component: UserWishList,
+        },
+        {
+            name: "WishListErrorPage",
+            path: "/member/error",
+            component: WishListErrorPage,
         },
 
         {

@@ -7,6 +7,8 @@ Vue.use(VueAlertify);
 const favoriteStore = {
     namespaced: true,
     state: {
+        hasFavoritePlace: false,
+
         hotplaceList: [],
         hotplaceCount: 0,
 
@@ -23,6 +25,10 @@ const favoriteStore = {
         userGugunName: "",
     },
     getters: {
+        getFavoritePlace: function (state) {
+            return state.hasFavoritePlace;
+        },
+
         getStoreHotplaceList: function (state) {
             return state.hotplacelist;
         },
@@ -67,13 +73,21 @@ const favoriteStore = {
         },
 
         async getFavoriteList({ state, commit }) {
-            // console.log("favorite UserSeq: ", state.userSeq);
+            console.log("favorite UserSeq: ", state.userSeq);
             try {
                 let { data } = await http.get(`/users/${state.userSeq}/places/favorites`);
-                // console.log("favoriteList: " + data.favoriteGetDtoList);
 
-                commit("SET_FAVORITE_LIST", data.favoriteGetDtoList);
-                commit("SET_FAVORITE_COUNT", data.count);
+                if (data.count == 0) {
+                    state.hasFavoritePlace = false;
+                    state.favoriteList = {};
+                    state.favoriteCount = 0;
+                } else {
+                    this.hasFavoritePlace = true;
+                    commit("SET_FAVORITE_LIST", data.favoriteGetDtoList);
+                    commit("SET_FAVORITE_COUNT", data.count);
+                }
+
+                // console.log("favoriteList: " + data.favoriteGetDtoList);
             } catch (error) {
                 console.log(error);
             }
@@ -101,12 +115,31 @@ const favoriteStore = {
         },
     },
     mutations: {
+        RESET_FAVORITE(state) {
+            state.hasFavoritePlace = false;
+
+            state.hotplaceList = [];
+            state.hotplaceCount = 0;
+            state.hotplaceListFromUser = [];
+            state.hotplaceCountFromUser = 0;
+            state.favoriteList = [];
+            state.favoriteCount = 0;
+
+            state.userSeq = 0;
+            state.userSidoCode = 0;
+            state.userSidoName = "";
+            state.userGugunCode = 0;
+            state.userGugunName = "";
+        },
+
         SET_USERINFO(state, payload) {
             state.userSeq = payload.userSeq;
             state.userGugunCode = payload.userGugunCode;
             state.userSidoCode = payload.userSidoCode;
             state.userGugunName = payload.userGugunName;
             state.userSidoName = payload.userSidoName;
+
+            console.log(state.userSeq + ", input: ", payload.userSeq);
         },
 
         SET_HOTPLACE_LIST(state, list) {

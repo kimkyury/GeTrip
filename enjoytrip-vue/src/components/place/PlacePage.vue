@@ -9,7 +9,34 @@
                 <!-- 중앙 center content end -->
                 <div class="col-md-12">
                     <div class="container py-4">
-                        <place-section class="col-lg-12"></place-section>
+                        <div class="row">
+                            <br />
+                            <h4 class="h4 text-uppercase mb-4">Place</h4>
+                            <div class="row" id="linkMoveList">
+                                <div class="d-flex justify-content-center">
+                                    <nav class="nav flex-row nav-pills">
+                                        <router-link
+                                            class="nav-link custom-text-small"
+                                            :to="{ name: 'PlacePage' }"
+                                        >
+                                            <i class="me-2 fas fa-user"></i> 여행 검색
+                                        </router-link>
+                                        <router-link
+                                            class="nav-link custom-text-small"
+                                            :to="{ name: 'HotPlacePage' }"
+                                        >
+                                            <i class="me-2 fas fa-heart"></i> 전국 핫플
+                                        </router-link>
+                                        <router-link
+                                            class="nav-link custom-text-small"
+                                            :to="{ name: 'HotPlaceFromUserPage' }"
+                                        >
+                                            <i class="me-2 fas fa-heart"></i> 내 지역 핫플
+                                        </router-link>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <!--  java이용 api 가져오기 start -->
@@ -86,6 +113,22 @@
                             style="border-radius: 20px; margin: 5px"
                         />
                     </div>
+                    <div v-if="isLogin">
+                        <p
+                            class="btn btn-outline-dark btn-sm"
+                            v-if="checkIsFavorite(area.contentId)"
+                            @click="changeFavoriteState(0, area.contentId)"
+                        >
+                            🖤 취소요
+                        </p>
+                        <p
+                            class="btn btn-outline-pink btn-sm"
+                            v-else
+                            @click="changeFavoriteState(1, area.contentId)"
+                        >
+                            💗 좋아요
+                        </p>
+                    </div>
                 </div>
                 <div class="col-8" id="sideText">
                     <h2
@@ -111,29 +154,16 @@
                             >
                                 Naver
                             </p>
-                            <p
-                                class="btn btn-outline-dark btn-sm"
-                                v-if="checkIsFavorite(area.contentId)"
-                                @click="changeFavoriteState(1, area.contentId)"
-                            >
-                                💗 👉 🖤
-                            </p>
-                            <p
-                                class="btn btn-outline-light btn-sm"
-                                v-else
-                                @click="changeFavoriteState(0, area.contentId)"
-                            >
-                                🖤 👉 💗
-                            </p>
                         </div>
                     </div>
                 </div>
+                <hr />
             </div>
         </div>
     </div>
 </template>
 <script>
-import PlaceSection from "@/components/place/PlaceSection";
+// import PlaceSection from "@/components/place/PlaceSection";
 import { mapState, mapActions } from "vuex";
 import http from "@/common/axios.js";
 const placeStore = "placeStore";
@@ -141,14 +171,9 @@ const favoriteStore = "favoriteStore";
 const loginStore = "loginStore";
 
 export default {
-    components: { PlaceSection },
+    components: {},
     methods: {
-        ...mapActions(favoriteStore, [
-            "getHotplaceList",
-            "getHotplaceListFromUser",
-            "getFavoriteList",
-            "postFavorite",
-        ]),
+        ...mapActions(favoriteStore, ["getFavoriteList", "postFavorite"]),
         ...mapActions(placeStore, [
             "getList",
             "getArea2List",
@@ -189,9 +214,9 @@ export default {
                 );
 
                 if (data.result == 1) {
-                    if (curState == 0) {
+                    if (curState == 1) {
                         this.$alertify.success("좋아요에 담았습니다");
-                    } else if (curState == 1) {
+                    } else if (curState == 0) {
                         this.$alertify.error("좋아요를 취소했습니다");
                     }
                 }
@@ -201,7 +226,6 @@ export default {
                     // 담고 난 후, 리스트를 다시 계산해야 함
                     try {
                         await this.getFavoriteList();
-                        console.log(this.favoriteList);
                     } catch (error) {
                         console.log(error);
                     }
@@ -212,33 +236,25 @@ export default {
         },
 
         checkIsFavorite(contentId) {
-            let result = this.isFavorite(contentId);
-            console.log(contentId + "의 FH 존재결과: ", result);
+            let result = false;
+            if (this.favoriteCount != 0) {
+                result = this.isFavorite(contentId);
+            }
             return result;
         },
         isFavorite(contentId) {
-            return this.favoriteHotplaceList.some(
+            return this.favoriteTripList.some(
                 (favorite) => favorite.contentId === contentId
             );
         },
     },
     computed: {
-        ...mapState(loginStore, ["userSeq"]),
+        ...mapState(loginStore, ["isLogin"]),
         ...mapState(placeStore, ["areaList1", "areaList2", "trips"]),
-        ...mapState(favoriteStore, [
-            "hotplaceList",
-            "hotplaceListFromUser",
-
-            "hotplaceCount",
-            "hotplaceCountFromUser",
-
-            "favoriteList",
-            "favoriteListCount",
-        ]),
+        ...mapState(favoriteStore, ["userSeq", "favoriteList", "favoriteCount"]),
 
         // 유저의 favoriteList와 Hotplace의 일치하는 배열만 리턴
-        favoriteHotplaceList() {
-            console.log("FavoriteHot place 계산");
+        favoriteTripList() {
             return this.trips.filter((trip) =>
                 this.favoriteList.some(
                     (favorite) => favorite.contentId === trip.contentId
@@ -246,10 +262,13 @@ export default {
             );
         },
     },
-    async mounted() {
-        await this.getHotplaceList();
-        await this.getFavoriteList();
+    async created() {
+        if (this.isLogin) {
+            await this.getFavoriteList();
+        }
         await this.mapView();
+        console.log("userSeq: ", this.userSeq);
+        console.log("FAVORITE: ", this.favoriteList);
     },
 };
 </script>
@@ -284,5 +303,9 @@ form {
 }
 h1 {
     font-size: 1rem;
+}
+/* 아래는 자체제작 css*/
+.custom-text-small {
+    font-size: 0.75rem;
 }
 </style>

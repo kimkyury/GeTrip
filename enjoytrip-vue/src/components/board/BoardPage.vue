@@ -1,82 +1,55 @@
 <template>
-    <div>
-        <!-- <section class="bg-pentagon py-4">
+    <div class="container">
+        <section class="py-5">
             <div class="container py-3">
-                <div class="row d-flex align-items-center gy-4">
-                    <div class="col-md-7">
-                        <h1 class="h2 mb-0 text-uppercase">ENJOYTRIP 자유게시판</h1>
-                    </div>
-                </div>
+                <h1 class="h1 lined text-uppercase mb-4">자유게시판</h1>
+                <br />
             </div>
-        </section> -->
-        <div class="container">
-            <section class="py-4">
-                <div class="container py-3">
-                    <h1 class="h1 lined text-uppercase mb-4">자유게시판</h1>
-                    <br />
-                </div>
-            </section>
+        </section>
 
-            <ul class="justify-content-center">
-                <button
-                    class="btn btn-sm btn-primary justify-content-center"
-                    @click="showInsertModal"
+        <ul class="justify-content-center">
+            <button
+                class="btn btn-sm btn-primary justify-content-center"
+                @click="showInsertModal"
+            >
+                글쓰기
+            </button>
+        </ul>
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>작성일시</th>
+                    <th>조회수</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    style="cursor: pointer"
+                    v-for="(board, index) in listGetters"
+                    @click="boardDetail(board.boardId)"
+                    v-bind:key="index"
                 >
-                    글쓰기
-                </button>
-            </ul>
+                    <td>{{ board.boardId }}</td>
+                    <td>{{ board.title }}</td>
+                    <td>{{ board.userName }}</td>
+                    <td>{{ board.regDt.date | makeDateStr(".") }}</td>
+                    <td>{{ board.readCount }}</td>
+                </tr>
+            </tbody>
+        </table>
 
-            <!-- <div class="input-group mb-3">
-                <input
-                    v-model="$store.state.board.searchWord"
-                    @keydown.enter="boardList"
-                    type="search"
-                    aria-label="search"
-                    placeholder="제목을 검색하세요"
-                    class="form-control"
-                />
-                <button @click="boardList" class="btn btn-primary" type="button">
-                    <i class="fas fa-search"></i>
-                </button>
-            </div> -->
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>제목</th>
-                        <th>작성자</th>
-                        <th>작성일시</th>
-                        <th>조회수</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr
-                        style="cursor: pointer"
-                        v-for="(board, index) in listGetters"
-                        @click="boardDetail(board.boardId)"
-                        v-bind:key="index"
-                    >
-                        <td>{{ board.boardId }}</td>
-                        <td>{{ board.title }}</td>
-                        <td>{{ board.userName }}</td>
-                        <td>{{ board.regDt.date | makeDateStr(".") }}</td>
-                        <td>{{ board.readCount }}</td>
-                    </tr>
-                </tbody>
-            </table>
+        <board-pagination v-on:call-parent="movePage" page="boards"></board-pagination>
 
-            <board-pagination
-                v-on:call-parent="movePage"
-                page="boards"
-            ></board-pagination>
-
-            <insert-modal v-on:call-parent-insert="closeAfterInsert"></insert-modal>
-            <detail-modal
-                v-on:call-parent-change-to-update="changeToUpdate"
-                v-on:call-parent-change-to-delete="changeToDelete"
-            ></detail-modal>
-            <update-modal v-on:call-parent-update="closeAfterUpdate"></update-modal>
-        </div>
+        <insert-modal v-on:call-parent-insert="closeAfterInsert"></insert-modal>
+        <detail-modal
+            v-on:call-parent-change-to-update="changeToUpdate"
+            v-on:call-parent-change-to-delete="changeToDelete"
+        ></detail-modal>
+        <update-modal v-on:call-parent-update="closeAfterUpdate"></update-modal>
     </div>
 </template>
 
@@ -108,6 +81,7 @@ export default {
         };
     },
     computed: {
+        ...mapState("loginStore", ["isLogin"]),
         ...mapState("boardStore", ["boardId"]),
         ...mapGetters("boardStore", ["getBoardList"]),
         listGetters() {
@@ -126,7 +100,11 @@ export default {
         makeDateStr: util.makeDateStr,
 
         showInsertModal() {
-            this.insertModal.show();
+            if (this.isLogin) {
+                this.insertModal.show();
+            } else {
+                this.$alertify.error("로그인 후 이용해주세요.");
+            }
         },
 
         closeAfterInsert() {
@@ -161,7 +139,6 @@ export default {
         },
 
         async boardDetail(boardId) {
-            console.log("boardId", boardId);
             try {
                 let { data } = await http.get("/boards/" + boardId);
                 console.log(data);
@@ -176,7 +153,6 @@ export default {
                     this.detailModal.show();
                 }
             } catch (error) {
-                console.log("BoardMainVue: error : ");
                 console.log(error);
             }
         },
@@ -184,8 +160,6 @@ export default {
         async boardDelete() {
             try {
                 let { data } = await http.delete("/boards/" + this.boardId);
-                console.log(data);
-
                 if (data.result == "login") {
                     this.doLogout();
                 } else {
@@ -193,13 +167,11 @@ export default {
                     this.boardList();
                 }
             } catch (error) {
-                console.log("------DELETE ERROR ---------");
                 console.log(error);
             }
         },
 
         movePage(pageIndex) {
-            console.log("movePage: " + pageIndex);
             this.SET_BOARD_MOVE_PAGE(pageIndex);
             this.boardList();
         },

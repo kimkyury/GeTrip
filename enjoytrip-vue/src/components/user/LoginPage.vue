@@ -43,8 +43,9 @@
 </template>
 <script>
 import http from "@/common/axios";
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 const loginStore = "loginStore";
+const favoriteStore = "favoriteStore";
 
 export default {
   data() {
@@ -58,6 +59,11 @@ export default {
     };
   },
   methods: {
+    ...mapActions(favoriteStore, [
+      "getHotplaceListFromUser",
+      "getFavoriteList",
+    ]),
+    ...mapMutations(favoriteStore, ["RESET_FAVORITE", "SET_USERINFO"]),
     ...mapMutations(loginStore, { setLogin: "SET_LOGIN" }),
     async validate() {
       if (this.loginUserEmail.length > 0) this.isLoginUserEmailValid = true;
@@ -78,6 +84,7 @@ export default {
           let { data } = await http.post("/login", loginObj);
           console.log(data);
           console.log(data.userSeq);
+
           // this 가 다른 url
           this.setLogin({
             isLogin: true,
@@ -99,6 +106,13 @@ export default {
             userClsfCode: data.userClsfCode,
             userClsfName: data.userClsfName,
           });
+
+          await this.setFavoriteInfo(
+            data.userSeq,
+            data.userSidoName,
+            data.userSidoCode,
+            data.userGugunName
+          );
           this.$router.push("/");
         } catch (error) {
           console.log("LoginVue: error : ");
@@ -112,6 +126,21 @@ export default {
       } else {
         alert("정보를 입력해 주세요.");
       }
+    },
+
+    async setFavoriteInfo(seq, sidoN, sidoC, gugunN) {
+      // Favorite init
+      this.SET_USERINFO({
+        userSeq: seq,
+        userSidoName: sidoN,
+        userSidoCode: sidoC,
+        userGugunName: gugunN,
+      });
+
+      console.log("setUserSeq in FavoriteStore: ");
+
+      await this.getHotplaceListFromUser;
+      await this.getFavoriteList;
     },
     // session에 정보를 저장하고 로그인 관리하자(NavBar, logout)
     // 로그인시 가입되어 있지 않을 경우 가입시키고 그렇지 않을 경우 로그인
@@ -164,6 +193,13 @@ export default {
                   userClsfCode: data.userClsfCode,
                   userClsfName: data.userClsfName,
                 });
+                await this.setFavoriteInfo(
+                  data.userSeq,
+                  data.userSidoName,
+                  data.userSidoCode,
+                  data.userGugunName
+                );
+                alert("로그인 성공!");
                 this.$router.push("/");
               } else {
                 // 아이디가 존재하지 않을 경우 받은 값으로 회원가입.
@@ -196,7 +232,10 @@ export default {
                   console.log("data: ", data);
                   console.log("data.result: ", data.result);
                   if (data.result == 1) {
-                    alert("회원가입 성공");
+                    alert("회원가입 성공!");
+                    let { data } = await http.get(
+                      "/login/kakao/" + response.kakao_account.email
+                    );
                     this.setLogin({
                       isLogin: true,
 
@@ -217,6 +256,13 @@ export default {
                       userClsfCode: data.userClsfCode,
                       userClsfName: data.userClsfName,
                     });
+                    await this.setFavoriteInfo(
+                      data.userSeq,
+                      data.userSidoName,
+                      data.userSidoCode,
+                      data.userGugunName
+                    );
+                    alert("로그인 성공!");
                     this.$router.push("/");
                   }
                 } catch (error) {
@@ -252,7 +298,7 @@ export default {
     // },
   },
   mounted() {
-    window.Kakao.init("c864ce7536c1b1ea34bd04064ea436cc");
+    window.Kakao.init("20d8b1fb60682e2256b9d4e10ea6a783");
     console.log(window.Kakao.isInitialized());
   },
 };

@@ -3,40 +3,47 @@
         <div class="container px-lg-0 text-light py-1">
             <div class="row d-flex align-items-center">
                 <div class="col-md-6 d-md-block d-none">
-                    <p class="mb-0 text-xs">Hope your enjoy trip</p>
+                    <p class="mb-0 text-xs">STARTrip</p>
                 </div>
                 <div class="col-md-6">
                     <div class="d-flex justify-content-md-end justify-content-between">
                         <ul class="list-inline d-block d-md-none mb-0">
                             <li class="list-inline-item">
-                                <a class="text-xs" href="#"><i class="fa fa-phone"></i></a>
+                                <a class="text-xs" href="#"
+                                    ><i class="fa fa-phone"></i
+                                ></a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="text-xs" href="#"><i class="fa fa-envelope"></i></a>
+                                <a class="text-xs" href="#"
+                                    ><i class="fa fa-envelope"></i
+                                ></a>
                             </li>
                         </ul>
 
-                        <ul class="list-inline mb-0" v-if="$store.state.loginStore.isLogin">
+                        <ul
+                            class="list-inline mb-0"
+                            v-if="$store.state.loginStore.isLogin"
+                        >
                             <li class="list-inline-item">
                                 <a
                                     class="text-xs text-uppercase fw-bold text-reset"
                                     @click="logout()"
                                     ><i class="fas fa-door-open me-2"></i
-                                    ><span class="d-none d-md-inline-block">LogOut</span></a
+                                    ><span class="d-none d-md-inline-block"
+                                        >LogOut</span
+                                    ></a
                                 >
                             </li>
                         </ul>
                         <ul class="list-inline mb-0" v-else>
                             <li class="list-inline-item">
-                                <a class="text-xs text-uppercase fw-bold text-reset" href="#"
-                                    ><i class="fas fa-door-open me-2"></i
-                                    ><span class="d-none d-md-inline-block">Sign In</span></a
-                                >
-                            </li>
-                            <li class="list-inline-item">
-                                <a class="text-xs text-uppercase fw-bold text-reset" href="#/signup"
+                                <a
+                                    class="text-xs text-uppercase fw-bold text-reset"
+                                    href="#/signup"
                                     ><i class="fas fa-user me-2"></i
-                                    ><span class="d-none d-md-inline-block">Sign Up</span></a
+                                    ><span class="d-none d-md-inline-block"
+                                        >Sign Up/Sign In</span
+                                    ></a
                                 >
                             </li>
                         </ul>
@@ -47,7 +54,7 @@
     </div>
 </template>
 <script>
-import {mapGetters, mapMutations} from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 const loginStore = "loginStore";
 
 export default {
