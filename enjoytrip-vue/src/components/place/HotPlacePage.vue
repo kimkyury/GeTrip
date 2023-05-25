@@ -7,7 +7,16 @@
                 <div class="row g-5">
                     <div class="col-lg-9">
                         <h1>HotPlaces</h1>
-                        <p class="lead mb-5">전국의 인기많은 관광지를 알려줄게요</p>
+                        <p class="lead mb-5">
+                            <span
+                                v-for="(guideChar, guideIndex) in guideText1"
+                                :key="'guide1-' + guideIndex"
+                                class="custom-item"
+                                :style="{ animationDelay: guideIndex * 200 + 'ms' }"
+                                v-text="guideChar"
+                            />
+                            의 인기많은 관광지를 알려줄게요
+                        </p>
                     </div>
                     <place-section></place-section>
                 </div>
@@ -109,7 +118,11 @@ const loginStore = "loginStore";
 
 export default {
     components: { PlaceSection },
-
+    data() {
+        return {
+            guideText1: "전국",
+        };
+    },
     methods: {
         ...mapMutations(favoriteStore, ["SET_USERINFO"]),
         ...mapActions(placeStore, ["getTripDetail"]),
@@ -227,5 +240,17 @@ export default {
     height: 100%;
     object-fit: cover;
     object-position: center;
+}
+@keyframes text-in {
+    0% {
+        transform: translate(0, -20px);
+        opacity: 0;
+    }
+}
+.custom-item {
+    display: inline-block;
+    min-width: 0.3em;
+    font-size: 1.5rem;
+    animation: text-in 0.8s cubic-bezier(0.22, 0.15, 0.25, 1.43) 0s backwards;
 }
 </style>

@@ -61,6 +61,18 @@ export default {};
 </script>
 
 <style scoped>
+.image-container {
+    width: 350px;
+    height: 250px;
+    overflow: hidden;
+}
+.fit-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
 .ex01 {
     box-shadow: 0px 7px 10px -4px rgb(161, 161, 161);
 }

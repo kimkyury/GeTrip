@@ -66,11 +66,13 @@
                             :key="index"
                         >
                             <!-- Portfolio item-->
-                            <div class="box-image-text text-center primary-overlay">
+                            <div
+                                class="image-container box-image-text text-center primary-overlay"
+                            >
                                 <img
                                     style="height: 250px"
                                     v-if="hotplace.firstImage == ''"
-                                    class="img-fluid"
+                                    class="img-fluid fit-image"
                                     src="@/assets/img/enjoytrip/unfind.png"
                                     alt="..."
                                 />
@@ -78,7 +80,7 @@
                                     style="height: 250px"
                                     v-else
                                     :src="hotplace.firstImage"
-                                    class="img-fluid"
+                                    class="img-fluid fit-image"
                                     alt="..."
                                 />
                                 <div
