@@ -91,38 +91,38 @@
                                 />
                             </div>
                             <div class="row">
-                              <div class="col-md-3 mb-3 col-lg-3">
-                                <label class="form-label" for="profile">Profile Image</label>
-                                <select
-                                  class="form-select"
-                                  id="profile"
-                                  v-model="signupUserProfileImageUrl"
-                                >
-                                  <option
+                                <div class="col-md-3 mb-3 col-lg-3">
+                                    <label class="form-label" for="profile"
+                                        >Profile Image</label
+                                    >
+                                    <select
+                                        class="form-select"
+                                        id="profile"
+                                        v-model="signupUserProfileImageUrl"
+                                    >
+                                        <option
+                                            v-for="(image, index) in $store.state
+                                                .loginStore.profileImage"
+                                            :key="index"
+                                            v-bind:value="image.path"
+                                        >
+                                            {{ image.name }}
+                                        </option>
+                                    </select>
+                                </div>
+                                <div
                                     v-for="(image, index) in $store.state.loginStore
-                                      .profileImage"
+                                        .profileImage"
                                     :key="index"
-                                    v-bind:value="image.path"
-                                  >
-                                    {{ image.name }}
-                                  </option>
-                                </select>
-                              </div>
-                              <div
-                                v-for="(image, index) in $store.state.loginStore.profileImage"
-                                :key="index"
-                                style="padding: 0px; width: 0px"
-                                id="imageRoop"
-                              >
-                                <img
-                                  v-if="
-                                    image.path ==
-                                    signupUserProfileImageUrl
-                                  "
-                                  :src="image.imageView"
-                                  style="width: 100px; height: 100px"
-                                />
-                              </div>
+                                    style="padding: 0px; width: 0px"
+                                    id="imageRoop"
+                                >
+                                    <img
+                                        v-if="image.path == signupUserProfileImageUrl"
+                                        :src="image.imageView"
+                                        style="width: 100px; height: 100px"
+                                    />
+                                </div>
                             </div>
                             <!-- birth_year, birth_day, birth_month -->
                             <div class="row">
@@ -254,93 +254,93 @@ import { mapState, mapActions } from "vuex";
 const SUCCESS = 1;
 
 export default {
-  components: { LoginPage },
-  data() {
-    return {
-      guguns: [],
-      // 회원가입
-      isSignupUserNamelValid: false,
-      isSignupUserEmailValid: false,
-      isSignupUserPasswordValid: false,
+    components: { LoginPage },
+    data() {
+        return {
+            guguns: [],
+            // 회원가입
+            isSignupUserNamelValid: false,
+            isSignupUserEmailValid: false,
+            isSignupUserPasswordValid: false,
 
-      signupUserProfileImageUrl: "@/assets/img/animal/bat.png",
+            signupUserProfileImageUrl: "",
 
-      // TODO: 공란으로 비울 것
-      signupUserName: "테스트용",
-      signupUserEmail: "t@nav.com",
-      signupUserPassword: "@qw1",
-      signupUserPasswordConfirm: "@qw1",
+            // TODO: 공란으로 비울 것
+            signupUserName: "",
+            signupUserEmail: "",
+            signupUserPassword: "",
+            signupUserPasswordConfirm: "",
 
-      signupUserGender: "01",
+            signupUserGender: "",
 
-      signupUserBirthYear: "2000",
-      signupUserBirthMonth: "09",
-      signupUserBirthDay: "18",
+            signupUserBirthYear: "",
+            signupUserBirthMonth: "",
+            signupUserBirthDay: "",
 
-      signupSidoCode: "",
-      signupGugunCode: "",
+            signupSidoCode: "",
+            signupGugunCode: "",
 
-      // 유효성 검사
-    };
-  },
-  methods: {
-    ...mapActions("placeStore", ["getArea1List", "getArea2List"]),
+            // 유효성 검사
+        };
+    },
+    methods: {
+        ...mapActions("placeStore", ["getArea1List", "getArea2List"]),
 
-    getSidos() {
-      console.log("getSidos 수행");
-      this.getArea1List();
+        getSidos() {
+            console.log("getSidos 수행");
+            this.getArea1List();
+        },
+
+        async getGuguns() {
+            console.log(this.signupSidoCode);
+            this.signupGugunCode = "";
+            let { data } = await http.get("/codes/" + this.signupSidoCode);
+            console.log(data);
+            this.guguns = data.list;
+
+            console.log(this.guguns);
+        },
+
+        async signup() {
+            let signupObj = {
+                userName: this.signupUserName,
+                userEmail: this.signupUserEmail,
+                userPassword: this.signupUserPassword,
+                userProfileImageUrl: this.signupUserProfileImageUrl,
+
+                gender: this.signupUserGender,
+
+                birthYear: this.signupUserBirthYear,
+                birthMonth: this.signupUserBirthMonth,
+                birthDay: this.signupUserBirthDay,
+
+                sidoCode: this.signupSidoCode,
+                gugunCode: this.signupGugunCode,
+            };
+
+            console.log(signupObj);
+
+            try {
+                let { data } = await http.post("/users", signupObj);
+                console.log("data: ", data);
+                console.log("data.result: ", data.result);
+                if (data.result == SUCCESS) {
+                    alert("회원가입 성공");
+                    this.$router.push("/login");
+                }
+            } catch (error) {
+                alert(error);
+            }
+        },
     },
 
-    async getGuguns() {
-      console.log(this.signupSidoCode);
-      this.signupGugunCode="";
-      let { data } = await http.get("/codes/" + this.signupSidoCode);
-      console.log(data);
-      this.guguns = data.list;
-
-      console.log(this.guguns);
+    computed: {
+        ...mapState("placeStore", ["areaList1", "areaList2"]),
     },
 
-    async signup() {
-      let signupObj = {
-        userName: this.signupUserName,
-        userEmail: this.signupUserEmail,
-        userPassword: this.signupUserPassword,
-        userProfileImageUrl: this.signupUserProfileImageUrl,
-
-        gender: this.signupUserGender,
-
-        birthYear: this.signupUserBirthYear,
-        birthMonth: this.signupUserBirthMonth,
-        birthDay: this.signupUserBirthDay,
-
-        sidoCode: this.signupSidoCode,
-        gugunCode: this.signupGugunCode,
-      };
-
-      console.log(signupObj);
-
-      try {
-        let { data } = await http.post("/users", signupObj);
-        console.log("data: ", data);
-        console.log("data.result: ", data.result);
-        if (data.result == SUCCESS) {
-          alert("회원가입 성공");
-          this.$router.push("/login");
-        }
-      } catch (error) {
-        alert(error);
-      }
+    created() {
+        this.getSidos();
     },
-  },
-
-  computed: {
-    ...mapState("placeStore", ["areaList1", "areaList2"]),
-  },
-
-  created() {
-    this.getSidos();
-  },
 };
 </script>
 <style scoped></style>

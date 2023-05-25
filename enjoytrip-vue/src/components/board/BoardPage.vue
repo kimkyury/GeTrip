@@ -108,6 +108,7 @@ export default {
         };
     },
     computed: {
+        ...mapState("loginStore", ["isLogin"]),
         ...mapState("boardStore", ["boardId"]),
         ...mapGetters("boardStore", ["getBoardList"]),
         listGetters() {
@@ -126,7 +127,11 @@ export default {
         makeDateStr: util.makeDateStr,
 
         showInsertModal() {
-            this.insertModal.show();
+            if (this.isLogin) {
+                this.insertModal.show();
+            } else {
+                this.$alertify.error("로그인 후 이용해주세요.");
+            }
         },
 
         closeAfterInsert() {
@@ -161,7 +166,6 @@ export default {
         },
 
         async boardDetail(boardId) {
-            console.log("boardId", boardId);
             try {
                 let { data } = await http.get("/boards/" + boardId);
                 console.log(data);
@@ -176,7 +180,6 @@ export default {
                     this.detailModal.show();
                 }
             } catch (error) {
-                console.log("BoardMainVue: error : ");
                 console.log(error);
             }
         },
@@ -184,8 +187,6 @@ export default {
         async boardDelete() {
             try {
                 let { data } = await http.delete("/boards/" + this.boardId);
-                console.log(data);
-
                 if (data.result == "login") {
                     this.doLogout();
                 } else {
@@ -193,13 +194,11 @@ export default {
                     this.boardList();
                 }
             } catch (error) {
-                console.log("------DELETE ERROR ---------");
                 console.log(error);
             }
         },
 
         movePage(pageIndex) {
-            console.log("movePage: " + pageIndex);
             this.SET_BOARD_MOVE_PAGE(pageIndex);
             this.boardList();
         },

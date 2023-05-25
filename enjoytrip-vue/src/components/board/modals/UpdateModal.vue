@@ -98,9 +98,6 @@ export default {
                     options
                 );
 
-                console.log("UpdateModalVue: data : ");
-                console.log(data);
-
                 if (data.result == "login") {
                     this.doLogout();
                 } else {
@@ -108,7 +105,6 @@ export default {
                     this.closeModal();
                 }
             } catch (error) {
-                console.log("UpdateModalVue: error ");
                 console.log(error);
             }
         },

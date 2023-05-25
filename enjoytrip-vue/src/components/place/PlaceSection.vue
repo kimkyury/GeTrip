@@ -15,13 +15,12 @@
     </div>
 </template>
 <script>
-import { mapState, mapActions, mapMutations } from "vuex";
+import { mapState, mapActions } from "vuex";
 const favoriteStore = "favoriteStore";
 const loginStore = "loginStore";
 
 export default {
     methods: {
-        ...mapMutations(favoriteStore, ["SET_USERINFO"]),
         ...mapActions(favoriteStore, [
             "getHotplaceList",
             "getHotplaceListFromUser",
@@ -30,38 +29,16 @@ export default {
     },
 
     computed: {
-        ...mapState(loginStore, [
-            "userSeq",
-            "userName",
-            "userSidoName",
-            "userSidoCode",
-            "userGugunName",
-            "userGugunCode",
-        ]),
-
-        ...mapState(favoriteStore, [
-            "hotplaceList",
-            "hotplaceCount",
-
-            "hotplaceListFromUser",
-            "hotplaceCountFromUser",
-
-            "favoriteList",
-            "favoriteCount",
-        ]),
+        ...mapState(loginStore, ["isLogin"]),
+        ...mapState(favoriteStore, ["hotplaceList", "hotplaceCount"]),
     },
 
     async created() {
-        this.SET_USERINFO({
-            userSeq: this.userSeq,
-            userSidoName: this.userSidoName,
-            userSidoCode: this.userSidoCode,
-            userGugunName: this.userGugunName,
-        });
-
+        if (this.isLogin) {
+            await this.getHotplaceListFromUser();
+            await this.getFavoriteList();
+        }
         await this.getHotplaceList();
-        await this.getHotplaceListFromUser();
-        await this.getFavoriteList();
     },
 };
 </script>

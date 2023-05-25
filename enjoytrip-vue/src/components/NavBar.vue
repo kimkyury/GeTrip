@@ -9,28 +9,57 @@
                     <div class="d-flex justify-content-md-end justify-content-between">
                         <ul class="list-inline d-block d-md-none mb-0">
                             <li class="list-inline-item">
-                                <a class="text-xs" href="#"><i class="fa fa-phone"></i></a>
+                                <a class="text-xs" href="#"
+                                    ><i class="fa fa-phone"></i
+                                ></a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="text-xs" href="#"><i class="fa fa-envelope"></i></a>
+                                <a class="text-xs" href="#"
+                                    ><i class="fa fa-envelope"></i
+                                ></a>
                             </li>
                         </ul>
 
-                        <ul class="list-inline mb-0" v-if="$store.state.loginStore.isLogin">
+                        <ul
+                            class="list-inline mb-0"
+                            v-if="$store.state.loginStore.isLogin"
+                        >
                             <li class="list-inline-item">
                                 <a
                                     class="text-xs text-uppercase fw-bold text-reset"
                                     @click="logout()"
                                     ><i class="fas fa-door-open me-2"></i
-                                    ><span class="d-none d-md-inline-block">LogOut</span></a
+                                    ><span class="d-none d-md-inline-block"
+                                        >LogOut</span
+                                    ></a
                                 >
                             </li>
                         </ul>
                         <ul class="list-inline mb-0" v-else>
                             <li class="list-inline-item">
+<<<<<<< HEAD
                                 <a class="text-xs text-uppercase fw-bold text-reset" href="#/signup"
                                     ><i class="fas fa-user me-2"></i
                                     ><span class="d-none d-md-inline-block">Sign Up/Sign In</span></a
+=======
+                                <a
+                                    class="text-xs text-uppercase fw-bold text-reset"
+                                    href="#"
+                                    ><i class="fas fa-door-open me-2"></i
+                                    ><span class="d-none d-md-inline-block"
+                                        >Sign In</span
+                                    ></a
+                                >
+                            </li>
+                            <li class="list-inline-item">
+                                <a
+                                    class="text-xs text-uppercase fw-bold text-reset"
+                                    href="#/signup"
+                                    ><i class="fas fa-user me-2"></i
+                                    ><span class="d-none d-md-inline-block"
+                                        >Sign Up</span
+                                    ></a
+>>>>>>> f5149c990d9398ddae26905cb592f10e49f4bab4
                                 >
                             </li>
                         </ul>
@@ -41,8 +70,9 @@
     </div>
 </template>
 <script>
-import {mapGetters, mapMutations} from "vuex";
+import { mapGetters, mapMutations, mapState } from "vuex";
 const loginStore = "loginStore";
+const favoriteStore = "favoriteStore";
 
 export default {
     metaInfo: {
@@ -61,13 +91,17 @@ export default {
         ],
     },
     methods: {
-        ...mapMutations(loginStore, ["SET_LOGOUT"]),
+        ...mapMutations(favoriteStore, ["RESET_FAVORITE"]),
+        ...mapMutations(loginStore, ["RESET_USER"]),
         logout() {
-            this.SET_LOGOUT();
+            this.RESET_USER();
+            this.RESET_FAVORITE();
+            console.log("logout, favoriteList: ", this.favoriteList);
             this.$router.push("/signup");
         },
     },
     computed: {
+        ...mapState(favoriteStore, ["hotplaceList, favoriteList"]),
         ...mapGetters(loginStore, ["IsLogin"]),
         isLogin() {
             return this.IsLogin;
