@@ -19,6 +19,8 @@ import UserWishList from "@/components/user/mypage/UserWishList";
 import MyPage from "@/components/user/mypage/MyPage";
 import WishListErrorPage from "@/components/user/mypage/WishListErrorPage";
 
+import WeatherPage from "@/components/weather/WeatherPage";
+
 import store from "@/store/store";
 import VueAlertify from "vue-alertify";
 
@@ -99,6 +101,11 @@ export default new VueRouter({
             name: "Login",
             path: "/login",
             component: LoginPage,
+        },
+        {
+            name: "WeatherPage",
+            path: "/weather",
+            component: WeatherPage,
         },
 
         {

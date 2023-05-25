@@ -31,7 +31,9 @@
                 <div class="collapse navbar-collapse" id="navigationCollapse">
                     <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                         <!-- megamenu [features]-->
-                        <router-link class="nav-link" :to="{ name: 'Home' }"> HOME</router-link>
+                        <router-link class="nav-link" :to="{ name: 'Home' }">
+                            HOME</router-link
+                        >
 
                         <router-link class="nav-link" :to="{ name: 'BoardMain' }">
                             Board</router-link
@@ -39,7 +41,12 @@
                         <router-link class="nav-link" :to="{ name: 'PlacePage' }">
                             Place</router-link
                         >
-                        <router-link class="nav-link" :to="{ name: 'MyPage' }"> MyPage</router-link>
+                        <router-link class="nav-link" :to="{ name: 'MyPage' }">
+                            MyPage</router-link
+                        >
+                        <router-link class="nav-link" :to="{ name: 'WeatherPage' }">
+                            WeatherPage</router-link
+                        >
                     </ul>
                 </div>
             </div>
