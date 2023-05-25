@@ -17,6 +17,7 @@ import SignUpPage from "@/components/user/SignUpPage";
 import UserInfoChange from "@/components/user/mypage/UserInfoChange";
 import UserWishList from "@/components/user/mypage/UserWishList";
 import MyPage from "@/components/user/mypage/MyPage";
+import WishListErrorPage from "@/components/user/mypage/WishListErrorPage";
 
 import store from "@/store/store";
 import VueAlertify from "vue-alertify";
@@ -87,6 +88,11 @@ export default new VueRouter({
             name: "UserWishList",
             path: "/member/wishlist",
             component: UserWishList,
+        },
+        {
+            name: "WishListErrorPage",
+            path: "/member/wishlist",
+            component: WishListErrorPage,
         },
 
         {

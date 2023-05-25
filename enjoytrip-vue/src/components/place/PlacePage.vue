@@ -113,6 +113,20 @@
                             style="border-radius: 20px; margin: 5px"
                         />
                     </div>
+                    <p
+                        class="btn btn-outline-dark btn-sm"
+                        v-if="checkIsFavorite(area.contentId)"
+                        @click="changeFavoriteState(0, area.contentId)"
+                    >
+                        🖤 취소요
+                    </p>
+                    <p
+                        class="btn btn-outline-pink btn-sm"
+                        v-else
+                        @click="changeFavoriteState(1, area.contentId)"
+                    >
+                        💗 좋아요
+                    </p>
                 </div>
                 <div class="col-8" id="sideText">
                     <h2
@@ -138,23 +152,10 @@
                             >
                                 Naver
                             </p>
-                            <p
-                                class="btn btn-outline-dark btn-sm"
-                                v-if="checkIsFavorite(area.contentId)"
-                                @click="changeFavoriteState(0, area.contentId)"
-                            >
-                                🖤 취소
-                            </p>
-                            <p
-                                class="btn btn-outline-pink btn-sm"
-                                v-else
-                                @click="changeFavoriteState(1, area.contentId)"
-                            >
-                                💗 좋아요
-                            </p>
                         </div>
                     </div>
                 </div>
+                <hr />
             </div>
         </div>
     </div>
