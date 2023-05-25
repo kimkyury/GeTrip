@@ -120,6 +120,9 @@ export default {
         //     this.$router.push("/login");
         // },
     },
+    created() {
+        this.inputTitle = this.title;
+    },
 
     async mounted() {
         this.inputTitle = this.title;
