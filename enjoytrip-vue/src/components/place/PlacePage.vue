@@ -229,7 +229,6 @@ export default {
                     // 담고 난 후, 리스트를 다시 계산해야 함
                     try {
                         await this.getFavoriteList();
-                        console.log(this.favoriteList);
                     } catch (error) {
                         console.log(error);
                     }
@@ -241,7 +240,6 @@ export default {
 
         checkIsFavorite(contentId) {
             let result = this.isFavorite(contentId);
-            console.log(contentId + "의 FH 존재결과: ", result);
             return result;
         },
         isFavorite(contentId) {
@@ -266,7 +264,6 @@ export default {
 
         // 유저의 favoriteList와 Hotplace의 일치하는 배열만 리턴
         favoriteHotplaceList() {
-            console.log("FavoriteHot place 계산");
             return this.trips.filter((trip) =>
                 this.favoriteList.some(
                     (favorite) => favorite.contentId === trip.contentId
