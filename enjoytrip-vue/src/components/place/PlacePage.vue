@@ -113,20 +113,22 @@
                             style="border-radius: 20px; margin: 5px"
                         />
                     </div>
-                    <p
-                        class="btn btn-outline-dark btn-sm"
-                        v-if="checkIsFavorite(area.contentId)"
-                        @click="changeFavoriteState(0, area.contentId)"
-                    >
-                        🖤 취소요
-                    </p>
-                    <p
-                        class="btn btn-outline-pink btn-sm"
-                        v-else
-                        @click="changeFavoriteState(1, area.contentId)"
-                    >
-                        💗 좋아요
-                    </p>
+                    <div v-if="isLogin">
+                        <p
+                            class="btn btn-outline-dark btn-sm"
+                            v-if="checkIsFavorite(area.contentId)"
+                            @click="changeFavoriteState(0, area.contentId)"
+                        >
+                            🖤 취소요
+                        </p>
+                        <p
+                            class="btn btn-outline-pink btn-sm"
+                            v-else
+                            @click="changeFavoriteState(1, area.contentId)"
+                        >
+                            💗 좋아요
+                        </p>
+                    </div>
                 </div>
                 <div class="col-8" id="sideText">
                     <h2
@@ -249,7 +251,7 @@ export default {
         },
     },
     computed: {
-        ...mapState(loginStore, ["userSeq"]),
+        ...mapState(loginStore, ["userSeq", "isLogin"]),
         ...mapState(placeStore, ["areaList1", "areaList2", "trips"]),
         ...mapState(favoriteStore, [
             "hotplaceList",
