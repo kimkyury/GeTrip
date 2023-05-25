@@ -43,7 +43,7 @@
 </template>
 <script>
 import http from "@/common/axios";
-import { mapMutations } from "vuex";
+import { mapMutations, mapActions } from "vuex";
 const loginStore = "loginStore";
 const favoriteStore = "favoriteStore";
 
@@ -59,7 +59,8 @@ export default {
         };
     },
     methods: {
-        ...mapMutations(favoriteStore, ["getHotplaceListFromUser", "getFavoriteList"]),
+        ...mapActions(favoriteStore, ["getHotplaceListFromUser", "getFavoriteList"]),
+        ...mapMutations(favoriteStore, ["RESET_FAVORITE", "SET_USERINFO"]),
         ...mapMutations(loginStore, { setLogin: "SET_LOGIN" }),
         async validate() {
             if (this.loginUserEmail.length > 0) this.isLoginUserEmailValid = true;
@@ -117,7 +118,14 @@ export default {
         },
 
         async setFavoriteInfo() {
-            // Favorite
+            // Favorite init
+            this.SET_USERINFO({
+                userSeq: this.userSeq,
+                userSidoName: this.userSidoName,
+                userSidoCode: this.userSidoCode,
+                userGugunName: this.userGugunName,
+            });
+
             await this.getHotplaceListFromUser;
             await this.getFavoriteList;
         },
