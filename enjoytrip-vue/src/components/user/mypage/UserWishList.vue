@@ -170,7 +170,9 @@ export default {
         ...mapState(favoriteStore, ["favoriteList", "favoriteCount"]),
     },
 
-    created() {
+    async created() {
+        await this.getFavoriteList();
+
         console.log("favoriteListCount: ", this.favoriteCount);
         if (this.favoriteCount == 0) {
             this.$router.push({ name: "WishListErrorPage" });
