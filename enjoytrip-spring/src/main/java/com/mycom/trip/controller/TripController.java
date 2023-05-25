@@ -14,7 +14,7 @@ import com.mycom.trip.dto.TripResultDto;
 import com.mycom.trip.service.TripService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5500", allowCredentials = "true", allowedHeaders = "*", methods = {
+@CrossOrigin(origins = "http://192.168.203.102:8080", allowCredentials = "true", allowedHeaders = "*", methods = {
 		RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS, RequestMethod.HEAD, RequestMethod.DELETE,
 		RequestMethod.PUT })
 public class TripController {

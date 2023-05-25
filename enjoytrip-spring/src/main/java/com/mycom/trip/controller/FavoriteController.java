@@ -16,7 +16,7 @@ import com.mycom.trip.dto.favorite.HotplaceResultDto;
 import com.mycom.trip.service.FavoriteService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5500", allowCredentials = "true", allowedHeaders = "*", methods = {
+@CrossOrigin(origins = "http://192.168.203.102:8080", allowCredentials = "true", allowedHeaders = "*", methods = {
 		RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS, RequestMethod.HEAD, RequestMethod.DELETE,
 		RequestMethod.PUT })
 public class FavoriteController {
@@ -47,7 +47,7 @@ public class FavoriteController {
 	public ResponseEntity<FavoriteResultDto> getFavoriteList(@PathVariable int userSeq) {
 
 		FavoriteResultDto favoriteResultDto = favoriteService.getFavoriteList(userSeq);
-
+		System.out.println("Favorits: " + favoriteResultDto);
 		// Fail일때만 badRequest를 보냄, 그다음은 front층에서 result가 0이나 1이냐에 따라서 '좋아요한 이력이 없습니다'
 		// 등으로 처리하도록 함
 		if (favoriteResultDto.getResult() == FAIL)
