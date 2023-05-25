@@ -167,12 +167,13 @@ export default {
     },
     computed: {
         ...mapState(loginStore, ["userSeq", "userName", "userSidoName"]),
-        ...mapState(favoriteStore, ["favoriteList", "favoriteListCount"]),
+        ...mapState(favoriteStore, ["favoriteList", "favoriteCount"]),
     },
 
     created() {
-        if (this.favoriteListCount == 0) {
-            this.$router.push({ name: "WishListerrorPage" });
+        console.log("favoriteListCount: ", this.favoriteCount);
+        if (this.favoriteCount == 0) {
+            this.$router.push({ name: "WishListErrorPage" });
         }
     },
 

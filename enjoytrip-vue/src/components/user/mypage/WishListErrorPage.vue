@@ -6,7 +6,8 @@
                     <h1>My Favorite Attraction</h1>
                     <p class="lead mb-5">당신이 좋아요한 여행지 목록입니다.</p>
                     <div class="row gy-5 align-items-stretch">
-                        <h3>텅~</h3>
+                        <h3>텅~~</h3>
+                        <p>좋아요한 장소가 없네요! 추가해볼까요?</p>
                     </div>
                 </div>
 

@@ -10,6 +10,7 @@
 
                         <div v-if="isLogin">
                             <p class="lead mb-5">
+                                "
                                 <span
                                     v-for="(nameChar, nameIndex) in userName"
                                     :key="'userName-' + nameIndex"
