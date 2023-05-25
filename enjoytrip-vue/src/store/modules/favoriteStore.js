@@ -73,7 +73,7 @@ const favoriteStore = {
         },
 
         async getFavoriteList({ state, commit }) {
-            // console.log("favorite UserSeq: ", state.userSeq);
+            console.log("favorite UserSeq: ", state.userSeq);
             try {
                 let { data } = await http.get(`/users/${state.userSeq}/places/favorites`);
 

@@ -173,12 +173,7 @@ const loginStore = "loginStore";
 export default {
     components: {},
     methods: {
-        ...mapActions(favoriteStore, [
-            "getHotplaceList",
-            "getHotplaceListFromUser",
-            "getFavoriteList",
-            "postFavorite",
-        ]),
+        ...mapActions(favoriteStore, ["getFavoriteList", "postFavorite"]),
         ...mapActions(placeStore, [
             "getList",
             "getArea2List",
@@ -245,27 +240,18 @@ export default {
             return result;
         },
         isFavorite(contentId) {
-            return this.favoriteHotplaceList.some(
+            return this.favoriteTripList.some(
                 (favorite) => favorite.contentId === contentId
             );
         },
     },
     computed: {
-        ...mapState(loginStore, ["userSeq", "isLogin"]),
+        ...mapState(loginStore, ["isLogin"]),
         ...mapState(placeStore, ["areaList1", "areaList2", "trips"]),
-        ...mapState(favoriteStore, [
-            "hotplaceList",
-            "hotplaceCount",
-
-            "hotplaceListFromUser",
-            "hotplaceCountFromUser",
-
-            "favoriteList",
-            "favoriteCount",
-        ]),
+        ...mapState(favoriteStore, ["userSeq", "favoriteList", "favoriteCount"]),
 
         // 유저의 favoriteList와 Hotplace의 일치하는 배열만 리턴
-        favoriteHotplaceList() {
+        favoriteTripList() {
             return this.trips.filter((trip) =>
                 this.favoriteList.some(
                     (favorite) => favorite.contentId === trip.contentId
@@ -273,10 +259,13 @@ export default {
             );
         },
     },
-    async mounted() {
-        await this.getHotplaceList();
-        await this.getFavoriteList();
+    async created() {
+        if (this.isLogin) {
+            await this.getFavoriteList();
+        }
         await this.mapView();
+        console.log("userSeq: ", this.userSeq);
+        console.log("FAVORITE: ", this.favoriteList);
     },
 };
 </script>

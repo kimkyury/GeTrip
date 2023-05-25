@@ -12,7 +12,7 @@
                             <p class="lead mb-5">
                                 <span
                                     v-for="(nameChar, nameIndex) in userName"
-                                    :key="nameIndex"
+                                    :key="'userName-' + nameIndex"
                                     class="custom-item"
                                     :style="{ animationDelay: nameIndex * 200 + 'ms' }"
                                     v-text="nameChar"
@@ -21,7 +21,7 @@
 
                                 <span
                                     v-for="(sidoChar, sidoIndex) in userSidoName"
-                                    :key="sidoIndex"
+                                    :key="'sido-' + sidoIndex"
                                     class="custom-item"
                                     :style="{ animationDelay: sidoIndex * 200 + 'ms' }"
                                     v-text="sidoChar"
@@ -33,7 +33,7 @@
                             <p class="lead mb-5">
                                 <span
                                     v-for="(guideChar, guideIndex) in guideText1"
-                                    :key="guideIndex"
+                                    :key="'guide1-' + guideIndex"
                                     class="custom-item"
                                     :style="{ animationDelay: guideIndex * 200 + 'ms' }"
                                     v-text="guideChar"
@@ -42,7 +42,7 @@
 
                                 <span
                                     v-for="(guideChar, guideIndex) in guideText2"
-                                    :key="guideIndex"
+                                    :key="'guide2-' + guideIndex"
                                     class="custom-item"
                                     :style="{ animationDelay: guideIndex * 200 + 'ms' }"
                                     v-text="guideChar"
