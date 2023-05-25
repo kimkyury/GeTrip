@@ -54,9 +54,8 @@
     </div>
 </template>
 <script>
-import { mapGetters, mapMutations, mapState } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 const loginStore = "loginStore";
-const favoriteStore = "favoriteStore";
 
 export default {
     metaInfo: {
@@ -75,17 +74,13 @@ export default {
         ],
     },
     methods: {
-        ...mapMutations(favoriteStore, ["RESET_FAVORITE"]),
-        ...mapMutations(loginStore, ["RESET_USER"]),
+        ...mapMutations(loginStore, ["SET_LOGOUT"]),
         logout() {
-            this.RESET_USER();
-            this.RESET_FAVORITE();
-            console.log("logout, favoriteList: ", this.favoriteList);
+            this.SET_LOGOUT();
             this.$router.push("/signup");
         },
     },
     computed: {
-        ...mapState(favoriteStore, ["hotplaceList, favoriteList"]),
         ...mapGetters(loginStore, ["IsLogin"]),
         isLogin() {
             return this.IsLogin;

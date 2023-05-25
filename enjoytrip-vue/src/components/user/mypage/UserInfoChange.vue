@@ -1,6 +1,6 @@
 <template>
   <div>
-    <section class="py-5">
+    <section>
       <div class="container py-4">
         <div class="row gy-5">
           <div class="col-lg-9">
@@ -9,212 +9,298 @@
             <p class="text-muted mb-5">
               본인의 개인정보 혹은 비밀번호의 수정이 가능합니다.
             </p>
-            <!-- CHANGE PASSWORD FORM-->
-            <form class="py-4 border-top border-bottom mb-5" action="#">
-              <div class="row">
-                <div class="col-12 mb-4">
-                  <h3 class="text-uppercase lined">비밀번호 교체</h3>
-                </div>
-                <div class="col-lg-6 mb-3">
-                  <label class="form-label" for="password_old">
-                    이전 비밀번호:
-                  </label>
-                  <input
-                    class="form-control"
-                    id="password_old"
-                    type="password"
-                    name="password_old"
-                    v-model="userPassword"
-                  />
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-lg-6 mb-3">
-                  <label class="form-label" for="password_1"
-                    >새 비밀번호:
-                  </label>
-                  <input
-                    class="form-control"
-                    id="password_1"
-                    type="password"
-                    name="password_1"
-                    v-model="userUpdatePassword"
-                  />
-                </div>
-                <div class="col-lg-6 mb-3">
-                  <label class="form-label" for="password_2"
-                    >새 비밀번호 재확인:
-                  </label>
-                  <input
-                    class="form-control"
-                    id="password_2"
-                    type="password"
-                    name="password_2"
-                    v-model="userUpdatePasswordConfirm"
-                  />
-                </div>
-                <div class="col-lg-12 text-center">
-                  <button
-                    class="btn btn-outline-primary"
-                    type="button"
-                    @click="passwordUpdate()"
-                  >
-                    <i class="fas fa-save me-2"></i> 새 비밀번호 저장
-                  </button>
-                </div>
-              </div>
-            </form>
-            <!-- PROFILE DETAIL FORM-->
-            <form class="py-4" action="#">
-              <div class="row">
-                <div class="col-12 mb-4">
-                  <h3 class="text-uppercase lined">Profile detail</h3>
-                </div>
-                <div class="col-md-12 mb-3">
-                  <label class="form-label" for="fullName"> 이메일 </label>
-                  <input
-                    class="form-control"
-                    id="fullName"
-                    type="text"
-                    name="fullName"
-                    v-model="$store.state.loginStore.updateUserEmail"
-                    readonly
-                  />
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-4 mb-4 col-lg-4">
-                  <label class="form-label" for="fullName">이름</label>
-                  <input
-                    class="form-control"
-                    id="fullName"
-                    type="text"
-                    name="fullName"
-                    v-model="$store.state.loginStore.updateUserName"
-                  />
-                </div>
-                <div class="col-md-4 mb-4 col-lg-4">
-                  <label class="form-label" for="area1List">8도</label>
-                  <select
-                    id="area1List"
-                    class="form-select"
-                    v-model="$store.state.loginStore.updateUserSidoCode"
-                    @change="updateArea2List()"
-                  >
-                    <option value="0">시도를 선택하세요</option>
-                    <option
-                      v-for="(area, index) in areaList1"
-                      :key="index"
-                      v-bind:value="area.sidoCode"
-                    >
-                      {{ area.sidoName }}
-                    </option>
-                  </select>
-                </div>
-                <div class="col-md-4 mb-4 col-lg-4">
-                  <label class="form-label" for="area2List">도시</label>
-                  <select
-                    id="area2List"
-                    class="form-select"
-                    v-model="$store.state.loginStore.updateUserGugunCode"
-                  >
-                    <option value="0">구군을 선택하세요</option>
-                    <option
-                      v-for="(area, index) in gugunList"
-                      :key="index"
-                      v-bind:value="area.gugunCode"
-                    >
-                      {{ area.gugunName }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3 mb-3 col-lg-3">
-                  <label class="form-label" for="gender"> 성별 </label>
-                  <select
-                    class="form-select"
-                    v-model="$store.state.loginStore.updateUserGenderCode"
-                  >
-                    <option value="1">남자</option>
-                    <option value="2">여자</option>
-                  </select>
-                </div>
-                <div class="col-md-3 mb-3 col-lg-3">
-                  <label class="form-label" for="birthYear">태어난 년도</label>
-                  <input
-                    class="form-control"
-                    id="birthYear"
-                    type="text"
-                    name="birthYear"
-                    v-model="$store.state.loginStore.updateUserBirthYear"
-                  />
-                </div>
-                <div class="col-md-3 mb-3 col-lg-3">
-                  <label class="form-label" for="birthMonth">월</label>
-                  <input
-                    class="form-control"
-                    id="birthMonth"
-                    type="text"
-                    name="birthMonth"
-                    v-model="$store.state.loginStore.updateUserBirthMonth"
-                  />
-                </div>
-                <div class="col-md-3 mb-3 col-lg-3">
-                  <label class="form-label" for="birthDay">일</label>
-                  <input
-                    class="form-control"
-                    id="birthDay"
-                    type="text"
-                    name="birthDay"
-                    v-model="$store.state.loginStore.updateUserBirthDay"
-                  />
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-3 mb-3 col-lg-3">
-                  <label class="form-label" for="profile">Profile Image</label>
-                  <select
-                    class="form-select"
-                    id="profile"
-                    v-model="$store.state.loginStore.updateUserProfileImageUrl"
-                  >
-                    <option
-                      v-for="(image, index) in $store.state.loginStore
-                        .profileImage"
-                      :key="index"
-                      v-bind:value="image.path"
-                    >
-                      {{ image.name }}
-                    </option>
-                  </select>
-                </div>
-                <div
-                  v-for="(image, index) in $store.state.loginStore.profileImage"
-                  :key="index"
-                  style="padding: 0px; width: 0px"
-                  id="imageRoop"
+            <div class="row">
+              <div class="col-lg-12">
+                <ul
+                  class="nav nav-pills flex-column flex-sm-row border-bottom-0"
+                  id="tab3"
+                  role="tablist"
                 >
-                  <img
-                    v-if="
-                      image.path ==
-                      $store.state.loginStore.updateUserProfileImageUrl
-                    "
-                    :src="image.imageView"
-                    style="width: 100px; height: 100px"
-                  />
+                  <li class="nav-item flex-sm-fill" role="presentation">
+                    <button
+                      class="border-bottom-0 w-100 nav-link active"
+                      id="webdesign-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#webdesign"
+                      type="button"
+                      role="tab"
+                      aria-controls="webdesign"
+                      aria-selected="true"
+                    >
+                      비밀번호 교체
+                    </button>
+                  </li>
+                  <li class="nav-item flex-sm-fill" role="presentation">
+                    <button
+                      class="border-bottom-0 w-100 nav-link"
+                      id="coding-tab"
+                      data-bs-toggle="tab"
+                      data-bs-target="#coding"
+                      type="button"
+                      role="tab"
+                      aria-controls="coding"
+                      aria-selected="false"
+                    >
+                      개인정보 수정
+                    </button>
+                  </li>
+                </ul>
+                <div class="tab-content" id="tab3Content">
+                  <div
+                    class="tab-pane fade show active"
+                    id="webdesign"
+                    role="tabpanel"
+                    aria-labelledby="webdesign-tab"
+                  >
+                    <div class="p-4 border border-top-0">
+                      <form
+                        class="py-4"
+                        action="#"
+                      >
+                        <div class="row">
+                          <div class="col-lg-6 mb-3">
+                            <label class="form-label" for="password_old">
+                              이전 비밀번호:
+                            </label>
+                            <input
+                              class="form-control"
+                              id="password_old"
+                              type="password"
+                              name="password_old"
+                              v-model="userPassword"
+                            />
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-lg-6 mb-3">
+                            <label class="form-label" for="password_1"
+                              >새 비밀번호:
+                            </label>
+                            <input
+                              class="form-control"
+                              id="password_1"
+                              type="password"
+                              name="password_1"
+                              v-model="userUpdatePassword"
+                            />
+                          </div>
+                          <div class="col-lg-6 mb-3">
+                            <label class="form-label" for="password_2"
+                              >새 비밀번호 재확인:
+                            </label>
+                            <input
+                              class="form-control"
+                              id="password_2"
+                              type="password"
+                              name="password_2"
+                              v-model="userUpdatePasswordConfirm"
+                            />
+                          </div>
+                          <div class="col-lg-12 text-center">
+                            <button
+                              class="btn btn-outline-primary"
+                              type="button"
+                              @click="passwordUpdate()"
+                            >
+                              <i class="fas fa-save me-2"></i> 새 비밀번호 저장
+                            </button>
+                          </div>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                  <div
+                    class="tab-pane fade"
+                    id="coding"
+                    role="tabpanel"
+                    aria-labelledby="coding-tab"
+                  >
+                    <div class="p-4 border border-top-0">
+                      <form class="py-4" action="#">
+                        <div class="row">
+                          <div class="col-md-12 mb-3">
+                            <label class="form-label" for="fullName">
+                              이메일
+                            </label>
+                            <input
+                              class="form-control"
+                              id="fullName"
+                              type="text"
+                              name="fullName"
+                              v-model="$store.state.loginStore.updateUserEmail"
+                              readonly
+                            />
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-4 mb-4 col-lg-4">
+                            <label class="form-label" for="fullName"
+                              >이름</label
+                            >
+                            <input
+                              class="form-control"
+                              id="fullName"
+                              type="text"
+                              name="fullName"
+                              v-model="$store.state.loginStore.updateUserName"
+                            />
+                          </div>
+                          <div class="col-md-4 mb-4 col-lg-4">
+                            <label class="form-label" for="area1List"
+                              >8도</label
+                            >
+                            <select
+                              id="area1List"
+                              class="form-select"
+                              v-model="
+                                $store.state.loginStore.updateUserSidoCode
+                              "
+                              @change="updateArea2List()"
+                            >
+                              <option value="0">시도를 선택하세요</option>
+                              <option
+                                v-for="(area, index) in areaList1"
+                                :key="index"
+                                v-bind:value="area.sidoCode"
+                              >
+                                {{ area.sidoName }}
+                              </option>
+                            </select>
+                          </div>
+                          <div class="col-md-4 mb-4 col-lg-4">
+                            <label class="form-label" for="area2List"
+                              >도시</label
+                            >
+                            <select
+                              id="area2List"
+                              class="form-select"
+                              v-model="
+                                $store.state.loginStore.updateUserGugunCode
+                              "
+                            >
+                              <option value="0">구군을 선택하세요</option>
+                              <option
+                                v-for="(area, index) in gugunList"
+                                :key="index"
+                                v-bind:value="area.gugunCode"
+                              >
+                                {{ area.gugunName }}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-3 mb-3 col-lg-3">
+                            <label class="form-label" for="gender">
+                              성별
+                            </label>
+                            <select
+                              class="form-select"
+                              v-model="
+                                $store.state.loginStore.updateUserGenderCode
+                              "
+                            >
+                              <option value="1">남자</option>
+                              <option value="2">여자</option>
+                            </select>
+                          </div>
+                          <div class="col-md-3 mb-3 col-lg-3">
+                            <label class="form-label" for="birthYear"
+                              >태어난 년도</label
+                            >
+                            <input
+                              class="form-control"
+                              id="birthYear"
+                              type="text"
+                              name="birthYear"
+                              v-model="
+                                $store.state.loginStore.updateUserBirthYear
+                              "
+                            />
+                          </div>
+                          <div class="col-md-3 mb-3 col-lg-3">
+                            <label class="form-label" for="birthMonth"
+                              >월</label
+                            >
+                            <input
+                              class="form-control"
+                              id="birthMonth"
+                              type="text"
+                              name="birthMonth"
+                              v-model="
+                                $store.state.loginStore.updateUserBirthMonth
+                              "
+                            />
+                          </div>
+                          <div class="col-md-3 mb-3 col-lg-3">
+                            <label class="form-label" for="birthDay">일</label>
+                            <input
+                              class="form-control"
+                              id="birthDay"
+                              type="text"
+                              name="birthDay"
+                              v-model="
+                                $store.state.loginStore.updateUserBirthDay
+                              "
+                            />
+                          </div>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-3 mb-3 col-lg-3">
+                            <label class="form-label" for="profile"
+                              >Profile Image</label
+                            >
+                            <select
+                              class="form-select"
+                              id="profile"
+                              v-model="
+                                $store.state.loginStore
+                                  .updateUserProfileImageUrl
+                              "
+                            >
+                              <option
+                                v-for="(image, index) in $store.state.loginStore
+                                  .profileImage"
+                                :key="index"
+                                v-bind:value="image.path"
+                              >
+                                {{ image.name }}
+                              </option>
+                            </select>
+                          </div>
+                          <div
+                            v-for="(image, index) in $store.state.loginStore
+                              .profileImage"
+                            :key="index"
+                            style="padding: 0px; width: 0px"
+                            id="imageRoop"
+                          >
+                            <img
+                              v-if="
+                                image.path ==
+                                $store.state.loginStore
+                                  .updateUserProfileImageUrl
+                              "
+                              :src="image.imageView"
+                              style="width: 100px; height: 100px"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-lg-12 text-center">
+                          <button
+                            class="btn btn-outline-primary"
+                            type="button"
+                            @click="userUpdate()"
+                          >
+                            <i class="fas fa-save me-2"></i> 저장
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="col-lg-12 text-center">
-                <button
-                  class="btn btn-outline-primary"
-                  type="button"
-                  @click="userUpdate()"
-                >
-                  <i class="fas fa-save me-2"></i> 저장
-                </button>
-              </div>
-            </form>
+            </div>
           </div>
           <member-section></member-section>
         </div>
