@@ -79,6 +79,7 @@ export default {
                     let { data } = await http.post("/login", loginObj);
                     console.log(data);
                     console.log(data.userSeq);
+
                     // this 가 다른 url
                     this.setLogin({
                         isLogin: true,
@@ -101,7 +102,12 @@ export default {
                         userClsfName: data.userClsfName,
                     });
 
-                    await this.setFavoriteInfo();
+                    await this.setFavoriteInfo(
+                        data.userSeq,
+                        data.userSidoName,
+                        data.userSidoCode,
+                        data.userGugunName
+                    );
                     this.$router.push("/");
                 } catch (error) {
                     console.log("LoginVue: error : ");
@@ -117,14 +123,16 @@ export default {
             }
         },
 
-        async setFavoriteInfo() {
+        async setFavoriteInfo(seq, sidoN, sidoC, gugunN) {
             // Favorite init
             this.SET_USERINFO({
-                userSeq: this.userSeq,
-                userSidoName: this.userSidoName,
-                userSidoCode: this.userSidoCode,
-                userGugunName: this.userGugunName,
+                userSeq: seq,
+                userSidoName: sidoN,
+                userSidoCode: sidoC,
+                userGugunName: gugunN,
             });
+
+            console.log("setUserSeq in FavoriteStore: ");
 
             await this.getHotplaceListFromUser;
             await this.getFavoriteList;

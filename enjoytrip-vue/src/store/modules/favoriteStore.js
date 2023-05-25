@@ -136,6 +136,8 @@ const favoriteStore = {
             state.userSidoCode = payload.userSidoCode;
             state.userGugunName = payload.userGugunName;
             state.userSidoName = payload.userSidoName;
+
+            console.log(state.userSeq + ", input: ", payload.userSeq);
         },
 
         SET_HOTPLACE_LIST(state, list) {
