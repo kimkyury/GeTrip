@@ -91,7 +91,7 @@ export default new VueRouter({
         },
         {
             name: "WishListErrorPage",
-            path: "/member/wishlist",
+            path: "/member/error",
             component: WishListErrorPage,
         },
 

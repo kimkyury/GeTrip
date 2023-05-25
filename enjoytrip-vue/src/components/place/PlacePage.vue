@@ -113,20 +113,22 @@
                             style="border-radius: 20px; margin: 5px"
                         />
                     </div>
-                    <p
-                        class="btn btn-outline-dark btn-sm"
-                        v-if="checkIsFavorite(area.contentId)"
-                        @click="changeFavoriteState(0, area.contentId)"
-                    >
-                        🖤 취소요
-                    </p>
-                    <p
-                        class="btn btn-outline-pink btn-sm"
-                        v-else
-                        @click="changeFavoriteState(1, area.contentId)"
-                    >
-                        💗 좋아요
-                    </p>
+                    <div v-if="isLogin">
+                        <p
+                            class="btn btn-outline-dark btn-sm"
+                            v-if="checkIsFavorite(area.contentId)"
+                            @click="changeFavoriteState(0, area.contentId)"
+                        >
+                            🖤 취소요
+                        </p>
+                        <p
+                            class="btn btn-outline-pink btn-sm"
+                            v-else
+                            @click="changeFavoriteState(1, area.contentId)"
+                        >
+                            💗 좋아요
+                        </p>
+                    </div>
                 </div>
                 <div class="col-8" id="sideText">
                     <h2
@@ -171,12 +173,7 @@ const loginStore = "loginStore";
 export default {
     components: {},
     methods: {
-        ...mapActions(favoriteStore, [
-            "getHotplaceList",
-            "getHotplaceListFromUser",
-            "getFavoriteList",
-            "postFavorite",
-        ]),
+        ...mapActions(favoriteStore, ["getFavoriteList", "postFavorite"]),
         ...mapActions(placeStore, [
             "getList",
             "getArea2List",
@@ -229,7 +226,6 @@ export default {
                     // 담고 난 후, 리스트를 다시 계산해야 함
                     try {
                         await this.getFavoriteList();
-                        console.log(this.favoriteList);
                     } catch (error) {
                         console.log(error);
                     }
@@ -241,32 +237,21 @@ export default {
 
         checkIsFavorite(contentId) {
             let result = this.isFavorite(contentId);
-            console.log(contentId + "의 FH 존재결과: ", result);
             return result;
         },
         isFavorite(contentId) {
-            return this.favoriteHotplaceList.some(
+            return this.favoriteTripList.some(
                 (favorite) => favorite.contentId === contentId
             );
         },
     },
     computed: {
-        ...mapState(loginStore, ["userSeq"]),
+        ...mapState(loginStore, ["isLogin"]),
         ...mapState(placeStore, ["areaList1", "areaList2", "trips"]),
-        ...mapState(favoriteStore, [
-            "hotplaceList",
-            "hotplaceCount",
-
-            "hotplaceListFromUser",
-            "hotplaceCountFromUser",
-
-            "favoriteList",
-            "favoriteCount",
-        ]),
+        ...mapState(favoriteStore, ["userSeq", "favoriteList", "favoriteCount"]),
 
         // 유저의 favoriteList와 Hotplace의 일치하는 배열만 리턴
-        favoriteHotplaceList() {
-            console.log("FavoriteHot place 계산");
+        favoriteTripList() {
             return this.trips.filter((trip) =>
                 this.favoriteList.some(
                     (favorite) => favorite.contentId === trip.contentId
@@ -274,10 +259,13 @@ export default {
             );
         },
     },
-    async mounted() {
-        await this.getHotplaceList();
-        await this.getFavoriteList();
+    async created() {
+        if (this.isLogin) {
+            await this.getFavoriteList();
+        }
         await this.mapView();
+        console.log("userSeq: ", this.userSeq);
+        console.log("FAVORITE: ", this.favoriteList);
     },
 };
 </script>
