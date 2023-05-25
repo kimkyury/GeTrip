@@ -65,7 +65,7 @@
                                     <li class="list-inline-item">
                                         <div v-if="isLogin">
                                             <a
-                                                class="btn btn-outline-pink"
+                                                class="btn btn-outline-dark"
                                                 v-if="checkIsFavorite(hotplace.contentId)"
                                                 @click="
                                                     changeFavoriteState(
@@ -74,10 +74,10 @@
                                                     )
                                                 "
                                             >
-                                                🖤 취소
+                                                🖤 취소요
                                             </a>
                                             <a
-                                                class="btn btn-outline-dark"
+                                                class="btn btn-outline-pink"
                                                 v-else
                                                 @click="
                                                     changeFavoriteState(
