@@ -3,7 +3,7 @@
         class="text-white bg-cover bg-center primary-overlay overlay-dense"
         style="background: url('img/photogrid.jpg') repeat"
     >
-        <div class="overlay-content py-5" style="height:80vh">
+        <div class="overlay-content py-5" style="height: 80vh">
             <div class="container py-4">
                 <!-- Hero slider-->
                 <div class="swiper-container homepage-slider">
