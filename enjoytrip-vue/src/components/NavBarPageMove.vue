@@ -8,7 +8,7 @@
                         class="d-none d-md-inline-block"
                         :src="image.imageView"
                         alt="Universal logo"
-                        style="width: 70px; height: 70px;"
+                        style="width: 60px; height: 60px;"
                     />
                     </div>
                     <span class="sr-only">Universal - go to homepage</span></a
