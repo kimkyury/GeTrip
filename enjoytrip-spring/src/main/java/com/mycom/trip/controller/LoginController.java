@@ -19,7 +19,7 @@ import com.mycom.trip.dto.UserGetDto;
 import com.mycom.trip.service.LoginService;
 
 @RestController
-@CrossOrigin(origins = "http://192.168.203.102:8080", allowCredentials = "true", allowedHeaders = "*", methods = {
+@CrossOrigin(origins = "http://localhost:5500", allowCredentials = "true", allowedHeaders = "*", methods = {
 		RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS, RequestMethod.HEAD, RequestMethod.DELETE,
 		RequestMethod.PUT })
 public class LoginController {
@@ -28,7 +28,7 @@ public class LoginController {
 	LoginService loginService;
 
 	@PostMapping("/login")
-	public Map<String, String> login(@RequestBody UserDto dto,  HttpSession session) {
+	public Map<String, String> login(@RequestBody UserDto dto, HttpSession session) {
 		System.out.println("dtp: " + dto);
 		UserGetDto userGetDto = loginService.login(dto);
 
@@ -70,14 +70,14 @@ public class LoginController {
 		}
 		return map;
 	}
-	
+
 	@GetMapping("/login/kakao/{userEmail}")
-	public Map<String, String> kakaoLoginSearch(@PathVariable String userEmail, HttpSession session){
-		Map<String, String> map = new HashMap<>();		
+	public Map<String, String> kakaoLoginSearch(@PathVariable String userEmail, HttpSession session) {
+		Map<String, String> map = new HashMap<>();
 		UserDto dto = new UserDto();
 		dto.setUserEmail(userEmail);
 		UserGetDto userGetDto = loginService.login(dto);
-		
+
 		if (userGetDto != null) {
 			session.setAttribute("userDto", userGetDto);
 			map.put("result", "success");
@@ -105,10 +105,10 @@ public class LoginController {
 			map.put("userClsfCode", String.valueOf(userGetDto.getUserClsfCode()));
 			map.put("userClsfName", userGetDto.getUserClsfName());
 
-		}else {
-			map.put("result","fail");
+		} else {
+			map.put("result", "fail");
 		}
-		
+
 		return map;
 	}
 }

@@ -14,7 +14,7 @@ import com.mycom.trip.dto.TripResultDto;
 import com.mycom.trip.service.TripService;
 
 @RestController
-@CrossOrigin(origins = "http://192.168.203.102:8080", allowCredentials = "true", allowedHeaders = "*", methods = {
+@CrossOrigin(origins = "http://localhost:5500", allowCredentials = "true", allowedHeaders = "*", methods = {
 		RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS, RequestMethod.HEAD, RequestMethod.DELETE,
 		RequestMethod.PUT })
 public class TripController {
@@ -54,6 +54,8 @@ public class TripController {
 			@RequestParam(value = "sidoCode", required = false, defaultValue = "0") int sidoCode,
 			@RequestParam(value = "gugunCode", required = false, defaultValue = "0") int gugunCode,
 			@RequestParam(value = "searchWord", required = false, defaultValue = "") String searchWord) {
+
+		System.out.println("trip!!!!!!!!!!!!!!!!");
 		TripParamDto tripParamDto = new TripParamDto();
 		tripParamDto.setOffset(offset);
 		tripParamDto.setLimit(limit);

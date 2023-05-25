@@ -16,7 +16,7 @@ import com.mycom.trip.dto.favorite.HotplaceResultDto;
 import com.mycom.trip.service.FavoriteService;
 
 @RestController
-@CrossOrigin(origins = "http://192.168.203.102:8080", allowCredentials = "true", allowedHeaders = "*", methods = {
+@CrossOrigin(origins = "http://localhost:5500", allowCredentials = "true", allowedHeaders = "*", methods = {
 		RequestMethod.GET, RequestMethod.POST, RequestMethod.OPTIONS, RequestMethod.HEAD, RequestMethod.DELETE,
 		RequestMethod.PUT })
 public class FavoriteController {
@@ -36,8 +36,7 @@ public class FavoriteController {
 		if (favoriteResultDto.getResult() == SUCCESS) {
 			System.out.println("post favorite Success");
 			return ResponseEntity.ok().body(favoriteResultDto);
-		}
-		else {
+		} else {
 			System.out.println("post Fail");
 			return ResponseEntity.badRequest().build();
 		}
@@ -72,7 +71,7 @@ public class FavoriteController {
 
 	@GetMapping(value = "/places/hotplaces/{userSeq}")
 	public ResponseEntity<HotplaceResultDto> getHotplaceFromUser(@PathVariable int userSeq) {
-		
+
 		System.out.println("hotplaceFromUser: " + userSeq);
 		HotplaceResultDto hotplaceResultDto = favoriteService.getHotplaceListFromUser(userSeq);
 
