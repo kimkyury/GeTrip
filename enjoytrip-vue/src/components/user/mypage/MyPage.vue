@@ -1,18 +1,18 @@
 <template>
   <div>
-    <section class="py-5">
+    <section>
       <div class="container py-4">
         <div class="row g-5">
           <div class="col-lg-9">
             <h1>Confirm My Info</h1>
-            <p class="lead mb-5">당신의 정보를 열람할 수 있습니다.</p>
+            <p class="lead">당신의 정보를 열람할 수 있습니다.</p>
           </div>
           <member-section></member-section>
         </div>
-        <div class="row mt-3">
+        <div class="row">
           <div class="col-lg-7">
             <div class="row">
-              <div class="col-md-12 mb-3">
+              <div class="col-md-12">
                 <div class="col-12 mb-4">
                   <h3 class="text-uppercase lined">당신의 계정정보</h3>
                 </div>

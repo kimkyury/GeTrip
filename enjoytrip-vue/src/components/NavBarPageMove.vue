@@ -3,15 +3,14 @@
         <div class="navbar navbar-light bg-white navbar-expand-lg py-0" id="navbar">
             <div class="container py-3 py-lg-0 px-lg-0">
                 <!-- Navbar brand--><a class="navbar-brand" href="index.html"
-                    ><img
+                    ><div v-for="(image, index) in $store.state.loginStore.profileImage" :key="index"><img 
+                        v-if="image.path == $store.state.loginStore.userProfileImageUrl"
                         class="d-none d-md-inline-block"
-                        src="@/assets/img/enjoytrip/ssafy_logo_small.png"
+                        :src="image.imageView"
                         alt="Universal logo"
-                    /><img
-                        class="d-inline-block d-md-none"
-                        src="@/assets/img/enjoytrip/ssafy_logo_small.png"
-                        alt="Universal logo"
+                        style="width: 70px; height: 70px;"
                     />
+                    </div>
                     <span class="sr-only">Universal - go to homepage</span></a
                 >
                 <!-- Navbar toggler-->

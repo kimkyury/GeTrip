@@ -10,7 +10,7 @@
             </div>
         </section> -->
         <div class="container">
-            <section class="py-4">
+            <section>
                 <div class="container py-3">
                     <h1 class="h1 lined text-uppercase mb-4">자유게시판</h1>
                     <br />
