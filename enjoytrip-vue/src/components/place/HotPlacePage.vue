@@ -202,13 +202,17 @@ export default {
             userGugunName: this.userGugunName,
         });
 
+        if (this.isLogin) {
+            await this.getHotplaceListFromUser();
+            await this.getFavoriteList();
+        }
         await this.getHotplaceList();
-        await this.getHotplaceListFromUser();
-        await this.getFavoriteList();
     },
     async mounted() {
+        if (this.isLogin) {
+            await this.getFavoriteList();
+        }
         await this.getHotplaceList();
-        await this.getFavoriteList();
     },
 };
 </script>

@@ -201,9 +201,7 @@ export default {
         },
     },
 
-    created() {
-        console.log("loginInfo: ", this.isLogin);
-    },
+    created() {},
 
     async mounted() {
         // await this.getHotplaceList();
