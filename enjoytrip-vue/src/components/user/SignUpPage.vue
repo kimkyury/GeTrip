@@ -1,24 +1,12 @@
 <template lang="">
     <div>
         <!-- HEADING BREADCRUMB-->
-        <section class="bg-pentagon py-4">
+        <section class="py-4">
             <div class="container py-3">
                 <div class="row d-flex align-items-center gy-4">
-                    <div class="col-md-7">
-                        <h1 class="h2 mb-0 text-uppercase">New account / sign in</h1>
-                    </div>
-                    <div class="col-md-5">
-                        <!-- Breadcrumb-->
-                        <ol
-                            class="text-sm justify-content-start justify-content-lg-end mb-0 breadcrumb undefined"
-                        >
-                            <li class="breadcrumb-item">
-                                <a class="text-uppercase" href="index.html">Home</a>
-                            </li>
-                            <li class="breadcrumb-item text-uppercase active">
-                                New account / sign in
-                            </li>
-                        </ol>
+                    <div class="col-lg-9">
+                        <h1>New account / sign in</h1>
+                        <p class="lead mb-4">같이 STARTrip!</p>
                     </div>
                 </div>
             </div>
