@@ -28,15 +28,9 @@
                         </ul>
                         <ul class="list-inline mb-0" v-else>
                             <li class="list-inline-item">
-                                <a class="text-xs text-uppercase fw-bold text-reset" href="#"
-                                    ><i class="fas fa-door-open me-2"></i
-                                    ><span class="d-none d-md-inline-block">Sign In</span></a
-                                >
-                            </li>
-                            <li class="list-inline-item">
                                 <a class="text-xs text-uppercase fw-bold text-reset" href="#/signup"
                                     ><i class="fas fa-user me-2"></i
-                                    ><span class="d-none d-md-inline-block">Sign Up</span></a
+                                    ><span class="d-none d-md-inline-block">Sign Up/Sign In</span></a
                                 >
                             </li>
                         </ul>
