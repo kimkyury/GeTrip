@@ -108,6 +108,7 @@ export default {
         };
     },
     computed: {
+        ...mapState("loginStore", ["isLogin"]),
         ...mapState("boardStore", ["boardId"]),
         ...mapGetters("boardStore", ["getBoardList"]),
         listGetters() {
@@ -126,7 +127,11 @@ export default {
         makeDateStr: util.makeDateStr,
 
         showInsertModal() {
-            this.insertModal.show();
+            if (this.isLogin) {
+                this.insertModal.show();
+            } else {
+                this.$alertify.error("로그인 후 이용해주세요.");
+            }
         },
 
         closeAfterInsert() {
