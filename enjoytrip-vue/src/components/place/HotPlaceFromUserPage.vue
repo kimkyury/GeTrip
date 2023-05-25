@@ -7,112 +7,142 @@
                 <div class="row g-5">
                     <div class="col-lg-9">
                         <h1>HotPlaces around You</h1>
-                        <p class="lead mb-5">
-                            "
-                            <!-- <span
-                                v-for="(nameChar, nameIndex) in userName"
-                                :key="nameIndex"
-                                class="custom-item"
-                                :style="{ animationDelay: nameIndex * 200 + 'ms' }"
-                                v-text="nameChar"
-                            /> -->
 
-                            "님의 지역, "
-                            <!-- <span
-                                v-for="(sidoChar, sidoIndex) in userSidoName"
-                                :key="sidoIndex"
-                                class="custom-item"
-                                :style="{ animationDelay: sidoIndex * 200 + 'ms' }"
-                                v-text="sidoChar"
-                            /> -->
-                            "의 인기많은 관광지를 알려줄게요
-                        </p>
+                        <div v-if="isLogin">
+                            <p class="lead mb-5">
+                                <span
+                                    v-for="(nameChar, nameIndex) in userName"
+                                    :key="nameIndex"
+                                    class="custom-item"
+                                    :style="{ animationDelay: nameIndex * 200 + 'ms' }"
+                                    v-text="nameChar"
+                                />
+                                "님의 지역, "
+
+                                <span
+                                    v-for="(sidoChar, sidoIndex) in userSidoName"
+                                    :key="sidoIndex"
+                                    class="custom-item"
+                                    :style="{ animationDelay: sidoIndex * 200 + 'ms' }"
+                                    v-text="sidoChar"
+                                />
+                                "의 인기많은 관광지를 알려줄게요
+                            </p>
+                        </div>
+                        <div v-else>
+                            <p class="lead mb-5">
+                                <span
+                                    v-for="(guideChar, guideIndex) in guideText1"
+                                    :key="guideIndex"
+                                    class="custom-item"
+                                    :style="{ animationDelay: guideIndex * 200 + 'ms' }"
+                                    v-text="guideChar"
+                                />
+                                을 하시면, 당신 지역의
+
+                                <span
+                                    v-for="(guideChar, guideIndex) in guideText2"
+                                    :key="guideIndex"
+                                    class="custom-item"
+                                    :style="{ animationDelay: guideIndex * 200 + 'ms' }"
+                                    v-text="guideChar"
+                                />
+                                한 관광지를 알려줄게요
+                            </p>
+                        </div>
                     </div>
                     <place-section></place-section>
                 </div>
             </div>
         </section>
-        <section class="py-5">
-            <div class="container py-4">
-                <div class="row gy-4">
-                    <div
-                        class="col-lg-4"
-                        v-for="(hotplace, index) in hotplaceListFromUser"
-                        :key="index"
-                    >
-                        <!-- Portfolio item-->
-                        <div class="box-image-text text-center primary-overlay">
-                            <img
-                                style="height: 250px"
-                                v-if="hotplace.firstImage == ''"
-                                class="img-fluid"
-                                src="@/assets/img/enjoytrip/unfind.png"
-                                alt="..."
-                            />
-                            <img
-                                style="height: 250px"
-                                v-else
-                                :src="hotplace.firstImage"
-                                class="img-fluid"
-                                alt="..."
-                            />
-                            <div
-                                class="overlay-content d-flex flex-column justify-content-center p-4"
-                            >
-                                <h4 class="text-uppercase box-image-text-heading">
-                                    {{ hotplace.title }}
-                                </h4>
-                                <p class="text-white box-image-text-description">
-                                    {{ hotplace.addr1 }}
-                                </p>
-                                <p class="text-white box-image-text-description">
-                                    좋아요한 회원 수 : {{ hotplace.favoriteCnt }}
-                                </p>
+        <div v-if="isLogin">
+            <section class="py-5">
+                <div class="container py-4">
+                    <div class="row gy-4">
+                        <div
+                            class="col-lg-4"
+                            v-for="(hotplace, index) in hotplaceListFromUser"
+                            :key="index"
+                        >
+                            <!-- Portfolio item-->
+                            <div class="box-image-text text-center primary-overlay">
+                                <img
+                                    style="height: 250px"
+                                    v-if="hotplace.firstImage == ''"
+                                    class="img-fluid"
+                                    src="@/assets/img/enjoytrip/unfind.png"
+                                    alt="..."
+                                />
+                                <img
+                                    style="height: 250px"
+                                    v-else
+                                    :src="hotplace.firstImage"
+                                    class="img-fluid"
+                                    alt="..."
+                                />
+                                <div
+                                    class="overlay-content d-flex flex-column justify-content-center p-4"
+                                >
+                                    <h4 class="text-uppercase box-image-text-heading">
+                                        {{ hotplace.title }}
+                                    </h4>
+                                    <p class="text-white box-image-text-description">
+                                        {{ hotplace.addr1 }}
+                                    </p>
+                                    <p class="text-white box-image-text-description">
+                                        좋아요한 회원 수 : {{ hotplace.favoriteCnt }}
+                                    </p>
 
-                                <ul class="list-inline mb-0 box-image-text-content">
-                                    <li class="list-inline-item">
-                                        <a
-                                            class="btn btn-outline-light"
-                                            href="#"
-                                            @click="tripDetail(hotplace.contentId)"
-                                            >자세히보기</a
-                                        >
-                                    </li>
-                                    <li class="list-inline-item">
-                                        <div v-if="isLogin">
+                                    <ul class="list-inline mb-0 box-image-text-content">
+                                        <li class="list-inline-item">
                                             <a
-                                                class="btn btn-outline-dark"
-                                                v-if="checkIsFavorite(hotplace.contentId)"
-                                                @click="
-                                                    changeFavoriteState(
-                                                        0,
-                                                        hotplace.contentId
-                                                    )
-                                                "
+                                                class="btn btn-outline-light"
+                                                href="#"
+                                                @click="tripDetail(hotplace.contentId)"
+                                                >자세히보기</a
                                             >
-                                                🖤 취소
-                                            </a>
-                                            <a
-                                                class="btn btn-outline-pink"
-                                                v-else
-                                                @click="
-                                                    changeFavoriteState(
-                                                        1,
-                                                        hotplace.contentId
-                                                    )
-                                                "
-                                            >
-                                                💗 좋아요
-                                            </a>
-                                        </div>
-                                    </li>
-                                </ul>
+                                        </li>
+                                        <li class="list-inline-item">
+                                            <div v-if="isLogin">
+                                                <a
+                                                    class="btn btn-outline-dark"
+                                                    v-if="
+                                                        checkIsFavorite(
+                                                            hotplace.contentId
+                                                        )
+                                                    "
+                                                    @click="
+                                                        changeFavoriteState(
+                                                            0,
+                                                            hotplace.contentId
+                                                        )
+                                                    "
+                                                >
+                                                    🖤 취소
+                                                </a>
+                                                <a
+                                                    class="btn btn-outline-pink"
+                                                    v-else
+                                                    @click="
+                                                        changeFavoriteState(
+                                                            1,
+                                                            hotplace.contentId
+                                                        )
+                                                    "
+                                                >
+                                                    💗 좋아요
+                                                </a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+        </div>
+        <div class="container py-4" v-else>로그인이 필요한 서비스입니다.</div>
     </div>
 </template>
 <script>
@@ -124,6 +154,13 @@ const placeStore = "placeStore";
 const loginStore = "loginStore";
 
 export default {
+    data() {
+        return {
+            guideText1: "회원가입",
+            guideText2: "HOT!",
+        };
+    },
+
     components: { PlaceSection },
     methods: {
         ...mapActions(placeStore, ["getTripDetail"]),
