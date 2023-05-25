@@ -9,22 +9,22 @@
                         <h1>HotPlaces around You</h1>
                         <p class="lead mb-5">
                             "
-                            <span
-                                v-for="(t, index) in userName"
-                                :key="index"
+                            <!-- <span
+                                v-for="(nameChar, nameIndex) in userName"
+                                :key="nameIndex"
                                 class="custom-item"
-                                :style="{ animationDelay: index * 200 + 'ms' }"
-                                v-text="t"
-                            />
+                                :style="{ animationDelay: nameIndex * 200 + 'ms' }"
+                                v-text="nameChar"
+                            /> -->
 
                             "님의 지역, "
-                            <span
-                                v-for="(t, index) in userSidoName"
-                                :key="index"
+                            <!-- <span
+                                v-for="(sidoChar, sidoIndex) in userSidoName"
+                                :key="sidoIndex"
                                 class="custom-item"
-                                :style="{ animationDelay: index * 200 + 'ms' }"
-                                v-text="t"
-                            />
+                                :style="{ animationDelay: sidoIndex * 200 + 'ms' }"
+                                v-text="sidoChar"
+                            /> -->
                             "의 인기많은 관광지를 알려줄게요
                         </p>
                     </div>

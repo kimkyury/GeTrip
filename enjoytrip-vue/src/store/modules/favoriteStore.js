@@ -113,6 +113,23 @@ const favoriteStore = {
         },
     },
     mutations: {
+        RESET_FAVORITE(state) {
+            state.hasFavoritePlace = false;
+
+            state.hotplaceList = [];
+            state.hotplaceCount = 0;
+            state.hotplaceListFromUser = [];
+            state.hotplaceCountFromUser = 0;
+            state.favoriteList = [];
+            state.favoriteCount = 0;
+
+            state.userSeq = 0;
+            state.userSidoCode = 0;
+            state.userSidoName = "";
+            state.userGugunCode = 0;
+            state.userGugunName = "";
+        },
+
         SET_USERINFO(state, payload) {
             state.userSeq = payload.userSeq;
             state.userGugunCode = payload.userGugunCode;

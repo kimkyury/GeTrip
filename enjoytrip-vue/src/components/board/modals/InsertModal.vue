@@ -80,14 +80,12 @@ export default {
                 this.$alertify.success("글이 등록되었습니다.");
                 this.closeModal();
             } catch (error) {
-                console.log("InsertModalVue: error ");
                 console.log(error);
             }
         },
         closeModal() {
             this.$emit("call-parent-insert"); // no parameter
         },
-        // logout 처리 별도 method
     },
     async mounted() {
         try {
