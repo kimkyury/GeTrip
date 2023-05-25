@@ -49,9 +49,6 @@
                         <router-link class="nav-link" :to="{ name: 'MyPage' }">
                             MyPage</router-link
                         >
-                        <router-link class="nav-link" :to="{ name: 'WeatherPage' }">
-                            WeatherPage</router-link
-                        >
                     </ul>
                 </div>
             </div>
