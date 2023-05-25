@@ -8,8 +8,24 @@
                     <div class="col-lg-9">
                         <h1>HotPlaces around You</h1>
                         <p class="lead mb-5">
-                            [{{ userName }}]님의 지역, [{{ userSidoName }}] 의 인기많은
-                            관광지를 알려줄게요
+                            "
+                            <span
+                                v-for="(t, index) in userName"
+                                :key="index"
+                                class="custom-item"
+                                :style="{ animationDelay: index * 200 + 'ms' }"
+                                v-text="t"
+                            />
+
+                            "님의 지역, "
+                            <span
+                                v-for="(t, index) in userSidoName"
+                                :key="index"
+                                class="custom-item"
+                                :style="{ animationDelay: index * 200 + 'ms' }"
+                                v-text="t"
+                            />
+                            "의 인기많은 관광지를 알려줄게요
                         </p>
                     </div>
                     <place-section></place-section>
@@ -144,11 +160,12 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+            console.log(this.favoriteList);
         },
 
         checkIsFavorite(contentId) {
             let result = this.isFavorite(contentId);
-            // console.log(contentId + "의 FH 존재결과: ", result);
+            console.log(contentId + "의 FH 존재결과: ", result);
             return result;
         },
         isFavorite(contentId) {
@@ -187,8 +204,22 @@ export default {
     },
 
     async mounted() {
-        await this.getHotplaceList();
-        await this.getFavoriteList();
+        // await this.getHotplaceList();
+        // await this.getFavoriteList();
     },
 };
 </script>
+<style scoped>
+@keyframes text-in {
+    0% {
+        transform: translate(0, -20px);
+        opacity: 0;
+    }
+}
+.custom-item {
+    display: inline-block;
+    min-width: 0.3em;
+    font-size: 1.5rem;
+    animation: text-in 0.8s cubic-bezier(0.22, 0.15, 0.25, 1.43) 0s backwards;
+}
+</style>

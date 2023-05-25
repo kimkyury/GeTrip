@@ -22,11 +22,13 @@
                         :key="index"
                     >
                         <!-- Portfolio item-->
-                        <div class="box-image-text text-center primary-overlay">
+                        <div
+                            class="image-container box-image-text text-center primary-overlay"
+                        >
                             <img
                                 v-if="hotplace.firstImage == ''"
                                 style="height: 250px"
-                                class="img-fluid"
+                                class="img-fluid fit-image"
                                 src="@/assets/img/enjoytrip/unfind.png"
                                 alt="..."
                             />
@@ -34,13 +36,14 @@
                                 v-else
                                 style="height: 250px"
                                 :src="hotplace.firstImage"
-                                class="img-fluid"
+                                class="img-fluid fit-image"
                                 alt="..."
                             />
-                            <div
-                                class="overlay-content d-flex flex-column justify-content-center p-4"
-                            >
-                                <h4 class="text-uppercase box-image-text-heading">
+                            <div class="overlay-content p-4">
+                                <h4
+                                    class="text-uppercase box-image-text-heading"
+                                    style="margin-top: 20px"
+                                >
                                     {{ hotplace.title }}
                                 </h4>
                                 <p class="text-white box-image-text-description">
@@ -207,3 +210,16 @@ export default {
     },
 };
 </script>
+<style scoped>
+.image-container {
+    width: 350px;
+    height: 250px;
+    overflow: hidden;
+}
+.fit-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+</style>
