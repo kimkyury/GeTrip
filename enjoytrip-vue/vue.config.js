@@ -5,5 +5,5 @@
 
 module.exports = {
     outputDir:
-        "C:/SSAFY/KIMKYURI/enjoytrip_final_10e_e_e/enjoytrip-spring/src/main/resources/static",
+        "/Users/kgyury/Desktop/SSAFY-LAB/enjoytrip_final_10e_e_e/enjoytrip-spring/src/main/resources/static",
 };
