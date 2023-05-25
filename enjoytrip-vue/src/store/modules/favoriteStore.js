@@ -78,7 +78,9 @@ const favoriteStore = {
                 let { data } = await http.get(`/users/${state.userSeq}/places/favorites`);
 
                 if (data.count == 0) {
-                    this.hasFavoritePlace = false;
+                    state.hasFavoritePlace = false;
+                    state.favoriteList = {};
+                    state.favoriteCount = 0;
                 } else {
                     this.hasFavoritePlace = true;
                     commit("SET_FAVORITE_LIST", data.favoriteGetDtoList);

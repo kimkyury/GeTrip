@@ -10,6 +10,7 @@ import PlacePage from "@/components/place/PlacePage";
 import HotPlacePage from "@/components/place/HotPlacePage";
 import PlaceDetailPage from "@/components/place/PlaceDetailPage";
 import HotPlaceFromUserPage from "@/components/place/HotPlaceFromUserPage";
+import HotPlaceErrorPage from "@/components/place/HotPlaceErrorPage";
 
 import LoginPage from "@/components/user/LoginPage";
 import SignUpPage from "@/components/user/SignUpPage";
@@ -64,6 +65,11 @@ export default new VueRouter({
             name: "HotPlaceFromUserPage",
             path: "/places/hotplaces/user",
             component: HotPlaceFromUserPage,
+        },
+        {
+            name: "HotPlaceErrorPage",
+            path: "/places/hotplaces/user/error",
+            component: HotPlaceErrorPage,
         },
 
         {

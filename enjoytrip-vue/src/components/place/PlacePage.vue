@@ -236,7 +236,10 @@ export default {
         },
 
         checkIsFavorite(contentId) {
-            let result = this.isFavorite(contentId);
+            let result = false;
+            if (this.favoriteCount != 0) {
+                result = this.isFavorite(contentId);
+            }
             return result;
         },
         isFavorite(contentId) {

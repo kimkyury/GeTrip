@@ -1,7 +1,7 @@
 <template lang="">
     <!-- <div style="height: 70px"></div> -->
     <div>
-        <section class="py-5">
+        <section class="py-4">
             <!-- 중앙 center content end -->
             <div class="container py-4">
                 <div class="row g-5">
@@ -241,7 +241,13 @@ export default {
         },
     },
 
-    created() {},
+    created() {
+        console.log("hotplaceCountFromUser: ", this.hotplaceCountFromUser);
+
+        if (this.hotplaceCountFromUser == 0) {
+            this.$router.push({ name: "HotPlaceErrorPage" });
+        }
+    },
 
     async mounted() {
         // await this.getHotplaceList();
